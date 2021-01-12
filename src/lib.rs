@@ -189,7 +189,7 @@ mod tests {
             .find(|&&e| e == index)
     }
 
-    fn fixup_compound_letters(indices: &Vec<usize>) -> Vec<usize> {
+    fn fixup_compound_letters(indices: &[usize]) -> Vec<usize> {
         let ret = indices
             .iter()
             .fold((None, Vec::new()), |(ep, mut acc), &e| {
@@ -199,7 +199,7 @@ mod tests {
                             && is_compound_letter_roman(ep)
                         {
                             let i_prev = acc.len() - 1;
-                            acc[i_prev] = acc[i_prev] + 1;
+                            acc[i_prev] += 1;
                         } else {
                             acc.push(e);
                         }
@@ -209,7 +209,7 @@ mod tests {
                 (Some(e), acc)
             });
 
-        return ret.1;
+        ret.1
     }
 
     #[test]
@@ -258,7 +258,7 @@ mod tests {
             let str = PALI_ALPHABET_ROMAN[i];
 
             let tokenizer = CharacterTokenizer::new(str.chars());
-            let new_pali_char = tokenizer.map(|c| match c { Character::Pali(c) => c, _ => panic!("") }).nth(0).unwrap();
+            let new_pali_char = tokenizer.map(|c| match c { Character::Pali(c) => c, _ => panic!("") }).next().unwrap();
 
             assert_eq!(new_pali_char, pali_char);
         }

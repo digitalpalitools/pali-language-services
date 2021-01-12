@@ -72,7 +72,7 @@ jobs:
         continue-on-error: false
         with:
           command: clippy
-          args: --tests -- -D warnings
+          args: --all-targets --all-features -- -D warnings
 
   finish:
     name: Finish
