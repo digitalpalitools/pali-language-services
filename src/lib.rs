@@ -1,11 +1,12 @@
 use core::str::Chars;
-use num_enum::IntoPrimitive;
-use num_enum::TryFromPrimitive;
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::{convert::TryFrom, iter::Peekable};
+use wasm_bindgen::prelude::*;
 
 // TODO: Split this into a Pāli core and a Roman specific module.
 
 // Spec: https://docs.google.com/document/d/1KF6NLFiiVH9oVz_NcU5mjHcMcIAZECgNifM8mX25MCo/edit#heading=h.2hvqs8bpra4
+#[wasm_bindgen]
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, IntoPrimitive, TryFromPrimitive)]
 #[repr(usize)]
 pub enum PaliAlphabet {
@@ -82,6 +83,7 @@ pub fn char_compare(c1: Character, c2: Character) -> isize {
     }
 }
 
+#[wasm_bindgen]
 pub fn string_compare(str1: &str, str2: &str) -> isize {
     if str1.len() != str2.len() {
         return isize::try_from(str1.len()).unwrap() - isize::try_from(str2.len()).unwrap();
@@ -279,7 +281,7 @@ mod tests {
     #[test_case("xabc", "yabc", 1)]
     #[test_case("xabc", "xabc", 0)]
     #[test_case("yabc", "xabc", -1)]
-    fn multiplication_tests(str1: &str, str2: &str, cmp: isize) {
+    fn string_compare_tests(str1: &str, str2: &str, cmp: isize) {
         let cmp_actual = string_compare(str1, str2);
 
         assert_eq!(cmp_actual, cmp)
