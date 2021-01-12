@@ -100,6 +100,13 @@ pub fn string_compare(str1: &str, str2: &str) -> isize {
     cmp.unwrap_or_default()
 }
 
+#[wasm_bindgen]
+pub fn string_length(str1: &str) -> usize {
+    let chars1 = CharacterTokenizer::new(str1.chars());
+
+    chars1.count()
+}
+
 impl<'a> CharacterTokenizer<'a> {
     pub fn new(source: Chars<'a>) -> CharacterTokenizer<'a> {
         CharacterTokenizer {
@@ -263,28 +270,32 @@ mod tests {
         assert_eq!(fixedup_indices, indices)
     }
 
-    #[test_case("c", "cc", -1)]
-    #[test_case("c", "b", -1)]
-    #[test_case("c", "c", 0)]
-    #[test_case("b", "c", 1)]
-    #[test_case("cc", "c", 1)]
-    #[test_case("ac", "ab", -1)]
-    #[test_case("ac", "ac", 0)]
-    #[test_case("ab", "ac", 1)]
-    #[test_case("a", "x", -1)]
-    #[test_case("x", "a", 1)]
-    #[test_case("x", "z", -1)]
-    #[test_case("x", "x", 0)]
-    #[test_case("z", "x", 1)]
-    #[test_case("xabc", "aabc", 1)]
-    #[test_case("aabc", "xabc", -1)]
-    #[test_case("xabc", "yabc", 1)]
-    #[test_case("xabc", "xabc", 0)]
-    #[test_case("yabc", "xabc", -1)]
-    fn string_compare_tests(str1: &str, str2: &str, cmp: isize) {
-        let cmp_actual = string_compare(str1, str2);
+    #[test_case("c", "cc"   => -1)]
+    #[test_case("c", "b"    => -1)]
+    #[test_case("c", "c"    => 0)]
+    #[test_case("b", "c"    => 1)]
+    #[test_case("cc", "c"   => 1)]
+    #[test_case("ac", "ab"  => -1)]
+    #[test_case("ac", "ac"  => 0)]
+    #[test_case("ab", "ac"  => 1)]
+    #[test_case("a", "x"    => -1)]
+    #[test_case("x", "a"    => 1)]
+    #[test_case("x", "z"    => -1)]
+    #[test_case("x", "x"    => 0)]
+    #[test_case("z", "x"    => 1)]
+    #[test_case("xabc", "aabc"  => 1)]
+    #[test_case("aabc", "xabc"  => -1)]
+    #[test_case("xabc", "yabc"  => 1)]
+    #[test_case("xabc", "xabc"  => 0)]
+    #[test_case("yabc", "xabc"  => -1)]
+    fn string_compare_tests(str1: &str, str2: &str) -> isize {
+        string_compare(str1, str2)
+    }
 
-        assert_eq!(cmp_actual, cmp)
+    #[test_case("buddho" => 5usize; "simple word")]
+    #[test_case("aāiīuūeokkhgghṅcchjjhñṭṭhḍḍhṇtthddhnpphbbhmyrlvshḷṃ" => 41; "all characters")]
+    fn string_length_tests(str1: &str) -> usize {
+        string_length(str1)
     }
 
     proptest! {

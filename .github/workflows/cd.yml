@@ -41,7 +41,7 @@ jobs:
 
       - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
-      - run: wasm-pack build
+      - run: wasm-pack build --scope digitalpalitools --target no-modules
 
   test:
     name: Test Suite
