@@ -73,3 +73,19 @@ jobs:
         with:
           command: clippy
           args: --tests -- -D warnings
+
+  finish:
+    name: Finish
+    needs: [check, test, lints]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify DPT on Discord
+        env:
+          JOB_STATUS: ${{ job.status }}
+          WEBHOOK_URL: ${{ secrets.DISCORD_DPT_PALI_LANGUAGE_WEBHOOK_URL }}
+          HOOK_OS_NAME: ${{ runner.os }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+        run: |
+          git clone https://github.com/DiscordHooks/github-actions-discord-webhook.git webhook
+          bash webhook/send.sh $JOB_STATUS $WEBHOOK_URL
+        shell: bash
