@@ -5,7 +5,7 @@ use std::{convert::TryFrom, iter::Peekable};
 
 // TODO: Split this into a Pāli core and a Roman specific module.
 
-// Spec: https://docs.google.com/document/d/1KF6NLFiiVH9oVz_NcU5mjHcMcIAZECgNifM8mX25MCo/edit#heading=h.es0rmyc509r7
+// Spec: https://docs.google.com/document/d/1KF6NLFiiVH9oVz_NcU5mjHcMcIAZECgNifM8mX25MCo/edit#heading=h.2hvqs8bpra4
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, IntoPrimitive, TryFromPrimitive)]
 #[repr(usize)]
 pub enum PaliAlphabet {
