@@ -1,7 +1,7 @@
 use core::str::Chars;
 use num_enum::IntoPrimitive;
 use num_enum::TryFromPrimitive;
-use std::iter::Peekable;
+use std::{convert::TryFrom, iter::Peekable};
 
 // TODO: Split this into a Pāli core and a Roman specific module.
 
@@ -63,7 +63,7 @@ pub const PALI_ALPHABET_ROMAN: &[&str] = &[
     "ṃ", // nigahita - 40-40
 ];
 
-#[derive(Debug, Eq, PartialEq)]
+#[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum Character {
     Pali(PaliAlphabet),
     Other(char),
@@ -71,6 +71,31 @@ pub enum Character {
 
 pub struct CharacterTokenizer<'a> {
     source: Peekable<Chars<'a>>,
+}
+
+pub fn char_compare(c1: Character, c2: Character) -> isize {
+    match (c1, c2) {
+        (Character::Other(c1), Character::Other(c2)) => (c1 as isize - c2 as isize).signum(),
+        (Character::Pali(c1), Character::Pali(c2)) => (c1 as isize - c2 as isize).signum(),
+        (Character::Other(_c1), Character::Pali(_c2)) => 1,
+        (Character::Pali(_c1), Character::Other(_c2)) => -1,
+    }
+}
+
+pub fn string_compare(str1: &str, str2: &str) -> isize {
+    if str1.len() != str2.len() {
+        return isize::try_from(str1.len()).unwrap() - isize::try_from(str2.len()).unwrap();
+    }
+
+    let chars1 = CharacterTokenizer::new(str1.chars());
+    let chars2 = CharacterTokenizer::new(str2.chars());
+
+    let cmp = chars1
+        .zip(chars2)
+        .map(|(c1, c2)| char_compare(c1, c2))
+        .find(|&sn| sn != 0);
+
+    cmp.unwrap_or_default()
 }
 
 impl<'a> CharacterTokenizer<'a> {
@@ -163,7 +188,10 @@ impl<'a> Iterator for CharacterTokenizer<'a> {
 
 #[cfg(test)]
 mod tests {
-    use super::PALI_ALPHABET_ROMAN;
+    use super::*;
+    use proptest::prelude::*;
+    use std::convert::TryFrom;
+    use test_case::test_case;
 
     #[test]
     fn test_pali_alphabet_length() {
@@ -172,11 +200,6 @@ mod tests {
         let i: usize = PaliAlphabet::DotM.into();
         assert_eq!(i, 40);
     }
-
-    use super::Character;
-    use super::CharacterTokenizer;
-    use super::PaliAlphabet;
-    use std::convert::TryFrom;
 
     const PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES: &[usize] =
         &[8, 10, 13, 15, 18, 20, 23, 25, 28, 30];
@@ -238,7 +261,29 @@ mod tests {
         assert_eq!(fixedup_indices, indices)
     }
 
-    use proptest::prelude::*;
+    #[test_case("c", "cc", -1)]
+    #[test_case("c", "b", -1)]
+    #[test_case("c", "c", 0)]
+    #[test_case("b", "c", 1)]
+    #[test_case("cc", "c", 1)]
+    #[test_case("ac", "ab", -1)]
+    #[test_case("ac", "ac", 0)]
+    #[test_case("ab", "ac", 1)]
+    #[test_case("a", "x", -1)]
+    #[test_case("x", "a", 1)]
+    #[test_case("x", "z", -1)]
+    #[test_case("x", "x", 0)]
+    #[test_case("z", "x", 1)]
+    #[test_case("xabc", "aabc", 1)]
+    #[test_case("aabc", "xabc", -1)]
+    #[test_case("xabc", "yabc", 1)]
+    #[test_case("xabc", "xabc", 0)]
+    #[test_case("yabc", "xabc", -1)]
+    fn multiplication_tests(str1: &str, str2: &str, cmp: isize) {
+        let cmp_actual = string_compare(str1, str2);
+
+        assert_eq!(cmp_actual, cmp)
+    }
 
     proptest! {
         #[test]

@@ -12,3 +12,4 @@ num_enum = "0.5.1"
 [dev-dependencies]
 cargo-watch = "7.5.0"
 proptest = "0.10.1"
+test-case = "1.1.0"
