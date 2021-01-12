@@ -93,7 +93,7 @@ pub fn string_compare(str1: &str, str2: &str) -> isize {
         .map(|(c1, c2)| char_compare(c1, c2))
         .find(|&sn| sn != 0);
 
-    let cmp = match cmp {
+    match cmp {
         Some(cmp) => cmp,
         None => {
             // TODO: This is a temp hack. Tokenize just once.
@@ -105,9 +105,7 @@ pub fn string_compare(str1: &str, str2: &str) -> isize {
                 0isize
             }
         }
-    };
-
-    cmp
+    }
 }
 
 #[wasm_bindgen]
