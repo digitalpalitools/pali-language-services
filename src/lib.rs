@@ -85,10 +85,6 @@ pub fn char_compare(c1: Character, c2: Character) -> isize {
 
 #[wasm_bindgen]
 pub fn string_compare(str1: &str, str2: &str) -> isize {
-    if str1.len() != str2.len() {
-        return isize::try_from(str1.len()).unwrap() - isize::try_from(str2.len()).unwrap();
-    }
-
     let chars1 = CharacterTokenizer::new(str1.chars());
     let chars2 = CharacterTokenizer::new(str2.chars());
 
@@ -97,7 +93,21 @@ pub fn string_compare(str1: &str, str2: &str) -> isize {
         .map(|(c1, c2)| char_compare(c1, c2))
         .find(|&sn| sn != 0);
 
-    cmp.unwrap_or_default()
+    let cmp = match cmp {
+        Some(cmp) => cmp,
+        None => {
+            // TODO: This is a temp hack. Tokenize just once.
+            let str1len = string_length(str1);
+            let str2len = string_length(str2);
+            if str1len != str2len {
+                (isize::try_from(str1len).unwrap() - isize::try_from(str2len).unwrap()).signum()
+            } else {
+                0isize
+            }
+        }
+    };
+
+    cmp
 }
 
 #[wasm_bindgen]
@@ -288,17 +298,31 @@ mod tests {
     #[test_case("xabc", "yabc"  => 1)]
     #[test_case("xabc", "xabc"  => 0)]
     #[test_case("yabc", "xabc"  => -1)]
+    #[test_case("i", "ā"    => 1; "random letters 1")]
+    #[test_case("cc", "b"    => -1; "longer of lesser sort order 1")]
     fn string_compare_tests(str1: &str, str2: &str) -> isize {
         string_compare(str1, str2)
     }
 
-    #[test_case("buddho" => 5usize; "simple word")]
+    #[test_case("buddho" => 5usize; "simple word 1")]
+    #[test_case("bhagavā" => 6usize; "simple word 2")]
     #[test_case("aāiīuūeokkhgghṅcchjjhñṭṭhḍḍhṇtthddhnpphbbhmyrlvshḷṃ" => 41; "all characters")]
     fn string_length_tests(str1: &str) -> usize {
         string_length(str1)
     }
 
     proptest! {
+        #[test]
+        fn string_compare_all(i1 in 0usize..PALI_ALPHABET_ROMAN.len(), i2 in 0usize..PALI_ALPHABET_ROMAN.len()) {
+            let cmp_str = string_compare(PALI_ALPHABET_ROMAN[i1], PALI_ALPHABET_ROMAN[i2]);
+
+            let pali_char1 = PaliAlphabet::try_from(i1).unwrap();
+            let pali_char2 = PaliAlphabet::try_from(i2).unwrap();
+            let cmp_char = (pali_char1 as isize - pali_char2 as isize).signum();
+
+            assert_eq!(cmp_char, cmp_str);
+        }
+
         #[test]
         fn fixup_compound_letters_with_compound_letters(index in 0usize..PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES.len()) {
             let indices: Vec<usize> = vec![0, PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES[index], 38, 38, 2, 38];
