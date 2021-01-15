@@ -297,7 +297,7 @@ mod tests {
     #[test_case("xabc", "xabc"  => 0)]
     #[test_case("yabc", "xabc"  => -1)]
     #[test_case("i", "ā"    => 1; "random letters 1")]
-    #[test_case("cc", "b"    => -1; "longer of lesser sort order 1")]
+    #[test_case("cc", "b"   => -1; "longer of lesser sort order 1")]
     fn string_compare_tests(str1: &str, str2: &str) -> isize {
         string_compare(str1, str2)
     }
@@ -350,7 +350,7 @@ mod tests {
             let pali_string = indices
                 .iter()
                 .map(|&i| PALI_ALPHABET_ROMAN[i] )
-                .fold(String::new(), |acc, e| { acc + e });
+                .fold(String::new(), |acc, e| acc + e);
 
             let tokenizer = CharacterTokenizer::new(pali_string.chars());
             let new_indices: Vec<usize> = tokenizer.map(|c| match c { Character::Pali(c) => c.into(), _ => panic!("") }).collect();
