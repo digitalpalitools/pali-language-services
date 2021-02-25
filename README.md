@@ -1,10 +1,10 @@
-[![Continuous Deployment](https://github.com/digitalpalitools/pali-language-services/workflows/Continuous%20Deployment/badge.svg)](https://github.com/digitalpalitools/lib/actions?query=workflow%3A%22Continuous+Deployment%22) [License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![Continuous Deployment](https://github.com/digitalpalitools/pali-language-services/workflows/Continuous%20Deployment/badge.svg)](https://github.com/digitalpalitools/lib/actions?query=workflow%3A%22Continuous+Deployment%22) [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 # Pāli Language Services
 
 ## Purpose
 
-Define the basics of the Pāli language in code as per the [specifications](https://docs.google.com/document/d/1KF6NLFiiVH9oVz_NcU5mjHcMcIAZECgNifM8mX25MCo/edit#heading=h.2hvqs8bpra4).
+Define the basics of the Pāli language in code as per the [specifications](http://bit.ly/dptvision).
 
 This is a cross platform library usable both on frontend and backend.
 
@@ -15,7 +15,7 @@ This is a cross platform library usable both on frontend and backend.
 - [x] Pāli alphabet - Roman script
   - [x] Parsing pāli written in Roman script
   - [x] Compare order for strings
-- [ ] Publish as npm library
+- [x] Publish as npm library
 
 ## Using it
 
@@ -23,13 +23,13 @@ This is a cross platform library usable both on frontend and backend.
 
 ## Updating PSC
 
-- ```cargo build; wasm-pack build --scope digitalpalitools --target no-modules```
-- ```del pkg\.gitignore```
-- Commit all changes including those under pkg
+- ```cargo clean; cargo build; wasm-pack build --scope digitalpalitools --target bundler```
+- ```npm login # dptadmin / digitalpalitools@gmail.com / ?????```
+- ```wasm-pack publish --access public```
 
 ## Commands
 
-- Build: ```cargo build; wasm-pack build --scope digitalpalitools --target no-modules```
+- Build: ```cargo build; wasm-pack build --scope digitalpalitools --target bundler```
 - Test: ```cargo test```
 - Format: ```cargo clean; cargo fmt --all -- --check```
 - Clippy: ```cargo clean; cargo clippy --tests --all-targets --all-features -- -D warnings```

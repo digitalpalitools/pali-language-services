@@ -1,8 +1,11 @@
 [package]
 name = "pali-language-services"
-version = "0.1.0"
+version = "0.1.2"
 authors = ["Digital Pāli Tools <digitalpalitools@gmail.com>"]
 edition = "2018"
+description = "Define the basics of the Pāli language in code as per https://bitly.com/dptvision."
+repository = "https://github.com/digitalpalitools/pali-language-services"
+license = "CC BY-NC-SA 4.0"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
