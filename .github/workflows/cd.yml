@@ -98,9 +98,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Notify DPT on Discord
+        if: always()
         env:
           JOB_STATUS: ${{ job.status }}
-          WEBHOOK_URL: ${{ secrets.DISCORD_DPT_PALI_LANGUAGE_WEBHOOK_URL }}
+          WEBHOOK_URL: ${{ secrets.DISCORD_DPT_DEPLOYMENT_NOTIFICATIONS_WEBHOOK_URL }}
           HOOK_OS_NAME: ${{ runner.os }}
           WORKFLOW_NAME: ${{ github.workflow }}
         run: |

@@ -127,18 +127,18 @@ fn parse_multichar_letter(
     chars: &mut Peekable<Chars<'_>>,
     a1: PaliAlphabet,
     a2: PaliAlphabet,
-) -> Option<Character> {
+) -> Character {
     match chars.peek() {
         Some('h') => {
             chars.next();
-            Some(Character::Pali(a2))
+            Character::Pali(a2)
         }
-        _ => Some(Character::Pali(a1)),
+        _ => Character::Pali(a1),
     }
 }
 
-fn parse_singlechar_letter(a: PaliAlphabet) -> Option<Character> {
-    Some(Character::Pali(a))
+fn parse_singlechar_letter(a: PaliAlphabet) -> Character {
+    Character::Pali(a)
 }
 
 impl<'a> Iterator for CharacterTokenizer<'a> {
@@ -146,57 +146,77 @@ impl<'a> Iterator for CharacterTokenizer<'a> {
 
     fn next(&mut self) -> Option<Character> {
         match self.source.next() {
-            Some('a') => parse_singlechar_letter(PaliAlphabet::A),
-            Some('ā') => parse_singlechar_letter(PaliAlphabet::AA),
-            Some('i') => parse_singlechar_letter(PaliAlphabet::I),
-            Some('ī') => parse_singlechar_letter(PaliAlphabet::II),
-            Some('u') => parse_singlechar_letter(PaliAlphabet::U),
-            Some('ū') => parse_singlechar_letter(PaliAlphabet::UU),
-            Some('e') => parse_singlechar_letter(PaliAlphabet::E),
-            Some('o') => parse_singlechar_letter(PaliAlphabet::O),
-            Some('k') => {
-                parse_multichar_letter(&mut self.source, PaliAlphabet::K, PaliAlphabet::KH)
-            }
-            Some('g') => {
-                parse_multichar_letter(&mut self.source, PaliAlphabet::G, PaliAlphabet::GH)
-            }
-            Some('ṅ') => parse_singlechar_letter(PaliAlphabet::QuoteN),
-            Some('c') => {
-                parse_multichar_letter(&mut self.source, PaliAlphabet::C, PaliAlphabet::CH)
-            }
-            Some('j') => {
-                parse_multichar_letter(&mut self.source, PaliAlphabet::J, PaliAlphabet::JH)
-            }
-            Some('ñ') => parse_singlechar_letter(PaliAlphabet::TildeN),
-            Some('ṭ') => {
-                parse_multichar_letter(&mut self.source, PaliAlphabet::DotT, PaliAlphabet::DotTH)
-            }
-            Some('ḍ') => {
-                parse_multichar_letter(&mut self.source, PaliAlphabet::DotD, PaliAlphabet::DotDH)
-            }
-            Some('ṇ') => parse_singlechar_letter(PaliAlphabet::DotN),
-            Some('t') => {
-                parse_multichar_letter(&mut self.source, PaliAlphabet::T, PaliAlphabet::TH)
-            }
-            Some('d') => {
-                parse_multichar_letter(&mut self.source, PaliAlphabet::D, PaliAlphabet::DH)
-            }
-            Some('n') => parse_singlechar_letter(PaliAlphabet::N),
-            Some('p') => {
-                parse_multichar_letter(&mut self.source, PaliAlphabet::P, PaliAlphabet::PH)
-            }
-            Some('b') => {
-                parse_multichar_letter(&mut self.source, PaliAlphabet::B, PaliAlphabet::BH)
-            }
-            Some('m') => parse_singlechar_letter(PaliAlphabet::M),
-            Some('y') => parse_singlechar_letter(PaliAlphabet::Y),
-            Some('r') => parse_singlechar_letter(PaliAlphabet::R),
-            Some('l') => parse_singlechar_letter(PaliAlphabet::L),
-            Some('v') => parse_singlechar_letter(PaliAlphabet::V),
-            Some('s') => parse_singlechar_letter(PaliAlphabet::S),
-            Some('h') => parse_singlechar_letter(PaliAlphabet::H),
-            Some('ḷ') => parse_singlechar_letter(PaliAlphabet::DotL),
-            Some('ṃ') => parse_singlechar_letter(PaliAlphabet::DotM),
+            Some('a') => Some(parse_singlechar_letter(PaliAlphabet::A)),
+            Some('ā') => Some(parse_singlechar_letter(PaliAlphabet::AA)),
+            Some('i') => Some(parse_singlechar_letter(PaliAlphabet::I)),
+            Some('ī') => Some(parse_singlechar_letter(PaliAlphabet::II)),
+            Some('u') => Some(parse_singlechar_letter(PaliAlphabet::U)),
+            Some('ū') => Some(parse_singlechar_letter(PaliAlphabet::UU)),
+            Some('e') => Some(parse_singlechar_letter(PaliAlphabet::E)),
+            Some('o') => Some(parse_singlechar_letter(PaliAlphabet::O)),
+            Some('k') => Some(parse_multichar_letter(
+                &mut self.source,
+                PaliAlphabet::K,
+                PaliAlphabet::KH,
+            )),
+            Some('g') => Some(parse_multichar_letter(
+                &mut self.source,
+                PaliAlphabet::G,
+                PaliAlphabet::GH,
+            )),
+            Some('ṅ') => Some(parse_singlechar_letter(PaliAlphabet::QuoteN)),
+            Some('c') => Some(parse_multichar_letter(
+                &mut self.source,
+                PaliAlphabet::C,
+                PaliAlphabet::CH,
+            )),
+            Some('j') => Some(parse_multichar_letter(
+                &mut self.source,
+                PaliAlphabet::J,
+                PaliAlphabet::JH,
+            )),
+            Some('ñ') => Some(parse_singlechar_letter(PaliAlphabet::TildeN)),
+            Some('ṭ') => Some(parse_multichar_letter(
+                &mut self.source,
+                PaliAlphabet::DotT,
+                PaliAlphabet::DotTH,
+            )),
+            Some('ḍ') => Some(parse_multichar_letter(
+                &mut self.source,
+                PaliAlphabet::DotD,
+                PaliAlphabet::DotDH,
+            )),
+            Some('ṇ') => Some(parse_singlechar_letter(PaliAlphabet::DotN)),
+            Some('t') => Some(parse_multichar_letter(
+                &mut self.source,
+                PaliAlphabet::T,
+                PaliAlphabet::TH,
+            )),
+            Some('d') => Some(parse_multichar_letter(
+                &mut self.source,
+                PaliAlphabet::D,
+                PaliAlphabet::DH,
+            )),
+            Some('n') => Some(parse_singlechar_letter(PaliAlphabet::N)),
+            Some('p') => Some(parse_multichar_letter(
+                &mut self.source,
+                PaliAlphabet::P,
+                PaliAlphabet::PH,
+            )),
+            Some('b') => Some(parse_multichar_letter(
+                &mut self.source,
+                PaliAlphabet::B,
+                PaliAlphabet::BH,
+            )),
+            Some('m') => Some(parse_singlechar_letter(PaliAlphabet::M)),
+            Some('y') => Some(parse_singlechar_letter(PaliAlphabet::Y)),
+            Some('r') => Some(parse_singlechar_letter(PaliAlphabet::R)),
+            Some('l') => Some(parse_singlechar_letter(PaliAlphabet::L)),
+            Some('v') => Some(parse_singlechar_letter(PaliAlphabet::V)),
+            Some('s') => Some(parse_singlechar_letter(PaliAlphabet::S)),
+            Some('h') => Some(parse_singlechar_letter(PaliAlphabet::H)),
+            Some('ḷ') => Some(parse_singlechar_letter(PaliAlphabet::DotL)),
+            Some('ṃ') => Some(parse_singlechar_letter(PaliAlphabet::DotM)),
             Some(c) => Some(Character::Other(c)),
             None => None,
         }

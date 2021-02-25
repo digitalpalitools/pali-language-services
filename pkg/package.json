@@ -1,0 +1,14 @@
+{
+  "name": "@digitalpalitools/pali-language-services",
+  "collaborators": [
+    "Digital Pāli Tools <digitalpalitools@gmail.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "pali_language_services_bg.wasm",
+    "pali_language_services.js",
+    "pali_language_services.d.ts"
+  ],
+  "browser": "pali_language_services.js",
+  "types": "pali_language_services.d.ts"
+}

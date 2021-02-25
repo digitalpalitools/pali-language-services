@@ -1,7 +1,7 @@
-extern crate corelib;
+extern crate pali_language_services;
 
 fn main() {
-    println!("{:?}", corelib::PALI_ALPHABET_ROMAN);
-    let x = corelib::PaliAlphabet::AA;
-    println!("{:#?}", x > corelib::PaliAlphabet::BH);
+    println!("{:?}", pali_language_services::PALI_ALPHABET_ROMAN);
+    let x = pali_language_services::PaliAlphabet::AA;
+    println!("{:#?}", x > pali_language_services::PaliAlphabet::BH);
 }
