@@ -38,12 +38,12 @@ jobs:
           toolchain: stable
           override: true
 
-      - name: Run cargo check - core
+      - name: Run cargo check - pls_core
         uses: actions-rs/cargo@v1
         continue-on-error: false
         with:
           command: check
-          args: --manifest-path ./core/Cargo.toml
+          args: --manifest-path ./pls_core/Cargo.toml
 
       - name: Run cargo check - js_lib
         uses: actions-rs/cargo@v1
@@ -73,26 +73,26 @@ jobs:
           toolchain: stable
           override: true
 
-      - name: Run cargo test - core
+      - name: Run cargo test - pls_core
         uses: actions-rs/cargo@v1
         continue-on-error: false
         with:
           command: test
-          args: --manifest-path ./core/Cargo.toml --all -- --check
+          args: --manifest-path ./pls_core/Cargo.toml
 
       - name: Run cargo test - js_lib
         uses: actions-rs/cargo@v1
         continue-on-error: false
         with:
           command: test
-          args: --manifest-path ./js_lib/Cargo.toml --all -- --check
+          args: --manifest-path ./js_lib/Cargo.toml
 
       - name: Run cargo test - test_app
         uses: actions-rs/cargo@v1
         continue-on-error: false
         with:
           command: test
-          args: --manifest-path ./test_app/Cargo.toml --all -- --check
+          args: --manifest-path ./test_app/Cargo.toml
 
   lints:
     name: Lints
@@ -109,19 +109,19 @@ jobs:
           override: true
           components: rustfmt, clippy
 
-      - name: Run cargo fmt - core
+      - name: Run cargo fmt - pls_core
         uses: actions-rs/cargo@v1
         continue-on-error: false
         with:
           command: fmt
-          args: --manifest-path ./core/Cargo.toml --all -- --check
+          args: --manifest-path ./pls_core/Cargo.toml --all -- --check
 
-      - name: Run cargo clippy - core
+      - name: Run cargo clippy - pls_core
         uses: actions-rs/cargo@v1
         continue-on-error: false
         with:
           command: clippy
-          args: --manifest-path ./core/Cargo.toml --all-targets --all-features -- -D warnings
+          args: --manifest-path ./pls_core/Cargo.toml --all-targets --all-features -- -D warnings
 
       - name: Run cargo fmt - js_lib
         uses: actions-rs/cargo@v1
