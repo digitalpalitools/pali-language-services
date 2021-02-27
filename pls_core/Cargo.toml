@@ -1,9 +1,19 @@
 [package]
 name = "pls_core"
 version = "0.1.0"
-authors = ["Partho P. Das <parthopdas@live.com>"]
+authors = ["Digital Pāli Tools <digitalpalitools@gmail.com>"]
 edition = "2018"
+description = "Define the basics of the Pāli language in code as per https://bitly.com/dptvision."
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+crate-type = ["rlib"]
 
 [dependencies]
+num_enum = "0.5.1"
+serde_json = "1.0.63"
+
+
+[dev-dependencies]
+cargo-watch = "7.5.0"
+proptest = "0.10.1"
+test-case = "1.1.0"

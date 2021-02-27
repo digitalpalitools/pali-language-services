@@ -1,3 +1,2 @@
-pub fn core_main() {
-    println!("Hello, world!");
-}
+pub mod alphabet;
+pub mod inflections;
