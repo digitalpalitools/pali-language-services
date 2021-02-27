@@ -2,8 +2,8 @@
 TODO
 o Generate inflection table
   - exe display, generate given pali1, stem, pattern
-    - verbs: eti pr
-    - support multiple inflections
+    v verbs: eti pr
+    v support multiple inflections
     - verbs: -
     - verbs: *
   - sql generation work
@@ -11,17 +11,19 @@ o Generate inflection table
     - generalize lists and order
   - test case
   - front-end display
-  - expand acronyms
   - non-verbs
   - remove empty columns rows
   - host determines styling
-  - additional tests: cannot have | and ,
+  x expand acronyms
+  v additional tests: cannot have | and ,
+  - simplify sql callback, publish a module that has it all
+  - 3 crates - core, bin, lib
 - Generate all words for a given stem
     - Generate all words for irreg
  */
 
 static HEADER_TEMPLATE: &str =
-    r#"<p><strong>{{PĀLI1}} &ndash; \"{{PATTERN}}\" ({{EXAMPLE_INFO}})</strong></p><br />"#;
+    r#"<p><strong>{{PĀLI1}} &ndash; "{{PATTERN}}" ({{EXAMPLE_INFO}})</strong></p><br />"#;
 static FOOTER_TEMPLATE: &str = r#"<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></p><br />"#;
 static VERB_TENSE_TEMPLATE: &str = include_str!("templates/verb_tense.html");
 
@@ -31,10 +33,27 @@ const PERSON_VALUES: &[&str] = &["3rd", "2nd", "1st"];
 const ACTREFLX_VALUES: &[&str] = &["act", "reflx"];
 const NUMBER_VALUES: &[&str] = &["sg", "pl"];
 
+fn untyped_example() -> serde_json::Result<()> {
+    // Some JSON input data as a &str. Maybe this comes from the user.
+    let data = r#"
+[["1","2"],["x","22"]]
+"#;
+
+    // Parse the string of data into serde_json::Value.
+    let v: Vec<Vec<String>> = serde_json::from_str(data)?;
+
+    // Access parts of the data by indexing with square brackets.
+    println!("Please call at the number {:#?}", v[0][0]);
+
+    Ok(())
+}
+
 fn generate_sql_queries(
     pali1: &str,
     get_table_name: fn(&str) -> Result<String, String>,
 ) -> Result<String, String> {
+    let x = untyped_example().unwrap();
+    println!("Please call at the number {:#?}", x);
     let table = get_table_name(&pali1)?;
     let mut sqlqs: Vec<String> = Vec::new();
     TENSE_VALUES.iter().for_each(|&t| {
