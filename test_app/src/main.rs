@@ -41,6 +41,8 @@ extern crate pali_language_services;
 // }
 
 fn main() {
+    pls_core::core_main();
+
     println!(
         "{:?}",
         pali_language_services::alphabet::PALI_ALPHABET_ROMAN

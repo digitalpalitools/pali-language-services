@@ -5,26 +5,6 @@ on:
     branches: [ master ]
 
 jobs:
-  check:
-    name: Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v2
-
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
-
-      - name: Run cargo check
-        uses: actions-rs/cargo@v1
-        continue-on-error: false
-        with:
-          command: check
-
   wasm-pack:
     name: WAsm Pack
     runs-on: ubuntu-latest
@@ -42,6 +22,42 @@ jobs:
       - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
       - run: wasm-pack build --scope digitalpalitools --target bundler
+        working-directory: ./js_lib
+
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Run cargo check - core
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          command: check
+          args: --manifest-path ./core/Cargo.toml
+
+      - name: Run cargo check - js_lib
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          command: check
+          args: --manifest-path ./js_lib/Cargo.toml
+
+      - name: Run cargo check - test_app
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          command: check
+          args: --manifest-path ./test_app/Cargo.toml
 
   test:
     name: Test Suite
@@ -57,11 +73,26 @@ jobs:
           toolchain: stable
           override: true
 
-      - name: Run cargo test
+      - name: Run cargo test - core
         uses: actions-rs/cargo@v1
         continue-on-error: false
         with:
           command: test
+          args: --manifest-path ./core/Cargo.toml --all -- --check
+
+      - name: Run cargo test - js_lib
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          command: test
+          args: --manifest-path ./js_lib/Cargo.toml --all -- --check
+
+      - name: Run cargo test - test_app
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          command: test
+          args: --manifest-path ./test_app/Cargo.toml --all -- --check
 
   lints:
     name: Lints
@@ -78,19 +109,47 @@ jobs:
           override: true
           components: rustfmt, clippy
 
-      - name: Run cargo fmt
+      - name: Run cargo fmt - core
         uses: actions-rs/cargo@v1
         continue-on-error: false
         with:
           command: fmt
-          args: --all -- --check
+          args: --manifest-path ./core/Cargo.toml --all -- --check
 
-      - name: Run cargo clippy
+      - name: Run cargo clippy - core
         uses: actions-rs/cargo@v1
         continue-on-error: false
         with:
           command: clippy
-          args: --all-targets --all-features -- -D warnings
+          args: --manifest-path ./core/Cargo.toml --all-targets --all-features -- -D warnings
+
+      - name: Run cargo fmt - js_lib
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          command: fmt
+          args: --manifest-path ./js_lib/Cargo.toml --all -- --check
+
+      - name: Run cargo clippy - js_lib
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          command: clippy
+          args: --manifest-path ./js_lib/Cargo.toml --all-targets --all-features -- -D warnings
+
+      - name: Run cargo fmt - test_app
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          command: fmt
+          args: --manifest-path ./test_app/Cargo.toml --all -- --check
+
+      - name: Run cargo clippy - test_app
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          command: clippy
+          args: --manifest-path ./test_app/Cargo.toml --all-targets --all-features -- -D warnings
 
   finish:
     name: Finish

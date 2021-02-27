@@ -1,5 +1,5 @@
 /.idea
-/target
+target/
 Cargo.lock
-/proptest-regressions/
-/pkg/
+proptest-regressions/
+pkg/
