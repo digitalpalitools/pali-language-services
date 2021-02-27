@@ -19,12 +19,13 @@ This is a cross platform library usable both on frontend and backend.
 
 ## Using it
 
-```yarn add https://github.com/digitalpalitools/pali-language-services/pkg --force```
+- ```yarn add @digitalpalitools/pali-language-services --force```
+- ```import * as PSL from '@digitalpalitools/pali-language-services'```
 
 ## Updating PSC
 
 - ```cargo clean; cargo build; wasm-pack build --scope digitalpalitools --target bundler```
-- ```npm login # dptadmin / digitalpalitools@gmail.com / ?????```
+- ```npm login # dptadmin / digitalpalitools@gmail.com / <passsowrd>```
 - ```wasm-pack publish --access public```
 
 ## Commands
