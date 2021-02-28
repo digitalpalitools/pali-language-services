@@ -7,17 +7,15 @@ o Generate inflection table
     - verbs: -
     - verbs: *
   - sql generation work
-    - place constraints on verbs / pos
+    v place constraints on verbs / pos
     - generalize lists and order
   - test case
   - front-end display
   - non-verbs
   - remove empty columns rows
   - host determines styling
+  - publish js module with sql stuff
   x expand acronyms
-  v additional tests: cannot have | and ,
-  - simplify sql callback, publish a module that has it all
-  - 3 crates - core, bin, lib
 - Generate all words for a given stem
     - Generate all words for irreg
  */
@@ -33,46 +31,38 @@ const PERSON_VALUES: &[&str] = &["3rd", "2nd", "1st"];
 const ACTREFLX_VALUES: &[&str] = &["act", "reflx"];
 const NUMBER_VALUES: &[&str] = &["sg", "pl"];
 
-fn untyped_example() -> serde_json::Result<()> {
-    // Some JSON input data as a &str. Maybe this comes from the user.
-    let data = r#"
-[["1","2"],["x","22"]]
-"#;
-
-    // Parse the string of data into serde_json::Value.
-    let v: Vec<Vec<String>> = serde_json::from_str(data)?;
-
-    // Access parts of the data by indexing with square brackets.
-    println!("Please call at the number {:#?}", v[0][0]);
-
-    Ok(())
-}
-
-fn generate_sql_queries(
-    pali1: &str,
-    get_table_name: fn(&str) -> Result<String, String>,
-) -> Result<String, String> {
-    let x = untyped_example().unwrap();
-    println!("Please call at the number {:#?}", x);
-    let table = get_table_name(&pali1)?;
-    let mut sqlqs: Vec<String> = Vec::new();
+fn get_inflections_from_table(
+    table_name: &str,
+    exec_sql: impl Fn(&str) -> Result<Vec<Vec<String>>, String>,
+) -> Vec<String> {
+    let mut inflections: Vec<String> = Vec::new();
     TENSE_VALUES.iter().for_each(|&t| {
         PERSON_VALUES.iter().for_each(|&p| {
             ACTREFLX_VALUES.iter().for_each(|&ar| {
                 NUMBER_VALUES.iter().for_each(|&n| {
-                    let sqlq = VERB_SQL_TEMPLATE
-                        .replace("{{TABLE}}", &table)
+                    let sql = VERB_SQL_TEMPLATE
+                        .replace("{{TABLE}}", table_name)
                         .replace("{{TENSE}}", t)
                         .replace("{{PERSON}}", p)
                         .replace("{{ACTREFLX}}", ar)
                         .replace("{{NUMBER}}", n);
-                    sqlqs.push(sqlq)
+                    let x = match exec_sql(&sql) {
+                        Ok(mut x) => {
+                            if x.len() == 1 && x[0].len() == 1 {
+                                x.remove(0).remove(0)
+                            } else {
+                                "".to_string()
+                            }
+                        }
+                        Err(e) => e,
+                    };
+                    inflections.push(x);
                 })
             })
         })
     });
 
-    Ok(sqlqs.join("|"))
+    inflections
 }
 
 fn create_inflected_stems_html_fragment(stem: &str, inflections: &str) -> String {
@@ -82,10 +72,10 @@ fn create_inflected_stems_html_fragment(stem: &str, inflections: &str) -> String
     html
 }
 
-fn create_html_body(stem: &str, inflections: &str) -> String {
+fn create_html_body(stem: &str, inflections: &[String]) -> String {
     let template = VERB_TENSE_TEMPLATE.to_string();
     let body: String = inflections
-        .split('|')
+        .iter()
         .enumerate()
         .fold(template, |acc, (ei, e)| {
             let name = format!("|{}|", ei);
@@ -105,18 +95,45 @@ fn append_header_footer(body: &str, pali1: &str, pattern: &str, example_info: &s
     format!("{}\n{}\n{}", &header, &body, FOOTER_TEMPLATE)
 }
 
+fn get_itable(isql: &str) -> Result<String, String> {
+    match isql.len() {
+        0 => Err("?".to_string()),
+        _ => Ok("eti_pr".to_string()),
+    }
+}
+
+fn get_pali1_metadata(pali1: &str) -> Result<String, String> {
+    match pali1.len() {
+        0 => Err("?".to_string()),
+        _ => Ok("ābādh|eti pr|like bhāveti".to_string()),
+    }
+}
+
+fn exec_sql_structured<F>(f: F) -> impl Fn(&str) -> Result<Vec<Vec<String>>, String>
+where
+    F: Fn(&str) -> Result<String, String>,
+{
+    move |sql| {
+        let xxx = f(sql)?;
+        let v: Vec<Vec<String>> = serde_json::from_str(&xxx).map_err(|e| e.to_string())?;
+        Ok(v)
+    }
+}
+
 pub fn generate_inflection_table(
     pali1: &str,
-    get_pali1_metatada: fn(&str) -> Result<String, String>,
-    get_itable: fn(&str) -> Result<String, String>,
-    exec_isql: fn(&str) -> Result<String, String>,
+    _exec_sql_no_transliteration: fn(&str) -> Result<String, String>,
+    exec_sql_with_transliteration: fn(&str) -> Result<String, String>,
 ) -> Result<String, String> {
-    let metadata: Vec<String> = get_pali1_metatada(pali1)?
+    let metadata: Vec<String> = get_pali1_metadata(pali1)?
         .split('|')
         .map(|s| s.to_string())
         .collect();
-    let sql_queries: String = generate_sql_queries(&pali1, get_itable)?;
-    let inflections = exec_isql(&sql_queries)?;
+    let table_name = get_itable(&pali1)?;
+    let inflections = get_inflections_from_table(
+        &table_name,
+        exec_sql_structured(exec_sql_with_transliteration),
+    );
     let body = create_html_body(&metadata[0], &inflections);
     let html = append_header_footer(&body, pali1, &metadata[1], &metadata[2]);
 
