@@ -1,0 +1,24 @@
+{
+  "name": "@digitalpalitools/pali-language-services",
+  "collaborators": [
+    "Digital Pāli Tools <digitalpalitools@gmail.com>"
+  ],
+  "description": "Define the basics of the Pāli language in code as per https://bitly.com/dptvision.",
+  "version": "1.0.0",
+  "license": "CC BY-NC-SA 4.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitalpalitools/pali-language-services"
+  },
+  "files": [
+    "pali_language_services_bg.js",
+    "pali_language_services_bg.wasm",
+    "pali_language_services_bg.wasm.d.ts",
+    "pali_language_services_dal.js",
+    "pali_language_services.d.ts",
+    "pali_language_services.js"
+  ],
+  "module": "pali_language_services.js",
+  "types": "pali_language_services.d.ts",
+  "sideEffects": false
+}

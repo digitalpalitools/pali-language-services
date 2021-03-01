@@ -33,7 +33,7 @@ const NUMBER_VALUES: &[&str] = &["sg", "pl"];
 
 fn get_inflections_from_table(
     table_name: &str,
-    exec_sql: impl Fn(&str) -> Result<Vec<Vec<String>>, String>,
+    exec_sql: impl Fn(String) -> Result<Vec<Vec<String>>, String>,
 ) -> Vec<String> {
     let mut inflections: Vec<String> = Vec::new();
     TENSE_VALUES.iter().for_each(|&t| {
@@ -46,7 +46,7 @@ fn get_inflections_from_table(
                         .replace("{{PERSON}}", p)
                         .replace("{{ACTREFLX}}", ar)
                         .replace("{{NUMBER}}", n);
-                    let x = match exec_sql(&sql) {
+                    let x = match exec_sql(sql) {
                         Ok(mut x) => {
                             if x.len() == 1 && x[0].len() == 1 {
                                 x.remove(0).remove(0)
@@ -109,21 +109,22 @@ fn get_pali1_metadata(pali1: &str) -> Result<String, String> {
     }
 }
 
-fn exec_sql_structured<F>(f: F) -> impl Fn(&str) -> Result<Vec<Vec<String>>, String>
+fn exec_sql_structured<F>(f: F) -> impl Fn(String) -> Result<Vec<Vec<String>>, String>
 where
-    F: Fn(&str) -> Result<String, String>,
+    F: Fn(String) -> Result<String, String>,
 {
     move |sql| {
-        let xxx = f(sql)?;
-        let v: Vec<Vec<String>> = serde_json::from_str(&xxx).map_err(|e| e.to_string())?;
-        Ok(v)
+        let result_str = f(sql)?;
+        let result: Vec<Vec<String>> =
+            serde_json::from_str(&result_str).map_err(|e| e.to_string())?;
+        Ok(result)
     }
 }
 
 pub fn generate_inflection_table(
     pali1: &str,
-    _exec_sql_no_transliteration: fn(&str) -> Result<String, String>,
-    exec_sql_with_transliteration: fn(&str) -> Result<String, String>,
+    _exec_sql: fn(String) -> Result<String, String>,
+    exec_sql_with_transliteration: fn(String) -> Result<String, String>,
 ) -> Result<String, String> {
     let metadata: Vec<String> = get_pali1_metadata(pali1)?
         .split('|')

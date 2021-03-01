@@ -29,13 +29,13 @@ fn exec_sql_core(sql: &str) -> rusqlite::Result<Vec<Vec<String>>, rusqlite::Erro
     Ok(table)
 }
 
-fn exec_sql_no_transliteration(sql: &str) -> Result<String, String> {
-    let table = exec_sql_core(sql).map_err(|x| x.to_string())?;
+fn exec_sql(sql: String) -> Result<String, String> {
+    let table = exec_sql_core(&sql).map_err(|x| x.to_string())?;
     serde_json::to_string(&table).map_err(|x| x.to_string())
 }
 
-fn exec_sql_with_transliteration(sql: &str) -> Result<String, String> {
-    let table = exec_sql_core(sql).map_err(|x| x.to_string())?;
+fn exec_sql_with_transliteration(sql: String) -> Result<String, String> {
+    let table = exec_sql_core(&sql).map_err(|x| x.to_string())?;
     serde_json::to_string(&table).map_err(|x| x.to_string())
 }
 
@@ -46,7 +46,7 @@ fn main() -> Result<(), String> {
 
     let html = pls_core::inflections::generate_inflection_table(
         "ābādheti",
-        exec_sql_no_transliteration,
+        exec_sql,
         exec_sql_with_transliteration,
     )?;
     println!("{:#?}", html);

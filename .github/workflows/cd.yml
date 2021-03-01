@@ -21,8 +21,7 @@ jobs:
 
       - run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
-      - run: wasm-pack build --scope digitalpalitools --target bundler
-        working-directory: ./js_lib
+      - run: wasm-pack build ./js_lib/ --scope digitalpalitools --target bundler
 
   check:
     name: Check
