@@ -17,7 +17,7 @@ fn get_row_cells(row: &Row) -> Vec<String> {
 }
 
 fn exec_sql_core(sql: &str) -> rusqlite::Result<Vec<Vec<String>>, rusqlite::Error> {
-    let conn = Connection::open("D:/src/dpt/i/build/inflections.db")?;
+    let conn = Connection::open("./inflections.db")?;
     let mut stmt = conn.prepare(&sql)?;
     let mut rows = stmt.query(NO_PARAMS)?;
 
