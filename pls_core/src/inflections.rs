@@ -6,16 +6,11 @@ o Generate inflection table
     v support multiple inflections
     - verbs: -
     - verbs: *
-  - sql generation work
-    v place constraints on verbs / pos
-    - generalize lists and order
   - test case
   - front-end display
   - non-verbs
   - remove empty columns rows
   - host determines styling
-  - publish js module with sql stuff
-  x expand acronyms
 - Generate all words for a given stem
     - Generate all words for irreg
  */
@@ -67,7 +62,11 @@ fn get_inflections_from_table(
 
 fn create_inflected_stems_html_fragment(stem: &str, inflections: &str) -> String {
     let html: String = inflections.split(',').fold(String::new(), |acc, e| {
-        acc + &format!("{}<strong>{}</strong><br />", stem, e)
+        if e.is_empty() {
+            acc
+        } else {
+            acc + &format!("{}<strong>{}</strong><br />", stem, e)
+        }
     });
     html
 }
