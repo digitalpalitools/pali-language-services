@@ -55,3 +55,22 @@ fn main() -> Result<(), String> {
 
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    // TODO: Need to be abstracted, granularized and moved to pls_core.
+    fn basic_inflection_test() {
+        let html = pls_core::inflections::generate_inflection_table(
+            "ābādheti",
+            exec_sql,
+            exec_sql_with_transliteration,
+        );
+
+        let approved_html = include_str!("test_data/basic_inflection_test.approved.txt");
+
+        assert_eq!(html.unwrap(), approved_html);
+    }
+}

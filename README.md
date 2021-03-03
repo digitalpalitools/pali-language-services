@@ -20,12 +20,12 @@ This is a cross platform library usable both on frontend and backend.
 - [x] Publish as npm library
 - [ ] Publish on crates.io
 
-## Using it
+## Using PLS
 
 - ```yarn add @digitalpalitools/pali-language-services --force```
 - ```import * as PSL from '@digitalpalitools/pali-language-services'```
 
-## Updating PSC
+## Updating PLS
 
 - ```cargo clean; cargo build; wasm-pack build --scope digitalpalitools --target bundler```
 - ```npm login # dptadmin / digitalpalitools@gmail.com / <passsowrd>```
