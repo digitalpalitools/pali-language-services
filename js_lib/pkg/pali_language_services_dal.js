@@ -22,8 +22,9 @@ export const execSql = (sql) => {
 
 export const execSqlWithTransliteration = (sql) => {
     try {
-        const table = execSqlCore(sql).map(row => row.map(cell => window.__pali_script_converter_convert(cell.toString())))
-        return JSON.stringify(table)
+        const tables = execSqlCore(sql)
+            .map(table => table.map(row => row.map(cell => window.__pali_script_converter_convert(cell.toString()))))
+        return JSON.stringify(tables)
     } catch (e) {
         console.error('pali-language-services-dal.execSqlWithTransliteration', e)
         throw e

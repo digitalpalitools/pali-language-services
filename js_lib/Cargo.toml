@@ -1,6 +1,6 @@
 [package]
 name = "pali-language-services"
-version = "1.1.0"
+version = "2.0.0"
 authors = ["Digital Pāli Tools <digitalpalitools@gmail.com>"]
 edition = "2018"
 description = "Define the basics of the Pāli language in code as per https://bitly.com/dptvision."
