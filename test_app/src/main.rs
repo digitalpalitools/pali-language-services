@@ -16,17 +16,21 @@ fn get_row_cells(row: &Row) -> Vec<String> {
     cells
 }
 
-fn exec_sql_core(sql: &str) -> rusqlite::Result<Vec<Vec<String>>, rusqlite::Error> {
+fn exec_sql_core(sql: &str) -> rusqlite::Result<Vec<Vec<Vec<String>>>, rusqlite::Error> {
     let conn = Connection::open("./inflections.db")?;
-    let mut stmt = conn.prepare(&sql)?;
-    let mut rows = stmt.query(NO_PARAMS)?;
+    let mut result: Vec<Vec<Vec<String>>> = Vec::new();
+    for s in sql.split(';').filter(|s| !s.trim().is_empty()) {
+        let mut stmt = conn.prepare(&s)?;
+        let mut rows = stmt.query(NO_PARAMS)?;
 
-    let mut table: Vec<Vec<String>> = Vec::new();
-    while let Some(row) = rows.next()? {
-        table.push(get_row_cells(row));
+        let mut table: Vec<Vec<String>> = Vec::new();
+        while let Some(row) = rows.next()? {
+            table.push(get_row_cells(row));
+        }
+        result.push(table)
     }
 
-    Ok(table)
+    Ok(result)
 }
 
 fn exec_sql(sql: String) -> Result<String, String> {

@@ -3,8 +3,12 @@ const execSqlCore = (sql) => {
         return window.__pali_language_services_execSqlCore(sql)
     }
 
-    const results = window.__pali_language_services_inflections_db.exec(sql)[0] || { values: [[]] }
-    return results.values
+    return sql
+        .split(';')
+        .map(x => x.trim())
+        .filter(x => x.length)
+        .map(x => window.__pali_language_services_inflections_db.exec(x))
+        .map(x => x[0] ? x[0].values : [])
 }
 
 export const execSql = (sql) => {
