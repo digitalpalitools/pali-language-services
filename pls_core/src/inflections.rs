@@ -71,6 +71,7 @@ fn get_pali1_metadata(
 fn get_inflections_from_table(
     table_name: &str,
     exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
+    exec_sql_with_transliterate: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Vec<String> {
     let sql = r#"
         select * from _tense_values where name <> "";
@@ -78,19 +79,19 @@ fn get_inflections_from_table(
         select * from _actreflx_values where name <> "";
         select * from _number_values where name <> "" and name <> "dual";
     "#;
-    let results = exec_sql(sql.to_string()).unwrap();
+    let values = exec_sql(sql.to_string()).unwrap();
     let mut inflections: Vec<String> = Vec::new();
-    results[0].iter().flatten().for_each(|t| {
-        results[1].iter().flatten().for_each(|p| {
-            results[2].iter().flatten().for_each(|ar| {
-                results[3].iter().flatten().for_each(|n| {
+    values[0].iter().flatten().for_each(|t| {
+        values[1].iter().flatten().for_each(|p| {
+            values[2].iter().flatten().for_each(|ar| {
+                values[3].iter().flatten().for_each(|n| {
                     let sql = VERB_SQL_TEMPLATE
                         .replace("{{TABLE}}", table_name)
                         .replace("{{TENSE}}", &t)
                         .replace("{{PERSON}}", &p)
                         .replace("{{ACTREFLX}}", &ar)
                         .replace("{{NUMBER}}", &n);
-                    let x = match exec_sql(sql) {
+                    let x = match exec_sql_with_transliterate(sql) {
                         Ok(mut x) => {
                             if x.len() == 1 && x[0].len() == 1 && x[0][0].len() == 1 {
                                 x.remove(0).remove(0).remove(0)
@@ -123,11 +124,16 @@ fn create_inflected_stems_html_fragment(stem: &str, inflections: &str) -> String
 fn create_html_body(
     pm: &Pali1Metadata,
     exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
+    exec_sql_with_transliterate: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> String {
     let table_name = pm.pattern.replace(" ", "_");
     match pm.inflection_class {
-        InflectionClass::Verb => create_html_body_for_verb(&table_name, &pm.stem, exec_sql),
-        _ => create_html_body_for_rest(&table_name, &pm.stem, exec_sql),
+        InflectionClass::Verb => {
+            create_html_body_for_verb(&table_name, &pm.stem, exec_sql, exec_sql_with_transliterate)
+        }
+        _ => {
+            create_html_body_for_rest(&table_name, &pm.stem, exec_sql, exec_sql_with_transliterate)
+        }
     }
 }
 
@@ -135,8 +141,10 @@ fn create_html_body_for_verb(
     table_name: &str,
     stem: &str,
     exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
+    exec_sql_with_transliterate: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> String {
-    let inflections = get_inflections_from_table(&table_name, exec_sql);
+    let inflections =
+        get_inflections_from_table(&table_name, exec_sql, exec_sql_with_transliterate);
     let template = VERB_TENSE_TEMPLATE.to_string();
     let body: String = inflections
         .iter()
@@ -154,6 +162,7 @@ fn create_html_body_for_rest(
     _table_name: &str,
     _stem: &str,
     _exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
+    _exec_sql_with_transliterate: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> String {
     "<div style='color: red'>Not yet implemented!</div>".to_string()
 }
@@ -185,7 +194,11 @@ pub fn generate_inflection_table(
     exec_sql_with_transliteration: fn(String) -> Result<String, String>,
 ) -> Result<String, String> {
     let pm = get_pali1_metadata(pali1, exec_sql_structured(exec_sql))?;
-    let body = create_html_body(&pm, exec_sql_structured(exec_sql_with_transliteration));
+    let body = create_html_body(
+        &pm,
+        exec_sql_structured(exec_sql),
+        exec_sql_structured(exec_sql_with_transliteration),
+    );
     let html = append_header_footer(&pm, pali1, &body);
 
     Ok(html)
