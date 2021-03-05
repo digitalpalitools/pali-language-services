@@ -38,20 +38,15 @@ fn exec_sql(sql: String) -> Result<String, String> {
     serde_json::to_string(&table).map_err(|x| x.to_string())
 }
 
-fn exec_sql_with_transliteration(sql: String) -> Result<String, String> {
-    let table = exec_sql_core(&sql).map_err(|x| x.to_string())?;
-    serde_json::to_string(&table).map_err(|x| x.to_string())
-}
-
 fn main() -> Result<(), String> {
     println!("{:?}", pls_core::alphabet::PALI_ALPHABET_ROMAN);
     let x = pls_core::alphabet::PaliAlphabet::AA;
     println!("ā > bh? {:#?}", x > pls_core::alphabet::PaliAlphabet::BH);
 
     let html = pls_core::inflections::generate_inflection_table(
-        "ābādheti",
+        "vyābādhetvā",
+        |s| Ok(s.to_string()),
         exec_sql,
-        exec_sql_with_transliteration,
     )?;
     println!("{:#?}", html);
 
@@ -69,8 +64,8 @@ mod tests {
     fn basic_inflection_test() {
         let html = pls_core::inflections::generate_inflection_table(
             "ābādheti",
+            |s| Ok(s.to_string()),
             exec_sql,
-            exec_sql_with_transliteration,
         );
 
         let approved_html = include_str!("test_data/basic_inflection_test.approved.txt");

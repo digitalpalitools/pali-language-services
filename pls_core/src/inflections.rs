@@ -1,16 +1,17 @@
 static HEADER_TEMPLATE: &str =
-    r#"<p><strong>{{PĀLI1}} &ndash; "{{PATTERN}}" ({{EXAMPLE_INFO}})</strong></p><br />"#;
-static FOOTER_TEMPLATE: &str = r#"<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></p><br />"#;
+    r#"<p><strong>{{PĀLI1}} &ndash; "{{PATTERN}}" (like {{EXAMPLE_INFO}})</strong></p><br />"#;
+static FOOTER_TEMPLATE: &str = r#"<p><a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></p><br />"#;
 static VERB_TENSE_TEMPLATE: &str = include_str!("templates/verb_tense.html");
 
 static VERB_SQL_TEMPLATE: &str = r#"SELECT inflections FROM '{{TABLE}}' where tense = '{{TENSE}}' and person = '{{PERSON}}' and actreflx = '{{ACTREFLX}}' and "number" = '{{NUMBER}}'"#;
 
+#[derive(Debug)]
 enum InflectionClass {
-    Pron1st,
-    Pron2nd,
-    PronDual,
-    Verb,
-    Rest,
+    Conjugation,
+    Inflection,
+    InflectionPron1st,
+    InflectionPron2nd,
+    InflectionPronDual,
 }
 
 struct Pali1Metadata {
@@ -22,11 +23,11 @@ struct Pali1Metadata {
 
 fn inflection_class_from_str(ic: &str) -> InflectionClass {
     match ic {
-        "verb" => InflectionClass::Verb,
-        "pron1st" => InflectionClass::Pron1st,
-        "pron2nd" => InflectionClass::Pron2nd,
-        "prondual" => InflectionClass::PronDual,
-        _ => InflectionClass::Rest,
+        "verb" => InflectionClass::Conjugation,
+        "pron1st" => InflectionClass::InflectionPron1st,
+        "pron2nd" => InflectionClass::InflectionPron2nd,
+        "prondual" => InflectionClass::InflectionPronDual,
+        _ => InflectionClass::Inflection,
     }
 }
 
@@ -47,7 +48,7 @@ fn get_pali1_metadata(
     let mut pm = Pali1Metadata {
         stem: stem.clone(),
         pattern: pattern.clone(),
-        inflection_class: InflectionClass::Rest,
+        inflection_class: InflectionClass::Inflection,
         example_info: "".to_string(),
     };
 
@@ -68,10 +69,10 @@ fn get_pali1_metadata(
 }
 
 // TODO: Return result, use loop.
+// TODO: Remove all unwraps.
 fn get_inflections_from_table(
     table_name: &str,
     exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
-    exec_sql_with_transliterate: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Vec<String> {
     let sql = r#"
         select * from _tense_values where name <> "";
@@ -91,7 +92,7 @@ fn get_inflections_from_table(
                         .replace("{{PERSON}}", &p)
                         .replace("{{ACTREFLX}}", &ar)
                         .replace("{{NUMBER}}", &n);
-                    let x = match exec_sql_with_transliterate(sql) {
+                    let x = match exec_sql(sql) {
                         Ok(mut x) => {
                             if x.len() == 1 && x[0].len() == 1 && x[0][0].len() == 1 {
                                 x.remove(0).remove(0).remove(0)
@@ -110,48 +111,61 @@ fn get_inflections_from_table(
     inflections
 }
 
-fn create_inflected_stems_html_fragment(stem: &str, inflections: &str) -> String {
+// TODO: Remove unwrap.
+fn create_inflected_stems_html_fragment(
+    stem: &str,
+    inflections: &str,
+    transliterate: fn(&str) -> Result<String, String>,
+) -> String {
     let html: String = inflections.split(',').fold(String::new(), |acc, e| {
         if e.is_empty() {
             acc
         } else {
-            acc + &format!("{}<strong>{}</strong><br />", stem, e)
+            acc + &format!(
+                "{}<strong>{}</strong><br />",
+                transliterate(stem).unwrap(),
+                transliterate(e).unwrap(),
+            )
         }
     });
+
     html
 }
 
 fn create_html_body(
     pm: &Pali1Metadata,
+    transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
-    exec_sql_with_transliterate: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> String {
     let table_name = pm.pattern.replace(" ", "_");
     match pm.inflection_class {
-        InflectionClass::Verb => {
-            create_html_body_for_verb(&table_name, &pm.stem, exec_sql, exec_sql_with_transliterate)
+        InflectionClass::Conjugation => {
+            create_html_body_for_verb(&table_name, &pm.stem, transliterate, exec_sql)
         }
-        _ => {
-            create_html_body_for_rest(&table_name, &pm.stem, exec_sql, exec_sql_with_transliterate)
-        }
+        _ => create_html_body_for_rest(
+            &table_name,
+            &pm.stem,
+            &pm.inflection_class,
+            transliterate,
+            exec_sql,
+        ),
     }
 }
 
 fn create_html_body_for_verb(
     table_name: &str,
     stem: &str,
+    transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
-    exec_sql_with_transliterate: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> String {
-    let inflections =
-        get_inflections_from_table(&table_name, exec_sql, exec_sql_with_transliterate);
+    let inflections = get_inflections_from_table(&table_name, exec_sql);
     let template = VERB_TENSE_TEMPLATE.to_string();
     let body: String = inflections
         .iter()
         .enumerate()
         .fold(template, |acc, (ei, e)| {
             let name = format!("|{}|", ei);
-            let value = create_inflected_stems_html_fragment(stem, e);
+            let value = create_inflected_stems_html_fragment(stem, e, transliterate);
             acc.replace(&name, &value)
         });
 
@@ -160,20 +174,29 @@ fn create_html_body_for_verb(
 
 fn create_html_body_for_rest(
     _table_name: &str,
-    _stem: &str,
+    stem: &str,
+    ic: &InflectionClass,
+    _transliterate: fn(&str) -> Result<String, String>,
     _exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
-    _exec_sql_with_transliterate: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> String {
-    "<div style='color: red'>Not yet implemented!</div>".to_string()
+    format!(
+        "<div style='color: red'>{} ({:#?}): Not yet implemented!</div>",
+        stem, ic
+    )
 }
 
-fn append_header_footer(pm: &Pali1Metadata, pali1: &str, body: &str) -> String {
+fn append_header_footer(
+    pm: &Pali1Metadata,
+    pali1: &str,
+    body: &str,
+    transliterate: fn(&str) -> Result<String, String>,
+) -> Result<String, String> {
     let header = HEADER_TEMPLATE
-        .replace("{{PĀLI1}}", pali1)
+        .replace("{{PĀLI1}}", &transliterate(pali1)?)
         .replace("{{PATTERN}}", &pm.pattern)
-        .replace("{{EXAMPLE_INFO}}", &pm.example_info);
+        .replace("{{EXAMPLE_INFO}}", &transliterate(&pm.example_info)?);
 
-    format!("{}\n{}\n{}", &header, &body, FOOTER_TEMPLATE)
+    Ok(format!("{}\n{}\n{}", &header, &body, FOOTER_TEMPLATE))
 }
 
 fn exec_sql_structured<F>(f: F) -> impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>
@@ -188,18 +211,15 @@ where
     }
 }
 
+// TODO: JS callbacks should have &str as parameter
 pub fn generate_inflection_table(
     pali1: &str,
+    transliterate: fn(&str) -> Result<String, String>,
     exec_sql: fn(String) -> Result<String, String>,
-    exec_sql_with_transliteration: fn(String) -> Result<String, String>,
 ) -> Result<String, String> {
     let pm = get_pali1_metadata(pali1, exec_sql_structured(exec_sql))?;
-    let body = create_html_body(
-        &pm,
-        exec_sql_structured(exec_sql),
-        exec_sql_structured(exec_sql_with_transliteration),
-    );
-    let html = append_header_footer(&pm, pali1, &body);
+    let body = create_html_body(&pm, transliterate, exec_sql_structured(exec_sql));
+    let html = append_header_footer(&pm, pali1, &body, transliterate)?;
 
     Ok(html)
 }

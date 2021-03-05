@@ -11,22 +11,20 @@ const execSqlCore = (sql) => {
         .map(x => x[0] ? x[0].values : [])
 }
 
+export const transliterate = (str) => {
+    try {
+        return window.__pali_script_converter_transliterate_from_roman(str)
+    } catch (e) {
+        console.error('pali-language-services-dal.transliterate', e)
+        throw e
+    }
+}
+
 export const execSql = (sql) => {
     try {
         return JSON.stringify(execSqlCore(sql))
     } catch (e) {
         console.error('pali-language-services-dal.execSql', e)
-        throw e
-    }
-}
-
-export const execSqlWithTransliteration = (sql) => {
-    try {
-        const tables = execSqlCore(sql)
-            .map(table => table.map(row => row.map(cell => window.__pali_script_converter_convert(cell.toString()))))
-        return JSON.stringify(tables)
-    } catch (e) {
-        console.error('pali-language-services-dal.execSqlWithTransliteration', e)
         throw e
     }
 }

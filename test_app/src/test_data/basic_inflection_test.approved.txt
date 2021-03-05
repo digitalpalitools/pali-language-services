@@ -1,4 +1,4 @@
-<p><strong>ābādheti &ndash; "eti pr" (like bhāveti)</strong></p><br />
+<p><strong>ābādheti &ndash; "eti pr" (like like bhāveti)</strong></p><br />
 <table>
     <thead>
     <tr>
@@ -344,4 +344,4 @@
 </table>
 <br />
 
-<p><a href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></p><br />
+<p><a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></p><br />
