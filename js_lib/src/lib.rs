@@ -2,11 +2,11 @@ use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(raw_module = "./pali_language_services_dal.js")]
 extern "C" {
+    #[wasm_bindgen(catch, js_name = transliterate)]
+    fn transliterate(sql: &str) -> Result<String, JsValue>;
+
     #[wasm_bindgen(catch, js_name = execSql)]
     fn exec_sql(sql: String) -> Result<String, JsValue>;
-
-    #[wasm_bindgen(catch, js_name = execSqlWithTransliteration)]
-    fn exec_sql_with_transliteration(sql: String) -> Result<String, JsValue>;
 }
 
 #[wasm_bindgen(js_name = stringCompare)]
@@ -24,13 +24,13 @@ pub fn generate_inflection_table(pali1: &str) -> String {
     pls_core::inflections::generate_inflection_table(
         pali1,
         |s| {
-            exec_sql(s).map_err(|e| {
+            transliterate(s).map_err(|e| {
                 e.as_string()
                     .unwrap_or_else(|| "No exception string!".to_string())
             })
         },
         |s| {
-            exec_sql_with_transliteration(s).map_err(|e| {
+            exec_sql(s).map_err(|e| {
                 e.as_string()
                     .unwrap_or_else(|| "No exception string!".to_string())
             })

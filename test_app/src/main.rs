@@ -16,25 +16,24 @@ fn get_row_cells(row: &Row) -> Vec<String> {
     cells
 }
 
-fn exec_sql_core(sql: &str) -> rusqlite::Result<Vec<Vec<String>>, rusqlite::Error> {
+fn exec_sql_core(sql: &str) -> rusqlite::Result<Vec<Vec<Vec<String>>>, rusqlite::Error> {
     let conn = Connection::open("./inflections.db")?;
-    let mut stmt = conn.prepare(&sql)?;
-    let mut rows = stmt.query(NO_PARAMS)?;
+    let mut result: Vec<Vec<Vec<String>>> = Vec::new();
+    for s in sql.split(';').filter(|s| !s.trim().is_empty()) {
+        let mut stmt = conn.prepare(&s)?;
+        let mut rows = stmt.query(NO_PARAMS)?;
 
-    let mut table: Vec<Vec<String>> = Vec::new();
-    while let Some(row) = rows.next()? {
-        table.push(get_row_cells(row));
+        let mut table: Vec<Vec<String>> = Vec::new();
+        while let Some(row) = rows.next()? {
+            table.push(get_row_cells(row));
+        }
+        result.push(table)
     }
 
-    Ok(table)
+    Ok(result)
 }
 
 fn exec_sql(sql: String) -> Result<String, String> {
-    let table = exec_sql_core(&sql).map_err(|x| x.to_string())?;
-    serde_json::to_string(&table).map_err(|x| x.to_string())
-}
-
-fn exec_sql_with_transliteration(sql: String) -> Result<String, String> {
     let table = exec_sql_core(&sql).map_err(|x| x.to_string())?;
     serde_json::to_string(&table).map_err(|x| x.to_string())
 }
@@ -45,13 +44,32 @@ fn main() -> Result<(), String> {
     println!("ā > bh? {:#?}", x > pls_core::alphabet::PaliAlphabet::BH);
 
     let html = pls_core::inflections::generate_inflection_table(
-        "ābādheti",
+        "vyābādhetvā",
+        |s| Ok(s.to_string()),
         exec_sql,
-        exec_sql_with_transliteration,
     )?;
     println!("{:#?}", html);
 
     std::fs::write("d:/delme/inflections.txt", &html).unwrap();
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    // TODO: Need to be abstracted, granularized and moved to pls_core.
+    fn basic_inflection_test() {
+        let html = pls_core::inflections::generate_inflection_table(
+            "ābādheti",
+            |s| Ok(s.to_string()),
+            exec_sql,
+        );
+
+        let approved_html = include_str!("test_data/basic_inflection_test.approved.txt");
+
+        assert_eq!(html.unwrap(), approved_html);
+    }
 }

@@ -1,0 +1,347 @@
+<p><strong>ābādheti &ndash; "eti pr" (like like bhāveti)</strong></p><br />
+<table>
+    <thead>
+    <tr>
+        <td>
+            <p><strong>Present</strong></p>
+        </td>
+        <td colspan="2">
+            <p>active</p>
+        </td>
+        <td colspan="2">
+            <p>reflexive</p>
+        </td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <p>person</p>
+        </td>
+        <td>
+            <p>singular</p>
+        </td>
+        <td>
+            <p>plural</p>
+        </td>
+        <td>
+            <p>singular</p>
+        </td>
+        <td>
+            <p>plural</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>imp 3rd</p>
+        </td>
+        <td>
+            <p>ābādh<strong>eti</strong><br /></p>
+        </td>
+        <td>
+            <p>ābādh<strong>enti</strong><br /></p>
+        </td>
+        <td>
+            <p></p>
+        </td>
+        <td>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>imp 2nd</p>
+        </td>
+        <td>
+            <p>ābādh<strong>esi</strong><br /></p>
+        </td>
+        <td>
+            <p>ābādh<strong>etha</strong><br /></p>
+        </td>
+        <td>
+            <p></p>
+        </td>
+        <td>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>imp 1st</p>
+        </td>
+        <td>
+            <p>ābādh<strong>emi</strong><br /></p>
+        </td>
+        <td>
+            <p>ābādh<strong>ema</strong><br /></p>
+        </td>
+        <td>
+            <p></p>
+        </td>
+        <td>
+            <p></p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br />
+<table>
+  <thead>
+  <tr>
+      <td>
+          <p><strong>Imperative</strong></p>
+      </td>
+      <td colspan="2">
+          <p>active</p>
+      </td>
+      <td colspan="2">
+          <p>reflexive</p>
+      </td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+      <td>
+          <p>person</p>
+      </td>
+      <td>
+          <p>singular</p>
+      </td>
+      <td>
+          <p>plural</p>
+      </td>
+      <td>
+          <p>singular</p>
+      </td>
+      <td>
+          <p>plural</p>
+      </td>
+  </tr>
+  <tr>
+      <td>
+          <p>imp 3rd</p>
+      </td>
+      <td>
+          <p>ābādh<strong>etu</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>entu</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>etaṃ</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>ehi</strong><br /></p>
+      </td>
+  </tr>
+  <tr>
+      <td>
+          <p>imp 2nd</p>
+      </td>
+      <td>
+          <p>ābādh<strong>ehi</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>etha</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>essu</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>evho</strong><br /></p>
+      </td>
+  </tr>
+  <tr>
+      <td>
+          <p>imp 1st</p>
+      </td>
+      <td>
+          <p>ābādh<strong>emi</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>ema</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>e</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>emase</strong><br /></p>
+      </td>
+  </tr>
+  </tbody>
+</table>
+<br />
+<table>
+  <thead>
+  <tr>
+      <td>
+          <p><strong>Optative</strong></p>
+      </td>
+      <td colspan="2">
+          <p>active</p>
+      </td>
+      <td colspan="2">
+          <p>reflexive</p>
+      </td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+      <td>
+          <p>person</p>
+      </td>
+      <td>
+          <p>singular</p>
+      </td>
+      <td>
+          <p>plural</p>
+      </td>
+      <td>
+          <p>singular</p>
+      </td>
+      <td>
+          <p>plural</p>
+      </td>
+  </tr>
+  <tr>
+      <td>
+          <p>imp 3rd</p>
+      </td>
+      <td>
+          <p>ābādh<strong>eyya</strong><br />ābādh<strong>e</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>eyyuṃ</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>etha</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>eraṃ</strong><br /></p>
+      </td>
+  </tr>
+  <tr>
+      <td>
+          <p>imp 2nd</p>
+      </td>
+      <td>
+          <p>ābādh<strong>eyyāsi</strong><br />ābādh<strong>e</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>eyyātha</strong><br />ābādh<strong>etha</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>etho</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>eyyavho</strong><br />ābādh<strong>eyyāvho</strong><br /></p>
+      </td>
+  </tr>
+  <tr>
+      <td>
+          <p>imp 1st</p>
+      </td>
+      <td>
+          <p>ābādh<strong>eyyāmi</strong><br />ābādh<strong>eyyaṃ</strong><br />ābādh<strong>e</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>eyyāma</strong><br />ābādh<strong>ema</strong><br />ābādh<strong>emu</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>eyyaṃ</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>eyyāmhe</strong><br /></p>
+      </td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<table>
+  <thead>
+  <tr>
+      <td>
+          <p><strong>Future</strong></p>
+      </td>
+      <td colspan="2">
+          <p>active</p>
+      </td>
+      <td colspan="2">
+          <p>reflexive</p>
+      </td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+      <td>
+          <p>person</p>
+      </td>
+      <td>
+          <p>singular</p>
+      </td>
+      <td>
+          <p>plural</p>
+      </td>
+      <td>
+          <p>singular</p>
+      </td>
+      <td>
+          <p>plural</p>
+      </td>
+  </tr>
+  <tr>
+      <td>
+          <p>imp 3rd</p>
+      </td>
+      <td>
+          <p>ābādh<strong>essati</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>essanti</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>essate</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>essante</strong><br /></p>
+      </td>
+  </tr>
+  <tr>
+      <td>
+          <p>imp 2nd</p>
+      </td>
+      <td>
+          <p>ābādh<strong>essasi</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>essatha</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>essase</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>essavhe</strong><br /></p>
+      </td>
+  </tr>
+  <tr>
+      <td>
+          <p>imp 1st</p>
+      </td>
+      <td>
+          <p>ābādh<strong>essāmi</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>essāma</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>essaṃ</strong><br /></p>
+      </td>
+      <td>
+          <p>ābādh<strong>essāmhe</strong><br /></p>
+      </td>
+  </tr>
+  </tbody>
+</table>
+<br />
+
+<p><a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></p><br />
