@@ -68,24 +68,22 @@ fn get_pali1_metadata(
     Ok(pm)
 }
 
-// TODO: Return result, use loop.
-// TODO: Remove all unwraps.
 fn get_inflections_from_table(
     table_name: &str,
     exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
-) -> Vec<String> {
+) -> Result<Vec<String>, String> {
     let sql = r#"
         select * from _tense_values where name <> "";
         select * from _person_values where name <> "";
         select * from _actreflx_values where name <> "";
         select * from _number_values where name <> "" and name <> "dual";
     "#;
-    let values = exec_sql(sql.to_string()).unwrap();
+    let values = exec_sql(sql.to_string())?;
     let mut inflections: Vec<String> = Vec::new();
-    values[0].iter().flatten().for_each(|t| {
-        values[1].iter().flatten().for_each(|p| {
-            values[2].iter().flatten().for_each(|ar| {
-                values[3].iter().flatten().for_each(|n| {
+    for t in values[0].iter().flatten() {
+        for p in values[1].iter().flatten() {
+            for ar in values[2].iter().flatten() {
+                for n in values[3].iter().flatten() {
                     let sql = VERB_SQL_TEMPLATE
                         .replace("{{TABLE}}", table_name)
                         .replace("{{TENSE}}", &t)
@@ -103,52 +101,51 @@ fn get_inflections_from_table(
                         Err(e) => e,
                     };
                     inflections.push(x);
-                })
-            })
-        })
-    });
+                }
+            }
+        }
+    }
 
-    inflections
+    Ok(inflections)
 }
 
-// TODO: Remove unwrap.
 fn create_inflected_stems_html_fragment(
     stem: &str,
     inflections: &str,
     transliterate: fn(&str) -> Result<String, String>,
-) -> String {
-    let html: String = inflections.split(',').fold(String::new(), |acc, e| {
-        if e.is_empty() {
-            acc
-        } else {
-            acc + &format!(
-                "{}<strong>{}</strong><br />",
-                transliterate(stem).unwrap(),
-                transliterate(e).unwrap(),
-            )
-        }
-    });
+) -> Result<String, String> {
+    let mut html = String::new();
 
-    html
+    for e in inflections.split(',') {
+        if !e.is_empty() {
+            html.push_str(&format!(
+                "{}<strong>{}</strong><br />",
+                transliterate(stem)?,
+                transliterate(e)?,
+            ))
+        }
+    }
+
+    Ok(html)
 }
 
 fn create_html_body(
     pm: &Pali1Metadata,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
-) -> String {
+) -> Result<String, String> {
     let table_name = pm.pattern.replace(" ", "_");
     match pm.inflection_class {
         InflectionClass::Conjugation => {
             create_html_body_for_verb(&table_name, &pm.stem, transliterate, exec_sql)
         }
-        _ => create_html_body_for_rest(
+        _ => Ok(create_html_body_for_rest(
             &table_name,
             &pm.stem,
             &pm.inflection_class,
             transliterate,
             exec_sql,
-        ),
+        )),
     }
 }
 
@@ -157,19 +154,20 @@ fn create_html_body_for_verb(
     stem: &str,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
-) -> String {
-    let inflections = get_inflections_from_table(&table_name, exec_sql);
+) -> Result<String, String> {
+    let inflections = get_inflections_from_table(&table_name, exec_sql)?;
     let template = VERB_TENSE_TEMPLATE.to_string();
     let body: String = inflections
         .iter()
         .enumerate()
         .fold(template, |acc, (ei, e)| {
             let name = format!("|{}|", ei);
-            let value = create_inflected_stems_html_fragment(stem, e, transliterate);
+            // TODO: Remove unwrap.
+            let value = create_inflected_stems_html_fragment(stem, e, transliterate).unwrap();
             acc.replace(&name, &value)
         });
 
-    body
+    Ok(body)
 }
 
 fn create_html_body_for_rest(
@@ -201,24 +199,23 @@ fn append_header_footer(
 
 fn exec_sql_structured<F>(f: F) -> impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>
 where
-    F: Fn(String) -> Result<String, String>,
+    F: Fn(&str) -> Result<String, String>,
 {
     move |sql| {
-        let result_str = f(sql)?;
+        let result_str = f(&sql)?;
         let result: Vec<Vec<Vec<String>>> =
             serde_json::from_str(&result_str).map_err(|e| e.to_string())?;
         Ok(result)
     }
 }
 
-// TODO: JS callbacks should have &str as parameter
 pub fn generate_inflection_table(
     pali1: &str,
     transliterate: fn(&str) -> Result<String, String>,
-    exec_sql: fn(String) -> Result<String, String>,
+    exec_sql: fn(&str) -> Result<String, String>,
 ) -> Result<String, String> {
     let pm = get_pali1_metadata(pali1, exec_sql_structured(exec_sql))?;
-    let body = create_html_body(&pm, transliterate, exec_sql_structured(exec_sql));
+    let body = create_html_body(&pm, transliterate, exec_sql_structured(exec_sql))?;
     let html = append_header_footer(&pm, pali1, &body, transliterate)?;
 
     Ok(html)

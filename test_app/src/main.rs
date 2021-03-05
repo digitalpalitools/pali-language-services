@@ -33,7 +33,7 @@ fn exec_sql_core(sql: &str) -> rusqlite::Result<Vec<Vec<Vec<String>>>, rusqlite:
     Ok(result)
 }
 
-fn exec_sql(sql: String) -> Result<String, String> {
+fn exec_sql(sql: &str) -> Result<String, String> {
     let table = exec_sql_core(&sql).map_err(|x| x.to_string())?;
     serde_json::to_string(&table).map_err(|x| x.to_string())
 }

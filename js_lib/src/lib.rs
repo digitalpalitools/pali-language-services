@@ -6,7 +6,7 @@ extern "C" {
     fn transliterate(sql: &str) -> Result<String, JsValue>;
 
     #[wasm_bindgen(catch, js_name = execSql)]
-    fn exec_sql(sql: String) -> Result<String, JsValue>;
+    fn exec_sql(sql: &str) -> Result<String, JsValue>;
 }
 
 #[wasm_bindgen(js_name = stringCompare)]
