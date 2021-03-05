@@ -223,3 +223,75 @@ pub fn generate_inflection_table(
 
     Ok(html)
 }
+
+fn get_inflections_for_pattern(
+    pattern: &str,
+    exec_sql: impl Fn(String) -> Result<Vec<Vec<String>>, String>,
+) -> Result<Vec<Vec<String>>, String> {
+    exec_sql("Select * from {}".replace("{}", pattern))
+}
+
+fn get_words_for_indeclinable_stem(paliword: &str) -> Vec<(String, String, String, String)> {
+    vec![(
+        paliword.chars().filter(|c| !c.is_digit(10)).collect(),
+        paliword.to_string(),
+        " ".to_string(),
+        "ind".to_string(),
+    )]
+}
+fn get_words_for_irregular_stem(
+    paliword: &str,
+    pattern: &str,
+    _exec_sql: fn(String) -> Result<String, String>,
+) -> Vec<(String, String, String, String)> {
+    let inflections: Vec<Vec<String>> =
+        get_inflections_for_pattern(pattern, exec_sql_structured(_exec_sql)).unwrap();
+    let mut inflected_words_irregular_stem: Vec<(String, String, String, String)> = Vec::new();
+    for mut i in inflections {
+        for j in i.pop().unwrap().split(",") {
+            inflected_words_irregular_stem.push((
+                j.to_string(),
+                paliword.to_string(),
+                i.join(" ").to_string(),
+                "*".to_string(),
+            ))
+        }
+    }
+    inflected_words_irregular_stem
+}
+fn get_words_for_regular_stem(
+    paliword: &str,
+    stem: &str,
+    pattern: &str,
+    _exec_sql: fn(String) -> Result<String, String>,
+) -> Vec<(String, String, String, String)> {
+    let mut inflected_words_regular_stem: Vec<(String, String, String, String)> = Vec::new();
+    let inflections: Vec<Vec<String>> =
+        get_inflections_for_pattern(pattern, exec_sql_structured(_exec_sql)).unwrap();
+    for mut i in inflections {
+        for j in i.pop().unwrap().split(",") {
+            inflected_words_regular_stem.push((
+                [stem, j].join("").to_string(),
+                paliword.to_string(),
+                i.join(" ").to_string(),
+                " ".to_string(),
+            ))
+        }
+    }
+    inflected_words_regular_stem
+}
+
+pub fn generate_all_inflected_words(
+    paliword: &str,
+    stem: &str,
+    pattern: &str,
+    _exec_sql_notransliteration: fn(String) -> Result<String, String>,
+    _exec_sql_transliterated: fn(String) -> Result<String, String>,
+) -> Result<Vec<(String, String, String, String)>, String> {
+    let inflected_words: Vec<(String, String, String, String)> = match stem {
+        "-" => get_words_for_indeclinable_stem(paliword),
+        "*" => get_words_for_irregular_stem(paliword, pattern, _exec_sql_notransliteration),
+        _ => get_words_for_regular_stem(paliword, stem, pattern, _exec_sql_notransliteration),
+    };
+    Ok(inflected_words)
+}
