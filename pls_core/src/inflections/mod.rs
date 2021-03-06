@@ -126,9 +126,9 @@ impl InflectedWordMetadata{
 
 fn get_inflections_for_pattern(
     pattern: &str,
-    exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
+    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Result<Vec<Vec<Vec<String>>>, String> {
-    exec_sql(format!("Select * from {}", pattern))
+    exec_sql(&format!("Select * from {}", pattern))
 }
 
 fn get_words_for_indeclinable_stem(paliword: &str) -> Vec<InflectedWordMetadata> {
