@@ -4,7 +4,7 @@
     "Digital Pāli Tools <digitalpalitools@gmail.com>"
   ],
   "description": "Define the basics of the Pāli language in code as per https://bitly.com/dptvision.",
-  "version": "3.1.2",
+  "version": "3.1.4",
   "license": "CC BY-NC-SA 4.0",
   "repository": {
     "type": "git",

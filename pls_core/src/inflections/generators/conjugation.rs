@@ -1,3 +1,4 @@
+use serde::Serialize;
 use tera::{Context, Tera};
 
 lazy_static! {
@@ -5,10 +6,6 @@ lazy_static! {
         let mut tera = Tera::default();
         tera.add_raw_templates(vec![
             ("conjugation", include_str!("templates/conjugation.html")),
-            (
-                "conjugation_tense",
-                include_str!("templates/conjugation_tense.html"),
-            ),
             (
                 "conjugation_single_query",
                 include_str!("templates/conjugation_single_query.sql"),
@@ -20,29 +17,42 @@ lazy_static! {
     };
 }
 
+#[derive(Serialize)]
+struct TenseViewModel {
+    name: String,
+    inflections_list: Vec<Vec<String>>,
+}
+
+#[derive(Serialize)]
+struct TemplateViewModel<'a> {
+    stem: &'a str,
+    tense_view_models: Vec<TenseViewModel>,
+}
+
 pub fn create_html_body(
     table_name: &str,
     stem: &str,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Result<String, String> {
-    let conjugation_tense_bodies =
-        create_html_bodies_for_tenses(&table_name, &stem, transliterate, &exec_sql)?;
+    let tense_view_models = create_template_view_model(&table_name, transliterate, &exec_sql)?;
 
-    let mut context = Context::new();
-    context.insert("conjugation_tense_bodies", &conjugation_tense_bodies);
+    let vm = TemplateViewModel {
+        stem: &transliterate(stem)?,
+        tense_view_models,
+    };
 
+    let context = Context::from_serialize(&vm).map_err(|e| e.to_string())?;
     TEMPLATES
         .render("conjugation", &context)
         .map_err(|e| e.to_string())
 }
 
-fn create_html_bodies_for_tenses(
+fn create_template_view_model(
     table_name: &str,
-    stem: &str,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
-) -> Result<Vec<String>, String> {
+) -> Result<Vec<TenseViewModel>, String> {
     let sql = r#"
         select * from _tense_values where name <> "";
         select * from _person_values where name <> "";
@@ -50,7 +60,7 @@ fn create_html_bodies_for_tenses(
         select * from _number_values where name <> "" and name <> "dual";
     "#;
     let values = exec_sql(sql)?;
-    let mut bodies_for_tenses: Vec<String> = Vec::new();
+    let mut view_models: Vec<TenseViewModel> = Vec::new();
     for t in values[0].iter().flatten() {
         let count_sql = format!(
             r#"select cast(count(*) as text) from {} where tense = "{}""#,
@@ -94,16 +104,12 @@ fn create_html_bodies_for_tenses(
             }
         }
 
-        let mut context = Context::new();
-        context.insert("stem", &stem);
-        context.insert("tense", &t);
-        context.insert("inflections_list", &inflections_list);
-
-        let body_for_tense = TEMPLATES
-            .render("conjugation_tense", &context)
-            .map_err(|e| e.to_string())?;
-        bodies_for_tenses.push(body_for_tense);
+        let view_model = TenseViewModel {
+            name: t.to_owned(),
+            inflections_list,
+        };
+        view_models.push(view_model);
     }
 
-    Ok(bodies_for_tenses)
+    Ok(view_models)
 }

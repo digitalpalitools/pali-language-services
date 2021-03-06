@@ -1,6 +1,6 @@
 <div class="pls-inflection-root">
   <header class="pls-inflection-header"><summary class="pls-inflection-summary">ābādheti &ndash; "eti pr" (like bhāveti)</summary></header>
-  <table class="pls-inflection-table pls-inflection-type-conjugation">
+<table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
         <td>pr</td>
@@ -58,7 +58,7 @@
     </tbody>
   </table>
 
-  <table class="pls-inflection-table pls-inflection-type-conjugation">
+<table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
         <td>imp</td>
@@ -122,7 +122,7 @@
     </tbody>
   </table>
 
-  <table class="pls-inflection-table pls-inflection-type-conjugation">
+<table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
         <td>opt</td>
@@ -194,7 +194,7 @@
     </tbody>
   </table>
 
-  <table class="pls-inflection-table pls-inflection-type-conjugation">
+<table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
         <td>fut</td>

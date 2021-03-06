@@ -1,3 +1,114 @@
-{% for conjugation_tense_body in conjugation_tense_bodies -%}
-{{ conjugation_tense_body }}
+{% for tense_view_model in tense_view_models -%}
+  <table class="pls-inflection-table pls-inflection-type-conjugation">
+    <thead>
+      <tr>
+        <td>{{ tense_view_model.name }}</td>
+        <td colspan="2">active</td>
+        <td colspan="2">reflexive</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>person</td>
+        <td>singular</td>
+        <td>plural</td>
+        <td>singular</td>
+        <td>plural</td>
+      </tr>
+      <tr>
+        <td>{{ tense_view_model.name }} 3rd</td>
+        <td>
+          {% for inflection in tense_view_model.inflections_list.0 -%}
+          {% if inflection -%}
+          <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+          {% endif -%}
+          {% endfor -%}
+        </td>
+        <td>
+          {% for inflection in tense_view_model.inflections_list.1 -%}
+          {% if inflection -%}
+          <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+          {% endif -%}
+          {% endfor -%}
+        </td>
+        <td>
+          {% for inflection in tense_view_model.inflections_list.2 -%}
+          {% if inflection -%}
+          <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+          {% endif -%}
+          {% endfor -%}
+        </td>
+        <td>
+          {% for inflection in tense_view_model.inflections_list.3 -%}
+          {% if inflection -%}
+          <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+          {% endif -%}
+          {% endfor -%}
+        </td>
+      </tr>
+      <tr>
+        <td>{{ tense_view_model.name }} 2nd</td>
+        <td>
+          {% for inflection in tense_view_model.inflections_list.4 -%}
+          {% if inflection -%}
+          <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+          {% endif -%}
+          {% endfor -%}
+        </td>
+        <td>
+          {% for inflection in tense_view_model.inflections_list.5 -%}
+          {% if inflection -%}
+          <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+          {% endif -%}
+          {% endfor -%}
+        </td>
+        <td>
+          {% for inflection in tense_view_model.inflections_list.6 -%}
+          {% if inflection -%}
+          <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+          {% endif -%}
+          {% endfor -%}
+        </td>
+        <td>
+          {% for inflection in tense_view_model.inflections_list.7 -%}
+          {% if inflection -%}
+          <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+          {% endif -%}
+          {% endfor -%}
+        </td>
+      </tr>
+      <tr>
+        <td>{{ tense_view_model.name }} 1st</td>
+        <td>
+          {% for inflection in tense_view_model.inflections_list.8 -%}
+          {% if inflection -%}
+          <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+          {% endif -%}
+          {% endfor -%}
+        </td>
+        <td>
+          {% for inflection in tense_view_model.inflections_list.9 -%}
+          {% if inflection -%}
+          <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+          {% endif -%}
+          {% endfor -%}
+        </td>
+        <td>
+          {% for inflection in tense_view_model.inflections_list.10 -%}
+          {% if inflection -%}
+          <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+          {% endif -%}
+          {% endfor -%}
+        </td>
+        <td>
+          {% for inflection in tense_view_model.inflections_list.11 -%}
+          {% if inflection -%}
+          <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+          {% endif -%}
+          {% endfor -%}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
 {% endfor -%}
