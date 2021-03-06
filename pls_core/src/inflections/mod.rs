@@ -122,6 +122,7 @@ fn get_words_for_indeclinable_stem(paliword: &str) -> Vec<(String, String, Strin
         "ind".to_string(),
     )]
 }
+
 fn get_words_for_irregular_stem(
     paliword: &str,
     pattern: &str,
@@ -130,18 +131,19 @@ fn get_words_for_irregular_stem(
     let inflections: Vec<Vec<String>> =
         get_inflections_for_pattern(pattern, exec_sql_structured(_exec_sql)).unwrap().pop().unwrap();
     let mut inflected_words_irregular_stem: Vec<(String, String, String, String)> = Vec::new();
-    for mut i in inflections {
-        for j in i.pop().unwrap().split(',') {
+    for mut inflection_row in inflections {
+        for inflection in inflection_row.pop().unwrap().split(',') {
             inflected_words_irregular_stem.push((
-                j.to_string(),
+                inflection.to_string(),
                 paliword.to_string(),
-                i.join(" ").to_string(),
+                inflection_row.join(" ").to_string(),
                 "*".to_string(),
             ))
         }
     }
     inflected_words_irregular_stem
 }
+
 fn get_words_for_regular_stem(
     paliword: &str,
     stem: &str,
@@ -151,12 +153,12 @@ fn get_words_for_regular_stem(
     let mut inflected_words_regular_stem: Vec<(String, String, String, String)> = Vec::new();
     let inflections: Vec<Vec<String>> =
         get_inflections_for_pattern(pattern, exec_sql_structured(_exec_sql)).unwrap().pop().unwrap();
-    for mut i in inflections {
-        for j in i.pop().unwrap().split(',') {
+    for mut inflection_row in inflections {
+        for inflection in inflection_row.pop().unwrap().split(',') {
             inflected_words_regular_stem.push((
-                [stem, j].join("").to_string(),
+                [stem, inflection].join("").to_string(),
                 paliword.to_string(),
-                i.join(" ").to_string(),
+                inflection_row.join(" ").to_string(),
                 " ".to_string(),
             ))
         }
