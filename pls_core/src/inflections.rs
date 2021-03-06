@@ -1,6 +1,5 @@
-static HEADER_TEMPLATE: &str =
-    r#"<p><strong>{{PĀLI1}} &ndash; "{{PATTERN}}" (like {{EXAMPLE_INFO}})</strong></p><br />"#;
-static FOOTER_TEMPLATE: &str = r#"<p><a target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></p><br />"#;
+static HEADER_TEMPLATE: &str = r#"<header class="pls-inflection-header"><summary class="pls-inflection-summary">{{PĀLI1}} &ndash; "{{PATTERN}}" (like {{EXAMPLE_INFO}})</summary></header><br />"#;
+static FOOTER_TEMPLATE: &str = r#"<footer class="pls-inflection-footer"><a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></footer><br />"#;
 static VERB_TENSE_TEMPLATE: &str = include_str!("templates/verb_tense.html");
 
 static VERB_SQL_TEMPLATE: &str = r#"SELECT inflections FROM '{{TABLE}}' where tense = '{{TENSE}}' and person = '{{PERSON}}' and actreflx = '{{ACTREFLX}}' and "number" = '{{NUMBER}}'"#;
@@ -91,9 +90,9 @@ fn get_inflections_from_table(
                         .replace("{{ACTREFLX}}", &ar)
                         .replace("{{NUMBER}}", &n);
                     let x = match exec_sql(sql) {
-                        Ok(mut x) => {
+                        Ok(x) => {
                             if x.len() == 1 && x[0].len() == 1 && x[0][0].len() == 1 {
-                                x.remove(0).remove(0).remove(0)
+                                x[0][0][0].to_string()
                             } else {
                                 "".to_string()
                             }
@@ -109,7 +108,19 @@ fn get_inflections_from_table(
     Ok(inflections)
 }
 
-fn create_inflected_stems_html_fragment(
+fn create_html_fragment_for_one_inflected_word(
+    stem: &str,
+    suffix: &str,
+    transliterate: fn(&str) -> Result<String, String>,
+) -> Result<String, String> {
+    Ok(format!(
+        r#"<div class="pls-inflection-inflected-word">{}<span class="pls-inflection-inflected-word-suffix">{}</span></div>"#,
+        transliterate(stem)?,
+        transliterate(suffix)?,
+    ))
+}
+
+fn create_html_fragment_for_all_inflected_words(
     stem: &str,
     inflections: &str,
     transliterate: fn(&str) -> Result<String, String>,
@@ -118,11 +129,11 @@ fn create_inflected_stems_html_fragment(
 
     for e in inflections.split(',') {
         if !e.is_empty() {
-            html.push_str(&format!(
-                "{}<strong>{}</strong><br />",
-                transliterate(stem)?,
-                transliterate(e)?,
-            ))
+            html.push_str(&create_html_fragment_for_one_inflected_word(
+                &stem,
+                &e,
+                transliterate,
+            )?)
         }
     }
 
@@ -163,7 +174,8 @@ fn create_html_body_for_verb(
         .fold(template, |acc, (ei, e)| {
             let name = format!("|{}|", ei);
             // TODO: Remove unwrap.
-            let value = create_inflected_stems_html_fragment(stem, e, transliterate).unwrap();
+            let value =
+                create_html_fragment_for_all_inflected_words(stem, e, transliterate).unwrap();
             acc.replace(&name, &value)
         });
 
@@ -194,7 +206,10 @@ fn append_header_footer(
         .replace("{{PATTERN}}", &pm.pattern)
         .replace("{{EXAMPLE_INFO}}", &transliterate(&pm.example_info)?);
 
-    Ok(format!("{}\n{}\n{}", &header, &body, FOOTER_TEMPLATE))
+    Ok(format!(
+        r#"<div class="pls-inflection-root">{}{}{}{}{}{}{}</div>"#,
+        "\n", &header, "\n", &body, "\n", FOOTER_TEMPLATE, "\n"
+    ))
 }
 
 fn exec_sql_structured<F>(f: F) -> impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>
