@@ -10,8 +10,13 @@ crate-type = ["rlib"]
 
 [dependencies]
 num_enum = "0.5.1"
-serde_json = "1.0.63"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.64"
+lazy_static = "1.4.0"
 
+[dependencies.tera]
+version = "1.6.1"
+default-features = false
 
 [dev-dependencies]
 cargo-watch = "7.5.0"
