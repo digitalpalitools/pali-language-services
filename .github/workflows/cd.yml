@@ -42,21 +42,6 @@ jobs:
         continue-on-error: false
         with:
           command: check
-          args: --manifest-path ./pls_core/Cargo.toml
-
-      - name: Run cargo check - js_lib
-        uses: actions-rs/cargo@v1
-        continue-on-error: false
-        with:
-          command: check
-          args: --manifest-path ./js_lib/Cargo.toml
-
-      - name: Run cargo check - test_app
-        uses: actions-rs/cargo@v1
-        continue-on-error: false
-        with:
-          command: check
-          args: --manifest-path ./test_app/Cargo.toml
 
   test:
     name: Test Suite
@@ -77,21 +62,6 @@ jobs:
         continue-on-error: false
         with:
           command: test
-          args: --manifest-path ./pls_core/Cargo.toml
-
-      - name: Run cargo test - js_lib
-        uses: actions-rs/cargo@v1
-        continue-on-error: false
-        with:
-          command: test
-          args: --manifest-path ./js_lib/Cargo.toml
-
-      - name: Run cargo test - test_app
-        uses: actions-rs/cargo@v1
-        continue-on-error: false
-        with:
-          command: test
-          args: --manifest-path ./test_app/Cargo.toml
 
   lints:
     name: Lints
@@ -113,42 +83,14 @@ jobs:
         continue-on-error: false
         with:
           command: fmt
-          args: --manifest-path ./pls_core/Cargo.toml --all -- --check
+          args: --all -- --check
 
       - name: Run cargo clippy - pls_core
         uses: actions-rs/cargo@v1
         continue-on-error: false
         with:
           command: clippy
-          args: --manifest-path ./pls_core/Cargo.toml --all-targets --all-features -- -D warnings
-
-      - name: Run cargo fmt - js_lib
-        uses: actions-rs/cargo@v1
-        continue-on-error: false
-        with:
-          command: fmt
-          args: --manifest-path ./js_lib/Cargo.toml --all -- --check
-
-      - name: Run cargo clippy - js_lib
-        uses: actions-rs/cargo@v1
-        continue-on-error: false
-        with:
-          command: clippy
-          args: --manifest-path ./js_lib/Cargo.toml --all-targets --all-features -- -D warnings
-
-      - name: Run cargo fmt - test_app
-        uses: actions-rs/cargo@v1
-        continue-on-error: false
-        with:
-          command: fmt
-          args: --manifest-path ./test_app/Cargo.toml --all -- --check
-
-      - name: Run cargo clippy - test_app
-        uses: actions-rs/cargo@v1
-        continue-on-error: false
-        with:
-          command: clippy
-          args: --manifest-path ./test_app/Cargo.toml --all-targets --all-features -- -D warnings
+          args: --all-targets --all-features -- -D warnings
 
   finish:
     name: Finish
