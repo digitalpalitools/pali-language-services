@@ -46,13 +46,13 @@ fn inflection_class_from_str(ic: &str) -> InflectionClass {
 // TODO: Negative scenarios where exec_sql does not return anything.
 fn get_pali1_metadata(
     pali1: &str,
-    exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
+    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Result<Pali1Metadata, String> {
     let sql = format!(
         r#"select stem, pattern from '_stems' where pāli1 = "{}""#,
         pali1,
     );
-    let results = exec_sql(sql)?;
+    let results = exec_sql(&sql)?;
     let stem = &results[0][0][0];
     let pattern = &results[0][0][1];
     let mut pm = Pali1Metadata {
@@ -67,7 +67,7 @@ fn get_pali1_metadata(
             r#"select inflection_class, example_info from '_index' where name = "{}""#,
             pattern
         );
-        let results = exec_sql(sql)?;
+        let results = exec_sql(&sql)?;
         let inflection_class = &results[0][0][0];
         let example_info = &results[0][0][1];
 
@@ -95,7 +95,7 @@ fn append_header_footer(
     ))
 }
 
-fn exec_sql_structured<F>(f: F) -> impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>
+fn exec_sql_structured<F>(f: F) -> impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>
 where
     F: Fn(&str) -> Result<String, String>,
 {

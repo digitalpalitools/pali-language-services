@@ -9,7 +9,7 @@ mod declension_pron_dual;
 pub fn create_html_body(
     pm: &Pali1Metadata,
     transliterate: fn(&str) -> Result<String, String>,
-    exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
+    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Result<String, String> {
     let table_name = pm.pattern.replace(" ", "_");
     match pm.inflection_class {

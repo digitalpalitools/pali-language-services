@@ -5,7 +5,7 @@ pub fn create_html_body(
     table_name: &str,
     stem: &str,
     transliterate: fn(&str) -> Result<String, String>,
-    exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
+    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Result<String, String> {
     let inflections = get_inflections_from_table(&table_name, exec_sql)?;
     let template = VERB_TENSE_TEMPLATE.to_string();
@@ -25,7 +25,7 @@ pub fn create_html_body(
 
 fn get_inflections_from_table(
     table_name: &str,
-    exec_sql: impl Fn(String) -> Result<Vec<Vec<Vec<String>>>, String>,
+    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Result<Vec<String>, String> {
     let sql = r#"
         select * from _tense_values where name <> "";
@@ -33,7 +33,7 @@ fn get_inflections_from_table(
         select * from _actreflx_values where name <> "";
         select * from _number_values where name <> "" and name <> "dual";
     "#;
-    let values = exec_sql(sql.to_string())?;
+    let values = exec_sql(sql)?;
     let mut inflections: Vec<String> = Vec::new();
     for t in values[0].iter().flatten() {
         for p in values[1].iter().flatten() {
@@ -45,7 +45,7 @@ fn get_inflections_from_table(
                         .replace("{{PERSON}}", &p)
                         .replace("{{ACTREFLX}}", &ar)
                         .replace("{{NUMBER}}", &n);
-                    let x = match exec_sql(sql) {
+                    let x = match exec_sql(&sql) {
                         Ok(x) => {
                             if x.len() == 1 && x[0].len() == 1 && x[0][0].len() == 1 {
                                 x[0][0][0].to_string()
