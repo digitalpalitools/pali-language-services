@@ -75,8 +75,8 @@ mod tests {
 
     #[test]
     fn inflected_word_indeclinable_test() {
-        let output =
-            pls_core::inflections::generate_all_inflected_words("a 1", "-", "", exec_sql).unwrap();
+        let output:Vec<(String, String, String, String)> =
+        pls_core::inflections::generate_all_inflected_words("a 1", "-", "", exec_sql).unwrap().iter_mut().map(|x| x.clone().simple_representation()).collect();
         let expected: Vec<(String, String, String, String)> = [("a ", "a 1", " ", "ind")]
             .iter()
             .map(|x| {
@@ -93,10 +93,10 @@ mod tests {
 
     #[test]
     fn inflected_word_regular_test() {
-        let output = pls_core::inflections::generate_all_inflected_words(
+        let output:Vec<(String, String, String, String)> = pls_core::inflections::generate_all_inflected_words(
             "ababa 1", "abab", "a_nt", exec_sql,
         )
-        .unwrap();
+        .unwrap().iter().map(|x| x.clone().simple_representation()).collect();
         let expected: Vec<(String, String, String, String)> = [
             ("ababā", "ababa 1", "nt nom pl", " "),
             ("ababāni", "ababa 1", "nt nom pl", " "),
@@ -145,13 +145,13 @@ mod tests {
 
     #[test]
     fn inflected_word_irregular_test() {
-        let output = pls_core::inflections::generate_all_inflected_words(
+        let output:Vec<(String, String, String, String)> = pls_core::inflections::generate_all_inflected_words(
             "ahesuṃ",
             "*",
             "ahosi_aor",
             exec_sql,
         )
-        .unwrap();
+        .unwrap().iter().map(|x| x.clone().simple_representation()).collect();
         let expected: Vec<(String, String, String, String)> = [
             ("ahuvattha", "ahesuṃ", "act aor 2nd pl", "*"),
             ("ahosittha", "ahesuṃ", "act aor 2nd pl", "*"),
