@@ -1,7 +1,7 @@
 mod generators;
 
-static HEADER_TEMPLATE: &str = r#"<header class="pls-inflection-header"><summary class="pls-inflection-summary">{{PĀLI1}} &ndash; "{{PATTERN}}" (like {{EXAMPLE_INFO}})</summary></header><br />"#;
-static FOOTER_TEMPLATE: &str = r#"<footer class="pls-inflection-footer"><a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></footer><br />"#;
+static HEADER_TEMPLATE: &str = r#"  <header class="pls-inflection-header"><summary class="pls-inflection-summary">{{PĀLI1}} &ndash; "{{PATTERN}}" (like {{EXAMPLE_INFO}})</summary></header>"#;
+static FOOTER_TEMPLATE: &str = r#"  <footer class="pls-inflection-footer"><a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></footer>"#;
 
 #[derive(Debug)]
 pub enum InflectionClass {
@@ -16,7 +16,7 @@ pub struct Pali1Metadata {
     pub stem: String,
     pub pattern: String,
     pub inflection_class: InflectionClass,
-    pub example_info: String,
+    pub like: String,
 }
 
 pub fn generate_inflection_table(
@@ -59,20 +59,20 @@ fn get_pali1_metadata(
         stem: stem.clone(),
         pattern: pattern.clone(),
         inflection_class: InflectionClass::Declension,
-        example_info: "".to_string(),
+        like: "".to_string(),
     };
 
     if !pattern.trim().is_empty() {
         let sql = format!(
-            r#"select inflection_class, example_info from '_index' where name = "{}""#,
+            r#"select inflection_class, like from '_index' where name = "{}""#,
             pattern
         );
         let results = exec_sql(&sql)?;
         let inflection_class = &results[0][0][0];
-        let example_info = &results[0][0][1];
+        let like = &results[0][0][1];
 
         pm.inflection_class = inflection_class_from_str(inflection_class);
-        pm.example_info = example_info.to_string();
+        pm.like = like.to_string();
     };
 
     Ok(pm)
@@ -87,11 +87,11 @@ fn append_header_footer(
     let header = HEADER_TEMPLATE
         .replace("{{PĀLI1}}", &transliterate(pali1)?)
         .replace("{{PATTERN}}", &pm.pattern)
-        .replace("{{EXAMPLE_INFO}}", &transliterate(&pm.example_info)?);
+        .replace("{{EXAMPLE_INFO}}", &transliterate(&pm.like)?);
 
     Ok(format!(
-        r#"<div class="pls-inflection-root">{}{}{}{}{}{}{}</div>"#,
-        "\n", &header, "\n", &body, "\n", FOOTER_TEMPLATE, "\n"
+        r#"<div class="pls-inflection-root">{}{}{}{}{}{}{}</div>{}"#,
+        "\n", &header, "\n", &body, "\n", FOOTER_TEMPLATE, "\n", "\n",
     ))
 }
 

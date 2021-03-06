@@ -1,164 +1,263 @@
 <div class="pls-inflection-root">
-<header class="pls-inflection-header"><summary class="pls-inflection-summary">ābādheti &ndash; "eti pr" (like like bhāveti)</summary></header><br />
-<table class="pls-inflection-table pls-inflection-type-conjugation">
-  <thead>
-    <tr>
+  <header class="pls-inflection-header"><summary class="pls-inflection-summary">ābādheti &ndash; "eti pr" (like bhāveti)</summary></header>
+  <table class="pls-inflection-table pls-inflection-type-conjugation">
+    <thead>
+      <tr>
         <td>pr</td>
         <td colspan="2">active</td>
         <td colspan="2">reflexive</td>
-    </tr>
+      </tr>
     </thead>
     <tbody>
-    <tr>
+      <tr>
         <td>person</td>
         <td>singular</td>
         <td>plural</td>
         <td>singular</td>
         <td>plural</td>
-    </tr>
-    <tr>
+      </tr>
+      <tr>
         <td>pr 3rd</td>
-        <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eti</span></div></td>
-        <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">enti</span></div></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eti</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">enti</span></div>
+          </td>
+        <td>
+          </td>
+        <td>
+          </td>
+      </tr>
+      <tr>
         <td>pr 2nd</td>
-        <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">esi</span></div></td>
-        <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etha</span></div></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">esi</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etha</span></div>
+          </td>
+        <td>
+          </td>
+        <td>
+          </td>
+      </tr>
+      <tr>
         <td>pr 1st</td>
-        <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">emi</span></div></td>
-        <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">ema</span></div></td>
-        <td></td>
-        <td></td>
-    </tr>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">emi</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">ema</span></div>
+          </td>
+        <td>
+          </td>
+        <td>
+          </td>
+      </tr>
     </tbody>
-</table>
-<br />
-<table class="pls-inflection-table pls-inflection-type-conjugation">
+  </table>
+
+  <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
-    <tr>
+      <tr>
         <td>imp</td>
         <td colspan="2">active</td>
         <td colspan="2">reflexive</td>
-    </tr>
+      </tr>
     </thead>
     <tbody>
-    <tr>
+      <tr>
         <td>person</td>
         <td>singular</td>
         <td>plural</td>
         <td>singular</td>
         <td>plural</td>
-    </tr>
-    <tr>
-      <td>imp 3rd</td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etu</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">entu</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etaṃ</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">ehi</span></div></td>
-  </tr>
-  <tr>
-      <td>imp 2nd</td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">ehi</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etha</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essu</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">evho</span></div></td>
-  </tr>
-  <tr>
-      <td>imp 1st</td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">emi</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">ema</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">e</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">emase</span></div></td>
-  </tr>
-  </tbody>
-</table>
-<br />
-<table class="pls-inflection-table pls-inflection-type-conjugation">
+      </tr>
+      <tr>
+        <td>imp 3rd</td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etu</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">entu</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etaṃ</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">entaṃ</span></div>
+          </td>
+      </tr>
+      <tr>
+        <td>imp 2nd</td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">ehi</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etha</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essu</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">evho</span></div>
+          </td>
+      </tr>
+      <tr>
+        <td>imp 1st</td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">emi</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">ema</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">e</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">emase</span></div>
+          </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
-    <tr>
+      <tr>
         <td>opt</td>
         <td colspan="2">active</td>
         <td colspan="2">reflexive</td>
-    </tr>
+      </tr>
     </thead>
     <tbody>
-    <tr>
+      <tr>
         <td>person</td>
         <td>singular</td>
         <td>plural</td>
         <td>singular</td>
         <td>plural</td>
-    </tr>
-    <tr>
-      <td>opt 3rd</td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyya</span></div><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">e</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyuṃ</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etha</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eraṃ</span></div></td>
-  </tr>
-  <tr>
-      <td>opt 2nd</td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyāsi</span></div><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">e</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyātha</span></div><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etha</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etho</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyavho</span></div><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyāvho</span></div></td>
-  </tr>
-  <tr>
-      <td>opt 1st</td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyāmi</span></div><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyaṃ</span></div><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">e</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyāma</span></div><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">ema</span></div><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">emu</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyaṃ</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyāmhe</span></div></td>
-  </tr>
-  </tbody>
-</table>
-<br />
-<table class="pls-inflection-table pls-inflection-type-conjugation">
+      </tr>
+      <tr>
+        <td>opt 3rd</td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyya</span></div>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">e</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyuṃ</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etha</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eraṃ</span></div>
+          </td>
+      </tr>
+      <tr>
+        <td>opt 2nd</td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyāsi</span></div>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">e</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyātha</span></div>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etha</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etho</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyavho</span></div>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyāvho</span></div>
+          </td>
+      </tr>
+      <tr>
+        <td>opt 1st</td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyāmi</span></div>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyaṃ</span></div>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">e</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyāma</span></div>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">ema</span></div>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">emu</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyaṃ</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyāmhe</span></div>
+          </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
-    <tr>
+      <tr>
         <td>fut</td>
         <td colspan="2">active</td>
         <td colspan="2">reflexive</td>
-    </tr>
+      </tr>
     </thead>
     <tbody>
-    <tr>
+      <tr>
         <td>person</td>
         <td>singular</td>
         <td>plural</td>
         <td>singular</td>
         <td>plural</td>
-    </tr>
-    <tr>
-      <td>fut 3rd</td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essati</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essanti</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essate</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essante</span></div></td>
-  </tr>
-  <tr>
-      <td>fut 2nd</td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essasi</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essatha</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essase</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essavhe</span></div></td>
-  </tr>
-  <tr>
-      <td>fut 1st</td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essāmi</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essāma</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essaṃ</span></div></td>
-      <td><div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essāmhe</span></div></td>
-  </tr>
-  </tbody>
-</table>
-<br />
-<footer class="pls-inflection-footer"><a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></footer><br />
+      </tr>
+      <tr>
+        <td>fut 3rd</td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essati</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essanti</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essate</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essante</span></div>
+          </td>
+      </tr>
+      <tr>
+        <td>fut 2nd</td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essasi</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essatha</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essase</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essavhe</span></div>
+          </td>
+      </tr>
+      <tr>
+        <td>fut 1st</td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essāmi</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essāma</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essaṃ</span></div>
+          </td>
+        <td>
+          <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essāmhe</span></div>
+          </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <footer class="pls-inflection-footer"><a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></footer>
 </div>
