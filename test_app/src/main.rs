@@ -75,8 +75,12 @@ mod tests {
 
     #[test]
     fn inflected_word_indeclinable_test() {
-        let output:Vec<(String, String, String, String)> =
-        pls_core::inflections::generate_all_inflected_words("a 1", "-", "", exec_sql).unwrap().iter_mut().map(|x| x.clone().simple_representation()).collect();
+        let output: Vec<(String, String, String, String)> =
+            pls_core::inflections::generate_all_inflected_words("a 1", "-", "", exec_sql)
+                .unwrap()
+                .iter_mut()
+                .map(|x| x.clone().simple_representation())
+                .collect();
         let expected: Vec<(String, String, String, String)> = [("a ", "a 1", " ", "ind")]
             .iter()
             .map(|x| {
@@ -93,42 +97,46 @@ mod tests {
 
     #[test]
     fn inflected_word_regular_test() {
-        let output:Vec<(String, String, String, String)> = pls_core::inflections::generate_all_inflected_words(
-            "ababa 1", "abab", "a_nt", exec_sql,
-        )
-        .unwrap().iter().map(|x| x.clone().simple_representation()).collect();
+        let output: Vec<(String, String, String, String)> =
+            pls_core::inflections::generate_all_inflected_words(
+                "ababa 1", "abab", "a_nt", exec_sql,
+            )
+            .unwrap()
+            .iter()
+            .map(|x| x.clone().simple_representation())
+            .collect();
         let expected: Vec<(String, String, String, String)> = [
-            ("ababā", "ababa 1", "nt nom pl", " "),
-            ("ababāni", "ababa 1", "nt nom pl", " "),
-            ("ababānaṃ", "ababa 1", "nt gen pl", " "),
             ("ababesu", "ababa 1", "nt loc pl", " "),
             ("ababāya", "ababa 1", "nt dat sg", " "),
             ("ababassa", "ababa 1", "nt dat sg", " "),
-            ("ababa", "ababa 1", "  ", " "),
-            ("ababaṃ", "ababa 1", "nt nom sg", " "),
-            ("ababā", "ababa 1", "nt voc pl", " "),
-            ("ababāni", "ababa 1", "nt voc pl", " "),
-            ("ababehi", "ababa 1", "nt instr pl", " "),
-            ("ababebhi", "ababa 1", "nt instr pl", " "),
-            ("ababa", "ababa 1", "nt voc sg", " "),
-            ("ababā", "ababa 1", "nt voc sg", " "),
-            ("ababaṃ", "ababa 1", "nt voc sg", " "),
-            ("ababassa", "ababa 1", "nt gen sg", " "),
             ("ababe", "ababa 1", "nt acc pl", " "),
             ("ababāni", "ababa 1", "nt acc pl", " "),
-            ("ababe", "ababa 1", "nt loc sg", " "),
-            ("ababamhi", "ababa 1", "nt loc sg", " "),
-            ("ababasmiṃ", "ababa 1", "nt loc sg", " "),
             ("ababena", "ababa 1", "nt instr sg", " "),
+            ("ababānaṃ", "ababa 1", "nt dat pl", " "),
             ("ababā", "ababa 1", "nt abl sg", " "),
             ("ababamhā", "ababa 1", "nt abl sg", " "),
             ("ababasmā", "ababa 1", "nt abl sg", " "),
             ("ababato", "ababa 1", "nt abl sg", " "),
+            ("ababa", "ababa 1", "  ", " "),
+            ("ababā", "ababa 1", "nt nom pl", " "),
+            ("ababāni", "ababa 1", "nt nom pl", " "),
+            ("ababānaṃ", "ababa 1", "nt gen pl", " "),
             ("ababaṃ", "ababa 1", "nt acc sg", " "),
-            ("ababānaṃ", "ababa 1", "nt dat pl", " "),
+            ("ababaṃ", "ababa 1", "nt nom sg", " "),
+            ("ababe", "ababa 1", "nt loc sg", " "),
+            ("ababamhi", "ababa 1", "nt loc sg", " "),
+            ("ababasmiṃ", "ababa 1", "nt loc sg", " "),
+            ("ababehi", "ababa 1", "nt instr pl", " "),
+            ("ababebhi", "ababa 1", "nt instr pl", " "),
+            ("ababassa", "ababa 1", "nt gen sg", " "),
             ("ababehi", "ababa 1", "nt abl pl", " "),
             ("ababebhi", "ababa 1", "nt abl pl", " "),
             ("ababato", "ababa 1", "nt abl pl", " "),
+            ("ababa", "ababa 1", "nt voc sg", " "),
+            ("ababā", "ababa 1", "nt voc sg", " "),
+            ("ababaṃ", "ababa 1", "nt voc sg", " "),
+            ("ababā", "ababa 1", "nt voc pl", " "),
+            ("ababāni", "ababa 1", "nt voc pl", " "),
         ]
         .iter()
         .map(|x| {
@@ -145,35 +153,39 @@ mod tests {
 
     #[test]
     fn inflected_word_irregular_test() {
-        let output:Vec<(String, String, String, String)> = pls_core::inflections::generate_all_inflected_words(
-            "ahesuṃ",
-            "*",
-            "ahosi_aor",
-            exec_sql,
-        )
-        .unwrap().iter().map(|x| x.clone().simple_representation()).collect();
+        let output: Vec<(String, String, String, String)> =
+            pls_core::inflections::generate_all_inflected_words(
+                "ahesuṃ",
+                "*",
+                "ahosi_aor",
+                exec_sql,
+            )
+            .unwrap()
+            .iter()
+            .map(|x| x.clone().simple_representation())
+            .collect();
         let expected: Vec<(String, String, String, String)> = [
             ("ahuvattha", "ahesuṃ", "act aor 2nd pl", "*"),
             ("ahosittha", "ahesuṃ", "act aor 2nd pl", "*"),
             ("ahosi", "ahesuṃ", "act aor 3rd sg", "*"),
             ("ahu", "ahesuṃ", "act aor 3rd sg", "*"),
-            ("ahuvivhaṃ", "ahesuṃ", "reflx aor 2nd pl", "*"),
-            ("ahesuṃ", "ahesuṃ", "act aor 3rd pl", "*"),
-            ("ahuṃ", "ahesuṃ", "act aor 3rd pl", "*"),
             ("ahuvā", "ahesuṃ", "reflx aor 3rd sg", "*"),
-            ("ahuvaṃ", "ahesuṃ", "reflx aor 1st sg", "*"),
-            ("ahuṃ", "ahesuṃ", "reflx aor 1st sg", "*"),
-            ("ahuvu", "ahesuṃ", "reflx aor 3rd pl", "*"),
+            ("ahuvivhaṃ", "ahesuṃ", "reflx aor 2nd pl", "*"),
+            ("ahuvimhe", "ahesuṃ", "reflx aor 1st pl", "*"),
             ("ahosiṃ", "ahesuṃ", "act aor 1st sg", "*"),
             ("ahuṃ", "ahesuṃ", "act aor 1st sg", "*"),
             ("ahuvāsiṃ", "ahesuṃ", "act aor 1st sg", "*"),
-            ("ahuvimhe", "ahesuṃ", "reflx aor 1st pl", "*"),
-            ("ahuvo", "ahesuṃ", "act aor 2nd sg", "*"),
-            ("ahosi", "ahesuṃ", "act aor 2nd sg", "*"),
-            ("ahuvase", "ahesuṃ", "reflx aor 2nd sg", "*"),
             ("ahumha", "ahesuṃ", "act aor 1st pl", "*"),
             ("ahumhā", "ahesuṃ", "act aor 1st pl", "*"),
             ("ahosimha", "ahesuṃ", "act aor 1st pl", "*"),
+            ("ahuvase", "ahesuṃ", "reflx aor 2nd sg", "*"),
+            ("ahesuṃ", "ahesuṃ", "act aor 3rd pl", "*"),
+            ("ahuṃ", "ahesuṃ", "act aor 3rd pl", "*"),
+            ("ahuvo", "ahesuṃ", "act aor 2nd sg", "*"),
+            ("ahosi", "ahesuṃ", "act aor 2nd sg", "*"),
+            ("ahuvaṃ", "ahesuṃ", "reflx aor 1st sg", "*"),
+            ("ahuṃ", "ahesuṃ", "reflx aor 1st sg", "*"),
+            ("ahuvu", "ahesuṃ", "reflx aor 3rd pl", "*"),
         ]
         .iter()
         .map(|x| {
