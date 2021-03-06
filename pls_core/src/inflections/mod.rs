@@ -56,7 +56,11 @@ fn get_pali1_metadata(
     let stem = &results[0][0][0];
     let pattern = &results[0][0][1];
     let mut pm = Pali1Metadata {
-        stem: stem.clone(),
+        stem: if !stem.eq("*") {
+            stem.clone()
+        } else {
+            "".to_string()
+        },
         pattern: pattern.clone(),
         inflection_class: InflectionClass::Declension,
         like: "".to_string(),

@@ -44,7 +44,7 @@ fn main() -> Result<(), String> {
     println!("ā > bh? {:#?}", x > pls_core::alphabet::PaliAlphabet::BH);
 
     let html = pls_core::inflections::generate_inflection_table(
-        "ābādheti",
+        "bala 1",
         |s| Ok(s.to_string()),
         exec_sql,
     )?;

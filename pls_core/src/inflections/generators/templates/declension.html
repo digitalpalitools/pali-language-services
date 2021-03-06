@@ -1,0 +1,75 @@
+<table class="pls-inflection-table pls-inflection-type-conjugation">
+  <thead>
+    <tr>
+      <td>{{ table_name }}</td>
+      <td colspan="2">masculine</td>
+      <td colspan="2">feminine</td>
+      <td colspan="2">neuter</td>
+    </tr>
+    <tr>
+      <td>case</td>
+      <td>sg</td>
+      <td>pl</td>
+      <td>sg</td>
+      <td>pl</td>
+      <td>sg</td>
+      <td>pl</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for case_view_model in case_view_models -%}
+    <tr>
+      <td>
+        <p>{{ case_view_model.name }}</p>
+      </td>
+      <td>
+        {% for inflection in case_view_model.inflections_list.0 -%}
+        {% if inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% endif -%}
+        {% endfor -%}
+      </td>
+      <td>
+        {% for inflection in case_view_model.inflections_list.1 -%}
+        {% if inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% endif -%}
+        {% endfor -%}
+      </td>
+      <td>
+        {% for inflection in case_view_model.inflections_list.2 -%}
+        {% if inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% endif -%}
+        {% endfor -%}
+      </td>
+      <td>
+        {% for inflection in case_view_model.inflections_list.3 -%}
+        {% if inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% endif -%}
+        {% endfor -%}
+      </td>
+      <td>
+        {% for inflection in case_view_model.inflections_list.4 -%}
+        {% if inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% endif -%}
+        {% endfor -%}
+      </td>
+      <td>
+        {% for inflection in case_view_model.inflections_list.5 -%}
+        {% if inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% endif -%}
+        {% endfor -%}
+      </td>
+    </tr>
+    {% endfor -%}
+
+    <tr>
+      <td>in comps</td>
+      <td colspan="6"><div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ in_comps }}</span></div></td>
+    </tr>
+  </tbody>
+</table>
