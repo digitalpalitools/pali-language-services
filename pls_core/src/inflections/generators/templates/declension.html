@@ -1,26 +1,26 @@
 <table class="pls-inflection-table pls-inflection-type-conjugation">
   <thead>
     <tr>
-      <td>{{ table_name }}</td>
-      <td colspan="2">masculine</td>
-      <td colspan="2">feminine</td>
-      <td colspan="2">neuter</td>
+      <td><span class="pls-inflection-table-title">{{ table_name }}</span></td>
+      <td colspan="2"><span class="pls-inflection-col-header">masculine</span></td>
+      <td colspan="2"><span class="pls-inflection-col-header">feminine</span></td>
+      <td colspan="2"><span class="pls-inflection-col-header">neuter</span></td>
     </tr>
     <tr>
-      <td>case</td>
-      <td>sg</td>
-      <td>pl</td>
-      <td>sg</td>
-      <td>pl</td>
-      <td>sg</td>
-      <td>pl</td>
+      <td><span class="pls-inflection-row-header">case</span></td>
+      <td><span class="pls-inflection-col-header">sg</span></td>
+      <td><span class="pls-inflection-col-header">pl</span></td>
+      <td><span class="pls-inflection-col-header">sg</span></td>
+      <td><span class="pls-inflection-col-header">pl</span></td>
+      <td><span class="pls-inflection-col-header">sg</span></td>
+      <td><span class="pls-inflection-col-header">pl</span></td>
     </tr>
   </thead>
   <tbody>
     {% for case_view_model in case_view_models -%}
     <tr>
       <td>
-        <p>{{ case_view_model.name }}</p>
+        <p><span class="pls-inflection-row-header">{{ case_view_model.name }}</span></p>
       </td>
       <td>
         {% for inflection in case_view_model.inflections_list.0 -%}
@@ -68,7 +68,7 @@
     {% endfor -%}
 
     <tr>
-      <td>in comps</td>
+      <td><span class="pls-inflection-row-header">in comps</span></td>
       <td colspan="6">
         {% for inflection in in_comps_inflections -%}
         {% if inflection -%}

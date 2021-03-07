@@ -2,21 +2,21 @@
   <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
-        <td>{{ tense_view_model.name }}</td>
-        <td colspan="2">active</td>
-        <td colspan="2">reflexive</td>
+        <td><span class="pls-inflection-table-title">{{ tense_view_model.name }}</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">active</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">reflexive</span></td>
       </tr>
       <tr>
-        <td>person</td>
-        <td>singular</td>
-        <td>plural</td>
-        <td>singular</td>
-        <td>plural</td>
+        <td><span class="pls-inflection-row-header">person</span></td>
+        <td><span class="pls-inflection-col-header">singular</span></td>
+        <td><span class="pls-inflection-col-header">plural</span></td>
+        <td><span class="pls-inflection-col-header">singular</span></td>
+        <td><span class="pls-inflection-col-header">plural</span></td>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>{{ tense_view_model.name }} 3rd</td>
+        <td><span class="pls-inflection-row-header">{{ tense_view_model.name }} 3rd</span></td>
         <td>
           {% for inflection in tense_view_model.inflections_list.0 -%}
           {% if inflection -%}
@@ -47,7 +47,7 @@
         </td>
       </tr>
       <tr>
-        <td>{{ tense_view_model.name }} 2nd</td>
+        <td><span class="pls-inflection-row-header">{{ tense_view_model.name }} 2nd</span></td>
         <td>
           {% for inflection in tense_view_model.inflections_list.4 -%}
           {% if inflection -%}
@@ -78,7 +78,7 @@
         </td>
       </tr>
       <tr>
-        <td>{{ tense_view_model.name }} 1st</td>
+        <td><span class="pls-inflection-row-header">{{ tense_view_model.name }} 1st</span></td>
         <td>
           {% for inflection in tense_view_model.inflections_list.8 -%}
           {% if inflection -%}

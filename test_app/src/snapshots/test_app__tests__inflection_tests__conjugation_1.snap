@@ -8,21 +8,21 @@ expression: html
 <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
-        <td>pr</td>
-        <td colspan="2">active</td>
-        <td colspan="2">reflexive</td>
+        <td><span class="pls-inflection-table-title">pr</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">active</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">reflexive</span></td>
       </tr>
       <tr>
-        <td>person</td>
-        <td>singular</td>
-        <td>plural</td>
-        <td>singular</td>
-        <td>plural</td>
+        <td><span class="pls-inflection-row-header">person</span></td>
+        <td><span class="pls-inflection-col-header">singular</span></td>
+        <td><span class="pls-inflection-col-header">plural</span></td>
+        <td><span class="pls-inflection-col-header">singular</span></td>
+        <td><span class="pls-inflection-col-header">plural</span></td>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>pr 3rd</td>
+        <td><span class="pls-inflection-row-header">pr 3rd</span></td>
         <td>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eti</span></div>
           </td>
@@ -35,7 +35,7 @@ expression: html
           </td>
       </tr>
       <tr>
-        <td>pr 2nd</td>
+        <td><span class="pls-inflection-row-header">pr 2nd</span></td>
         <td>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">esi</span></div>
           </td>
@@ -48,7 +48,7 @@ expression: html
           </td>
       </tr>
       <tr>
-        <td>pr 1st</td>
+        <td><span class="pls-inflection-row-header">pr 1st</span></td>
         <td>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">emi</span></div>
           </td>
@@ -66,21 +66,21 @@ expression: html
 <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
-        <td>imp</td>
-        <td colspan="2">active</td>
-        <td colspan="2">reflexive</td>
+        <td><span class="pls-inflection-table-title">imp</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">active</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">reflexive</span></td>
       </tr>
       <tr>
-        <td>person</td>
-        <td>singular</td>
-        <td>plural</td>
-        <td>singular</td>
-        <td>plural</td>
+        <td><span class="pls-inflection-row-header">person</span></td>
+        <td><span class="pls-inflection-col-header">singular</span></td>
+        <td><span class="pls-inflection-col-header">plural</span></td>
+        <td><span class="pls-inflection-col-header">singular</span></td>
+        <td><span class="pls-inflection-col-header">plural</span></td>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>imp 3rd</td>
+        <td><span class="pls-inflection-row-header">imp 3rd</span></td>
         <td>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">etu</span></div>
           </td>
@@ -95,7 +95,7 @@ expression: html
           </td>
       </tr>
       <tr>
-        <td>imp 2nd</td>
+        <td><span class="pls-inflection-row-header">imp 2nd</span></td>
         <td>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">ehi</span></div>
           </td>
@@ -110,7 +110,7 @@ expression: html
           </td>
       </tr>
       <tr>
-        <td>imp 1st</td>
+        <td><span class="pls-inflection-row-header">imp 1st</span></td>
         <td>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">emi</span></div>
           </td>
@@ -130,21 +130,21 @@ expression: html
 <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
-        <td>opt</td>
-        <td colspan="2">active</td>
-        <td colspan="2">reflexive</td>
+        <td><span class="pls-inflection-table-title">opt</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">active</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">reflexive</span></td>
       </tr>
       <tr>
-        <td>person</td>
-        <td>singular</td>
-        <td>plural</td>
-        <td>singular</td>
-        <td>plural</td>
+        <td><span class="pls-inflection-row-header">person</span></td>
+        <td><span class="pls-inflection-col-header">singular</span></td>
+        <td><span class="pls-inflection-col-header">plural</span></td>
+        <td><span class="pls-inflection-col-header">singular</span></td>
+        <td><span class="pls-inflection-col-header">plural</span></td>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>opt 3rd</td>
+        <td><span class="pls-inflection-row-header">opt 3rd</span></td>
         <td>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyya</span></div>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">e</span></div>
@@ -160,7 +160,7 @@ expression: html
           </td>
       </tr>
       <tr>
-        <td>opt 2nd</td>
+        <td><span class="pls-inflection-row-header">opt 2nd</span></td>
         <td>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyāsi</span></div>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">e</span></div>
@@ -178,7 +178,7 @@ expression: html
           </td>
       </tr>
       <tr>
-        <td>opt 1st</td>
+        <td><span class="pls-inflection-row-header">opt 1st</span></td>
         <td>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyāmi</span></div>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">eyyaṃ</span></div>
@@ -202,21 +202,21 @@ expression: html
 <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
-        <td>fut</td>
-        <td colspan="2">active</td>
-        <td colspan="2">reflexive</td>
+        <td><span class="pls-inflection-table-title">fut</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">active</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">reflexive</span></td>
       </tr>
       <tr>
-        <td>person</td>
-        <td>singular</td>
-        <td>plural</td>
-        <td>singular</td>
-        <td>plural</td>
+        <td><span class="pls-inflection-row-header">person</span></td>
+        <td><span class="pls-inflection-col-header">singular</span></td>
+        <td><span class="pls-inflection-col-header">plural</span></td>
+        <td><span class="pls-inflection-col-header">singular</span></td>
+        <td><span class="pls-inflection-col-header">plural</span></td>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>fut 3rd</td>
+        <td><span class="pls-inflection-row-header">fut 3rd</span></td>
         <td>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essati</span></div>
           </td>
@@ -231,7 +231,7 @@ expression: html
           </td>
       </tr>
       <tr>
-        <td>fut 2nd</td>
+        <td><span class="pls-inflection-row-header">fut 2nd</span></td>
         <td>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essasi</span></div>
           </td>
@@ -246,7 +246,7 @@ expression: html
           </td>
       </tr>
       <tr>
-        <td>fut 1st</td>
+        <td><span class="pls-inflection-row-header">fut 1st</span></td>
         <td>
           <div class="pls-inflection-inflected-word">ābādh<span class="pls-inflection-inflected-word-suffix">essāmi</span></div>
           </td>
