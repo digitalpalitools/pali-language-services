@@ -1,0 +1,91 @@
+---
+source: test_app/src/main.rs
+expression: html
+
+---
+<div class="pls-inflection-root">
+  <header class="pls-inflection-header"><summary class="pls-inflection-summary">ubha &ndash; "ubha pron dual" (like )</summary></header>
+<table class="pls-inflection-table pls-inflection-type-conjugation">
+  <thead>
+    <tr>
+      <td><span class="pls-inflection-table-title">ubha_pron_dual</span></td>
+      <td><span class="pls-inflection-col-header">dual</span></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">nom</span></p>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">ubhe</span></div>
+        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">ubho</span></div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">acc</span></p>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">ubho</span></div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">instr</span></p>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">ubhohi</span></div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">dat</span></p>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">ubhinnaṃ</span></div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">abl</span></p>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">ubhohi</span></div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">gen</span></p>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">ubhinnaṃ</span></div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">loc</span></p>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">ubhosu</span></div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">voc</span></p>
+      </td>
+      <td>
+        </td>
+    </tr>
+    <tr>
+      <td><span class="pls-inflection-row-header">in comps</span></td>
+      <td colspan="6">
+        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">ubho</span></div>
+        </td>
+    </tr>
+  </tbody>
+</table>
+
+  <footer class="pls-inflection-footer"><a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></footer>
+</div>
+

@@ -64,7 +64,7 @@ mod tests {
     #[test_case("vassūpanāyikā"; "declension - 1")]
     #[test_case("kamma 1"; "declension - 2 - irreg")]
     // #[test_case("kāmaṃ 3", "declension - 3 - ind"; "declension - 3 - ind")]
-    // #[test_case("ubha", "declension - 4 - pron_dual"; "declension - 4 - pron_dual")]
+    #[test_case("ubha"; "declension - 4 - pron_dual")]
     // #[test_case("ahaṃ", "declension - 4 - pron_1st"; "declension - 4 - pron_1st")]
     // #[test_case("taṃ 3", "declension - 4 - pron_2nd"; "declension - 4 - pron_2nd")]
     // TODO: Need to be abstracted, granularized and moved to pls_core.
