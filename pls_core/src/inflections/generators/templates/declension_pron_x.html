@@ -1,0 +1,43 @@
+<table class="pls-inflection-table pls-inflection-type-conjugation">
+  <thead>
+    <tr>
+      <td><span class="pls-inflection-table-title">{{ table_name }}</span></td>
+      <td><span class="pls-inflection-col-header">{{ pron_type }} sg</span></td>
+      <td><span class="pls-inflection-col-header">{{ pron_type }} pl</span></td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for view_model in view_models -%}
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">{{ view_model.name }}</span></p>
+      </td>
+      <td>
+        {% for inflection in view_model.inflections_list.0 -%}
+        {% if inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% endif -%}
+        {% endfor -%}
+      </td>
+      <td>
+        {% for inflection in view_model.inflections_list.1 -%}
+        {% if inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% endif -%}
+        {% endfor -%}
+      </td>
+    </tr>
+    {% endfor -%}
+
+    <tr>
+      <td><span class="pls-inflection-row-header">in comps</span></td>
+      <td colspan="2">
+        {% for inflection in in_comps_inflections -%}
+        {% if inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% endif -%}
+        {% endfor -%}
+      </td>
+    </tr>
+  </tbody>
+</table>
