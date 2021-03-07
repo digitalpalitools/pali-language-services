@@ -110,3 +110,98 @@ where
         Ok(result)
     }
 }
+#[derive(Debug,Clone)]
+pub struct InflectedWordMetadata{
+    pub inflected_word: String,
+    pub stem_word: String,
+    pub grammar: String,
+    pub comment: String
+}
+
+impl InflectedWordMetadata{
+    pub fn simple_representation(self) -> (String,String,String,String){
+        (self.inflected_word,self.stem_word,self.grammar,self.comment)
+    }
+}
+
+fn get_inflections_for_pattern(
+    pattern: &str,
+    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
+) -> Result<Vec<Vec<Vec<String>>>, String> {
+    exec_sql(&format!("Select * from {}", pattern))
+}
+
+fn get_words_for_indeclinable_stem(paliword: &str) -> Vec<InflectedWordMetadata> {
+    vec![InflectedWordMetadata{
+        inflected_word:paliword.chars().filter(|c| !c.is_digit(10)).collect(),
+        stem_word:paliword.to_string(),
+        grammar:" ".to_string(),
+        comment:"ind".to_string(),
+    }]
+}
+
+fn get_words_for_irregular_stem(
+    paliword: &str,
+    pattern: &str,
+    _exec_sql: fn(&str) -> Result<String, String>,
+) -> Vec<InflectedWordMetadata> {
+    let inflections: Vec<Vec<String>> =
+        get_inflections_for_pattern(pattern, exec_sql_structured(_exec_sql))
+            .unwrap()
+            .pop()
+            .unwrap();
+    let mut inflected_words_irregular_stem: Vec<InflectedWordMetadata> = Vec::new();
+    for mut inflection_row in inflections {
+        for inflection in inflection_row.pop().unwrap().split(',') {
+            inflected_words_irregular_stem.push(InflectedWordMetadata {
+                inflected_word:inflection.to_string(),
+                stem_word:paliword.to_string(),
+                grammar:inflection_row.join(" ").to_string(),
+                comment:"*".to_string(),
+                }
+            )
+        }
+    }
+    inflected_words_irregular_stem
+}
+
+fn get_words_for_regular_stem(
+    paliword: &str,
+    stem: &str,
+    pattern: &str,
+    _exec_sql: fn(&str) -> Result<String, String>,
+) -> Vec<InflectedWordMetadata> {
+    let mut inflected_words_regular_stem: Vec<InflectedWordMetadata> = Vec::new();
+    let inflections: Vec<Vec<String>> =
+        get_inflections_for_pattern(pattern, exec_sql_structured(_exec_sql))
+            .unwrap()
+            .pop()
+            .unwrap();
+    for mut inflection_row in inflections {
+        for inflection in inflection_row.pop().unwrap().split(',') {
+            inflected_words_regular_stem.push(InflectedWordMetadata{
+                inflected_word:[stem, inflection].join("").to_string(),
+                stem_word:paliword.to_string(),
+                grammar:inflection_row.join(" ").to_string(),
+                comment:" ".to_string(),
+
+            }
+            )
+        }
+    }
+    inflected_words_regular_stem
+}
+
+pub fn generate_all_inflected_words(
+    paliword: &str,
+    stem: &str,
+    pattern: &str,
+    _exec_sql: fn(&str) -> Result<String, String>,
+) -> Result<Vec<InflectedWordMetadata>, String> {
+    let inflected_words: Vec<InflectedWordMetadata> = match stem {
+        "-" => get_words_for_indeclinable_stem(paliword),
+        "*" => get_words_for_irregular_stem(paliword, pattern, _exec_sql),
+        _ => get_words_for_regular_stem(paliword, stem, pattern, _exec_sql),
+    };
+    Ok(inflected_words)
+}
