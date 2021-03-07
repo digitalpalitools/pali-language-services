@@ -214,3 +214,26 @@ pub fn generate_all_inflected_words(
     };
     Ok(inflected_words)
 }
+
+fn get_inflections(
+    sql: &str,
+    transliterate: fn(&str) -> Result<String, String>,
+    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
+) -> Vec<String> {
+    let res = match exec_sql(&sql) {
+        Ok(x) => {
+            if x.len() == 1 && x[0].len() == 1 && x[0][0].len() == 1 {
+                x[0][0][0].to_string()
+            } else {
+                "".to_string()
+            }
+        }
+        Err(e) => e,
+    };
+    let inflections: Vec<String> = res
+        .split(',')
+        .map(|s| transliterate(s).unwrap_or_else(|e| e))
+        .collect();
+
+    inflections
+}

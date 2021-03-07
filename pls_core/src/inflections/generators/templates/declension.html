@@ -69,7 +69,13 @@
 
     <tr>
       <td>in comps</td>
-      <td colspan="6"><div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ in_comps }}</span></div></td>
+      <td colspan="6">
+        {% for inflection in in_comps_inflections -%}
+        {% if inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% endif -%}
+        {% endfor -%}
+      </td>
     </tr>
   </tbody>
 </table>

@@ -1,17 +1,14 @@
+use crate::inflections;
 use serde::Serialize;
 use tera::{Context, Tera};
-// use std::fs;
 
 lazy_static! {
     static ref TEMPLATES: Tera = {
         let mut tera = Tera::default();
-        tera.add_raw_templates(vec![
-            ("declension", include_str!("templates/declension.html")),
-            (
-                "declension_single_query",
-                include_str!("templates/declension_single_query.sql"),
-            ),
-        ])
+        tera.add_raw_templates(vec![(
+            "declension",
+            include_str!("templates/declension.html"),
+        )])
         .unwrap();
         tera.autoescape_on(vec!["html", ".sql"]);
         tera
@@ -29,7 +26,7 @@ struct TemplateViewModel<'a> {
     table_name: &'a str,
     stem: &'a str,
     case_view_models: Vec<CaseViewModel>,
-    in_comps: &'a str,
+    in_comps_inflections: Vec<String>,
 }
 
 pub fn create_html_body(
@@ -39,41 +36,20 @@ pub fn create_html_body(
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Result<String, String> {
     let case_view_models = create_template_view_model(&table_name, transliterate, &exec_sql)?;
-
-    let mut context = Context::new();
-    context.insert("table", table_name);
-    context.insert("case", "");
-    context.insert("gender", "");
-    context.insert("number", "");
-
-    let sql = TEMPLATES
-        .render("declension_single_query", &context)
-        .map_err(|e| e.to_string())?;
-    let res = match exec_sql(&sql) {
-        Ok(x) => {
-            if x.len() == 1 && x[0].len() == 1 && x[0][0].len() == 1 {
-                x[0][0][0].to_string()
-            } else {
-                "".to_string()
-            }
-        }
-        Err(e) => e,
-    };
+    let in_comps_inflections =
+        create_template_view_model_for_in_comps(&table_name, transliterate, &exec_sql);
 
     let vm = TemplateViewModel {
         table_name,
         stem: &transliterate(stem)?,
         case_view_models,
-        in_comps: &transliterate(&res)?,
+        in_comps_inflections,
     };
 
     let context = Context::from_serialize(&vm).map_err(|e| e.to_string())?;
-    let xxx = TEMPLATES
+    TEMPLATES
         .render("declension", &context)
-        .map_err(|e| e.to_string())?;
-    // fs::write("d:/delme/declension.txt", &xxx);
-
-    Ok(xxx)
+        .map_err(|e| e.to_string())
 }
 
 fn create_template_view_model(
@@ -92,29 +68,11 @@ fn create_template_view_model(
         let mut inflections_list: Vec<Vec<String>> = Vec::new();
         for gender in values[1].iter().flatten() {
             for number in values[2].iter().flatten() {
-                let mut context = Context::new();
-                context.insert("table", table_name);
-                context.insert("case", case);
-                context.insert("gender", gender);
-                context.insert("number", number);
-
-                let sql = TEMPLATES
-                    .render("declension_single_query", &context)
-                    .map_err(|e| e.to_string())?;
-                let res = match exec_sql(&sql) {
-                    Ok(x) => {
-                        if x.len() == 1 && x[0].len() == 1 && x[0][0].len() == 1 {
-                            x[0][0][0].to_string()
-                        } else {
-                            "".to_string()
-                        }
-                    }
-                    Err(e) => e,
-                };
-                let inflections: Vec<String> = res
-                    .split(',')
-                    .map(|s| transliterate(s).unwrap_or_else(|e| e))
-                    .collect();
+                let sql = format!(
+                    r#"SELECT inflections FROM '{}' WHERE "case" = '{}' AND gender = '{}' AND "number" = '{}'"#,
+                    table_name, case, gender, number
+                );
+                let inflections = inflections::get_inflections(&sql, transliterate, &exec_sql);
                 inflections_list.push(inflections);
             }
         }
@@ -127,4 +85,17 @@ fn create_template_view_model(
     }
 
     Ok(view_models)
+}
+
+fn create_template_view_model_for_in_comps(
+    table_name: &str,
+    transliterate: fn(&str) -> Result<String, String>,
+    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
+) -> Vec<String> {
+    let sql = format!(
+        r#"SELECT inflections FROM '{}' WHERE "case" = '' AND gender = '' AND "number" = ''"#,
+        table_name
+    );
+
+    inflections::get_inflections(&sql, transliterate, &exec_sql)
 }
