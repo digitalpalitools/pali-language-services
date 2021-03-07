@@ -1,3 +1,8 @@
+---
+source: test_app/src/main.rs
+expression: html
+
+---
 <div class="pls-inflection-root">
   <header class="pls-inflection-header"><summary class="pls-inflection-summary">kamma 1 &ndash; "kamma nt" (like )</summary></header>
 <table class="pls-inflection-table pls-inflection-type-conjugation">
@@ -196,3 +201,4 @@
 
   <footer class="pls-inflection-footer"><a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></footer>
 </div>
+
