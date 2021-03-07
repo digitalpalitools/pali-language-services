@@ -76,11 +76,15 @@ mod tests {
             exec_sql,
         )?;
 
-        let approved_html = fs::read_to_string(format!("src/test_data/{}.approved.html", approved_filename))
-            .map_err(|e| e.to_string())?;
+        let approved_html =
+            fs::read_to_string(format!("src/test_data/{}.approved.html", approved_filename))
+                .map_err(|e| e.to_string())?;
 
-        fs::write(format!("src/test_data/{}.actual.html", approved_filename), &html)
-            .map_err(|e| e.to_string())?;
+        fs::write(
+            format!("src/test_data/{}.actual.html", approved_filename),
+            &html,
+        )
+        .map_err(|e| e.to_string())?;
 
         assert_eq!(html, approved_html);
 
