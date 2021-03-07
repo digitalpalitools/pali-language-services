@@ -120,7 +120,7 @@ pub struct InflectedWordMetadata {
 }
 
 impl InflectedWordMetadata {
-    pub fn simple_representation(self) -> (String, String, String, String) {
+    pub fn simple_representation(self) -> (String, String, String, String){
         (
             self.inflected_word,
             self.stem_word,
