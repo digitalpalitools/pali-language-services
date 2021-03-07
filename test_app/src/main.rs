@@ -58,19 +58,33 @@ fn main() -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::fs;
+    use test_case::test_case;
 
-    #[test]
+    #[test_case("ābādheti", "conjugation - 1"; "conjugation - 1")]
+    #[test_case("vassūpanāyikā", "declension - 1"; "declension - 1")]
+    #[test_case("kamma 1", "declension - 2 - irreg"; "declension - 2 - irreg")]
+    // #[test_case("kāmaṃ 3", "declension - 3 - ind"; "declension - 3 - ind")]
+    // #[test_case("ubha", "declension - 4 - pron_dual"; "declension - 4 - pron_dual")]
+    // #[test_case("ahaṃ", "declension - 4 - pron_1st"; "declension - 4 - pron_1st")]
+    // #[test_case("taṃ 3", "declension - 4 - pron_2nd"; "declension - 4 - pron_2nd")]
     // TODO: Need to be abstracted, granularized and moved to pls_core.
-    fn basic_inflection_test() {
+    fn inflection_tests(pali1: &str, approved_filename: &str) -> Result<(), String> {
         let html = pls_core::inflections::generate_inflection_table(
-            "ābādheti",
+            pali1,
             |s| Ok(s.to_string()),
             exec_sql,
-        );
+        )?;
 
-        let approved_html = include_str!("test_data/basic_inflection_test.approved.txt");
+        let approved_html = fs::read_to_string(format!("src/test_data/{}.approved.html", approved_filename))
+            .map_err(|e| e.to_string())?;
 
-        assert_eq!(html.unwrap(), approved_html);
+        fs::write(format!("src/test_data/{}.actual.html", approved_filename), &html)
+            .map_err(|e| e.to_string())?;
+
+        assert_eq!(html, approved_html);
+
+        Ok(())
     }
 
     #[test]

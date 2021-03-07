@@ -110,17 +110,23 @@ where
         Ok(result)
     }
 }
-#[derive(Debug,Clone)]
-pub struct InflectedWordMetadata{
+
+#[derive(Debug, Clone)]
+pub struct InflectedWordMetadata {
     pub inflected_word: String,
     pub stem_word: String,
     pub grammar: String,
-    pub comment: String
+    pub comment: String,
 }
 
-impl InflectedWordMetadata{
-    pub fn simple_representation(self) -> (String,String,String,String){
-        (self.inflected_word,self.stem_word,self.grammar,self.comment)
+impl InflectedWordMetadata {
+    pub fn simple_representation(self) -> (String, String, String, String) {
+        (
+            self.inflected_word,
+            self.stem_word,
+            self.grammar,
+            self.comment,
+        )
     }
 }
 
@@ -132,11 +138,11 @@ fn get_inflections_for_pattern(
 }
 
 fn get_words_for_indeclinable_stem(paliword: &str) -> Vec<InflectedWordMetadata> {
-    vec![InflectedWordMetadata{
-        inflected_word:paliword.chars().filter(|c| !c.is_digit(10)).collect(),
-        stem_word:paliword.to_string(),
-        grammar:" ".to_string(),
-        comment:"ind".to_string(),
+    vec![InflectedWordMetadata {
+        inflected_word: paliword.chars().filter(|c| !c.is_digit(10)).collect(),
+        stem_word: paliword.to_string(),
+        grammar: " ".to_string(),
+        comment: "ind".to_string(),
     }]
 }
 
@@ -154,12 +160,11 @@ fn get_words_for_irregular_stem(
     for mut inflection_row in inflections {
         for inflection in inflection_row.pop().unwrap().split(',') {
             inflected_words_irregular_stem.push(InflectedWordMetadata {
-                inflected_word:inflection.to_string(),
-                stem_word:paliword.to_string(),
-                grammar:inflection_row.join(" ").to_string(),
-                comment:"*".to_string(),
-                }
-            )
+                inflected_word: inflection.to_string(),
+                stem_word: paliword.to_string(),
+                grammar: inflection_row.join(" ").to_string(),
+                comment: "*".to_string(),
+            })
         }
     }
     inflected_words_irregular_stem
@@ -179,14 +184,12 @@ fn get_words_for_regular_stem(
             .unwrap();
     for mut inflection_row in inflections {
         for inflection in inflection_row.pop().unwrap().split(',') {
-            inflected_words_regular_stem.push(InflectedWordMetadata{
-                inflected_word:[stem, inflection].join("").to_string(),
-                stem_word:paliword.to_string(),
-                grammar:inflection_row.join(" ").to_string(),
-                comment:" ".to_string(),
-
-            }
-            )
+            inflected_words_regular_stem.push(InflectedWordMetadata {
+                inflected_word: [stem, inflection].join("").to_string(),
+                stem_word: paliword.to_string(),
+                grammar: inflection_row.join(" ").to_string(),
+                comment: " ".to_string(),
+            })
         }
     }
     inflected_words_regular_stem
