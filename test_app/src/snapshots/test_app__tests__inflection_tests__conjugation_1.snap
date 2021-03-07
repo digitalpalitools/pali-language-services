@@ -12,8 +12,6 @@ expression: html
         <td colspan="2">active</td>
         <td colspan="2">reflexive</td>
       </tr>
-    </thead>
-    <tbody>
       <tr>
         <td>person</td>
         <td>singular</td>
@@ -21,6 +19,8 @@ expression: html
         <td>singular</td>
         <td>plural</td>
       </tr>
+    </thead>
+    <tbody>
       <tr>
         <td>pr 3rd</td>
         <td>
@@ -70,8 +70,6 @@ expression: html
         <td colspan="2">active</td>
         <td colspan="2">reflexive</td>
       </tr>
-    </thead>
-    <tbody>
       <tr>
         <td>person</td>
         <td>singular</td>
@@ -79,6 +77,8 @@ expression: html
         <td>singular</td>
         <td>plural</td>
       </tr>
+    </thead>
+    <tbody>
       <tr>
         <td>imp 3rd</td>
         <td>
@@ -134,8 +134,6 @@ expression: html
         <td colspan="2">active</td>
         <td colspan="2">reflexive</td>
       </tr>
-    </thead>
-    <tbody>
       <tr>
         <td>person</td>
         <td>singular</td>
@@ -143,6 +141,8 @@ expression: html
         <td>singular</td>
         <td>plural</td>
       </tr>
+    </thead>
+    <tbody>
       <tr>
         <td>opt 3rd</td>
         <td>
@@ -206,8 +206,6 @@ expression: html
         <td colspan="2">active</td>
         <td colspan="2">reflexive</td>
       </tr>
-    </thead>
-    <tbody>
       <tr>
         <td>person</td>
         <td>singular</td>
@@ -215,6 +213,8 @@ expression: html
         <td>singular</td>
         <td>plural</td>
       </tr>
+    </thead>
+    <tbody>
       <tr>
         <td>fut 3rd</td>
         <td>

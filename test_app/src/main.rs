@@ -58,7 +58,6 @@ fn main() -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use insta;
     use test_case::test_case;
 
     #[test_case("ābādheti"; "conjugation - 1")]
@@ -74,7 +73,8 @@ mod tests {
             pali1,
             |s| Ok(s.to_string()),
             exec_sql,
-        ).unwrap_or_else(|e| e);
+        )
+        .unwrap_or_else(|e| e);
 
         insta::assert_snapshot!(html);
     }
