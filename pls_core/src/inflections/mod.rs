@@ -1,7 +1,16 @@
 mod generators;
 
-static HEADER_TEMPLATE: &str = r#"  <header class="pls-inflection-header"><summary class="pls-inflection-summary">{{PĀLI1}} &ndash; "{{PATTERN}}" (like {{EXAMPLE_INFO}})</summary></header>"#;
-static FOOTER_TEMPLATE: &str = r#"  <footer class="pls-inflection-footer"><a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></footer>"#;
+use tera::{Context, Tera};
+
+lazy_static! {
+    static ref TEMPLATES: Tera = {
+        let mut tera = Tera::default();
+        tera.add_raw_templates(vec![("output", include_str!("templates/output.html"))])
+            .unwrap();
+        tera.autoescape_on(vec!["html", ".sql"]);
+        tera
+    };
+}
 
 #[derive(Debug)]
 pub enum InflectionClass {
@@ -21,14 +30,15 @@ pub struct Pali1Metadata {
 
 pub fn generate_inflection_table(
     pali1: &str,
+    host_url: &str,
+    host_version: &str,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: fn(&str) -> Result<String, String>,
 ) -> Result<String, String> {
     let pm = get_pali1_metadata(pali1, exec_sql_structured(exec_sql))?;
     let body = generators::create_html_body(&pm, transliterate, exec_sql_structured(exec_sql))?;
-    let html = append_header_footer(&pm, pali1, &body, transliterate)?;
 
-    Ok(html)
+    generate_output(&pm, pali1, host_url, host_version, &body, transliterate)
 }
 
 fn inflection_class_from_str(ic: &str) -> InflectionClass {
@@ -82,21 +92,35 @@ fn get_pali1_metadata(
     Ok(pm)
 }
 
-fn append_header_footer(
+fn generate_output(
     pm: &Pali1Metadata,
     pali1: &str,
+    host_url: &str,
+    host_version: &str,
     body: &str,
     transliterate: fn(&str) -> Result<String, String>,
 ) -> Result<String, String> {
-    let header = HEADER_TEMPLATE
-        .replace("{{PĀLI1}}", &transliterate(pali1)?)
-        .replace("{{PATTERN}}", &pm.pattern)
-        .replace("{{EXAMPLE_INFO}}", &transliterate(&pm.like)?);
+    let feedback_form_url = match pm.inflection_class {
+        InflectionClass::Conjugation => {
+            "https://docs.google.com/forms/d/e/1FAIpQLSeJpx7TsISkYEXzxvbBtOH25T-ZO1Z5NFdujO5SD9qcAH_i1A/viewform"
+        }
+        _ => { // All declensions.
+            "https://docs.google.com/forms/d/e/1FAIpQLSeoxZiqvIWadaLeuXF4f44NCqEn49-B8KNbSvNer5jxgRYdtQ/viewform"
+        }
+    };
 
-    Ok(format!(
-        r#"<div class="pls-inflection-root">{}{}{}{}{}{}{}</div>{}"#,
-        "\n", &header, "\n", &body, "\n", FOOTER_TEMPLATE, "\n", "\n",
-    ))
+    let mut context = Context::new();
+    context.insert("pali1", &transliterate(pali1)?);
+    context.insert("pattern", &pm.pattern);
+    context.insert("like", &transliterate(&pm.like)?);
+    context.insert("body", &body);
+    context.insert("feedback_form_url", &feedback_form_url);
+    context.insert("host_url", &host_url);
+    context.insert("host_version", &host_version);
+
+    TEMPLATES
+        .render("output", &context)
+        .map_err(|e| e.to_string())
 }
 
 fn exec_sql_structured<F>(f: F) -> impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>

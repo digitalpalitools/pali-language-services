@@ -45,6 +45,8 @@ fn main() -> Result<(), String> {
 
     let html = pls_core::inflections::generate_inflection_table(
         "bala 1",
+        "the table is hosted here",
+        "host version v0.0.1",
         |s| Ok(s.to_string()),
         exec_sql,
     )?;
@@ -71,6 +73,8 @@ mod tests {
     fn inflection_tests(pali1: &str) {
         let html = pls_core::inflections::generate_inflection_table(
             pali1,
+            "test case",
+            "v0.1",
             |s| Ok(s.to_string()),
             exec_sql,
         )

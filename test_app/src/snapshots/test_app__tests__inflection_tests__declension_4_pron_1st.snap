@@ -4,7 +4,9 @@ expression: html
 
 ---
 <div class="pls-inflection-root">
-  <header class="pls-inflection-header"><summary class="pls-inflection-summary">maṃ &ndash; "ahaṃ pron 1st" (like )</summary></header>
+  <header class="pls-inflection-header">
+    <summary class="pls-inflection-summary">maṃ &ndash; "ahaṃ pron 1st" (like )</summary>
+  </header>
 <table class="pls-inflection-table pls-inflection-type-conjugation">
   <thead>
     <tr>
@@ -127,6 +129,10 @@ expression: html
   </tbody>
 </table>
 
-  <footer class="pls-inflection-footer"><a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSdqnYM0_5VeWzkFBPzyxaLqUfKWgNjI8STCpdrx4vX3hetyxw/viewform"><strong>spot a mistake? something missing? fix it here!</strong></a></footer>
+  <footer class="pls-inflection-footer">
+    <a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeoxZiqvIWadaLeuXF4f44NCqEn49-B8KNbSvNer5jxgRYdtQ/viewform?entry.267696921=test case&entry.1433863141=v0.1">
+      spot a mistake? something missing? fix it here!
+    </a>
+  </footer>
 </div>
 
