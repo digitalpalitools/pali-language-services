@@ -261,3 +261,18 @@ fn get_inflections(
 
     inflections
 }
+
+pub fn get_inflections_stemmed(
+    sql: &str,
+    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
+    stem: String,
+    transliterate: fn(&str) -> Result<String, String>,
+) -> Result<Vec<String>, String> {
+    let mut inflections = get_inflections(&sql, |s| Ok(s.to_string()), &exec_sql);
+    for inflection in inflections.iter_mut() {
+        if inflection.len() > 0 {
+            *inflection = transliterate(&(stem.to_owned() + inflection)).unwrap_or_else(|e| e);
+        }
+    }
+    Ok(inflections)
+}
