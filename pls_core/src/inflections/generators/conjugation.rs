@@ -36,7 +36,7 @@ pub fn create_html_body(
     let tense_view_models =
         create_template_view_model(&table_name, transliterate, &exec_sql, &stem)?;
     let vm = TemplateViewModel {
-        stem: stem,
+        stem,
         tense_view_models,
     };
     let context = Context::from_serialize(&vm).map_err(|e| e.to_string())?;

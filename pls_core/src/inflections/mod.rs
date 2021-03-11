@@ -270,7 +270,7 @@ pub fn get_inflections_stemmed(
 ) -> Result<Vec<String>, String> {
     let mut inflections = get_inflections(&sql, |s| Ok(s.to_string()), &exec_sql);
     for inflection in inflections.iter_mut() {
-        if inflection.len() > 0 {
+        if !inflection.is_empty() {
             *inflection = transliterate(&(stem.to_owned() + inflection)).unwrap_or_else(|e| e);
         }
     }
