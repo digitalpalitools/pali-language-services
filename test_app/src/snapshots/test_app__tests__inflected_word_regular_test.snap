@@ -3,34 +3,6 @@ source: test_app/src/main.rs
 expression: output
 
 ---
-- - ababesu
-  - ababa 1
-  - nt loc pl
-  - " "
-- - ababāya
-  - ababa 1
-  - nt dat sg
-  - " "
-- - ababassa
-  - ababa 1
-  - nt dat sg
-  - " "
-- - ababe
-  - ababa 1
-  - nt acc pl
-  - " "
-- - ababāni
-  - ababa 1
-  - nt acc pl
-  - " "
-- - ababena
-  - ababa 1
-  - nt instr sg
-  - " "
-- - ababānaṃ
-  - ababa 1
-  - nt dat pl
-  - " "
 - - ababā
   - ababa 1
   - nt abl sg
@@ -47,41 +19,33 @@ expression: output
   - ababa 1
   - nt abl sg
   - " "
+- - ababaṃ
+  - ababa 1
+  - nt nom sg
+  - " "
 - - ababa
   - ababa 1
   - "  "
   - " "
 - - ababā
   - ababa 1
-  - nt nom pl
+  - nt voc pl
   - " "
 - - ababāni
   - ababa 1
-  - nt nom pl
-  - " "
-- - ababānaṃ
-  - ababa 1
-  - nt gen pl
-  - " "
-- - ababaṃ
-  - ababa 1
-  - nt acc sg
-  - " "
-- - ababaṃ
-  - ababa 1
-  - nt nom sg
+  - nt voc pl
   - " "
 - - ababe
   - ababa 1
-  - nt loc sg
+  - nt acc pl
   - " "
-- - ababamhi
+- - ababāni
   - ababa 1
-  - nt loc sg
+  - nt acc pl
   - " "
-- - ababasmiṃ
+- - ababena
   - ababa 1
-  - nt loc sg
+  - nt instr sg
   - " "
 - - ababehi
   - ababa 1
@@ -95,6 +59,22 @@ expression: output
   - ababa 1
   - nt gen sg
   - " "
+- - ababā
+  - ababa 1
+  - nt nom pl
+  - " "
+- - ababāni
+  - ababa 1
+  - nt nom pl
+  - " "
+- - ababaṃ
+  - ababa 1
+  - nt acc sg
+  - " "
+- - ababānaṃ
+  - ababa 1
+  - nt gen pl
+  - " "
 - - ababehi
   - ababa 1
   - nt abl pl
@@ -106,6 +86,18 @@ expression: output
 - - ababato
   - ababa 1
   - nt abl pl
+  - " "
+- - ababānaṃ
+  - ababa 1
+  - nt dat pl
+  - " "
+- - ababāya
+  - ababa 1
+  - nt dat sg
+  - " "
+- - ababassa
+  - ababa 1
+  - nt dat sg
   - " "
 - - ababa
   - ababa 1
@@ -119,12 +111,20 @@ expression: output
   - ababa 1
   - nt voc sg
   - " "
-- - ababā
+- - ababesu
   - ababa 1
-  - nt voc pl
+  - nt loc pl
   - " "
-- - ababāni
+- - ababe
   - ababa 1
-  - nt voc pl
+  - nt loc sg
+  - " "
+- - ababamhi
+  - ababa 1
+  - nt loc sg
+  - " "
+- - ababasmiṃ
+  - ababa 1
+  - nt loc sg
   - " "
 

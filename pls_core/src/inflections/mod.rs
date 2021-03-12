@@ -51,9 +51,7 @@ fn inflection_class_from_str(ic: &str) -> InflectionClass {
     }
 }
 
-// TODO: Pull the .to_strings out into the HOF.
 // TODO: No leading/trailing spaces in _stems.pattern and _index.name.
-// TODO: Negative scenarios where exec_sql does not return anything.
 fn get_pali1_metadata(
     pali1: &str,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,

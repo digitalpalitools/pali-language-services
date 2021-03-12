@@ -3,33 +3,9 @@ source: test_app/src/main.rs
 expression: output
 
 ---
-- - ahuvattha
-  - ahesuṃ
-  - act aor 2nd pl
-  - "*"
-- - ahosittha
-  - ahesuṃ
-  - act aor 2nd pl
-  - "*"
-- - ahosi
-  - ahesuṃ
-  - act aor 3rd sg
-  - "*"
-- - ahu
-  - ahesuṃ
-  - act aor 3rd sg
-  - "*"
-- - ahuvā
-  - ahesuṃ
-  - reflx aor 3rd sg
-  - "*"
 - - ahuvivhaṃ
   - ahesuṃ
   - reflx aor 2nd pl
-  - "*"
-- - ahuvimhe
-  - ahesuṃ
-  - reflx aor 1st pl
   - "*"
 - - ahosiṃ
   - ahesuṃ
@@ -43,6 +19,62 @@ expression: output
   - ahesuṃ
   - act aor 1st sg
   - "*"
+- - ahosi
+  - ahesuṃ
+  - act aor 3rd sg
+  - "*"
+- - ahu
+  - ahesuṃ
+  - act aor 3rd sg
+  - "*"
+- - ahuvo
+  - ahesuṃ
+  - act aor 2nd sg
+  - "*"
+- - ahosi
+  - ahesuṃ
+  - act aor 2nd sg
+  - "*"
+- - ahuvattha
+  - ahesuṃ
+  - act aor 2nd pl
+  - "*"
+- - ahosittha
+  - ahesuṃ
+  - act aor 2nd pl
+  - "*"
+- - ahuvase
+  - ahesuṃ
+  - reflx aor 2nd sg
+  - "*"
+- - ahuvā
+  - ahesuṃ
+  - reflx aor 3rd sg
+  - "*"
+- - ahuvimhe
+  - ahesuṃ
+  - reflx aor 1st pl
+  - "*"
+- - ahuvaṃ
+  - ahesuṃ
+  - reflx aor 1st sg
+  - "*"
+- - ahuṃ
+  - ahesuṃ
+  - reflx aor 1st sg
+  - "*"
+- - ahesuṃ
+  - ahesuṃ
+  - act aor 3rd pl
+  - "*"
+- - ahuṃ
+  - ahesuṃ
+  - act aor 3rd pl
+  - "*"
+- - ahuvu
+  - ahesuṃ
+  - reflx aor 3rd pl
+  - "*"
 - - ahumha
   - ahesuṃ
   - act aor 1st pl
@@ -54,37 +86,5 @@ expression: output
 - - ahosimha
   - ahesuṃ
   - act aor 1st pl
-  - "*"
-- - ahuvase
-  - ahesuṃ
-  - reflx aor 2nd sg
-  - "*"
-- - ahesuṃ
-  - ahesuṃ
-  - act aor 3rd pl
-  - "*"
-- - ahuṃ
-  - ahesuṃ
-  - act aor 3rd pl
-  - "*"
-- - ahuvo
-  - ahesuṃ
-  - act aor 2nd sg
-  - "*"
-- - ahosi
-  - ahesuṃ
-  - act aor 2nd sg
-  - "*"
-- - ahuvaṃ
-  - ahesuṃ
-  - reflx aor 1st sg
-  - "*"
-- - ahuṃ
-  - ahesuṃ
-  - reflx aor 1st sg
-  - "*"
-- - ahuvu
-  - ahesuṃ
-  - reflx aor 3rd pl
   - "*"
 
