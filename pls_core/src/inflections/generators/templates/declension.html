@@ -23,44 +23,44 @@
         <p><span class="pls-inflection-row-header">{{ case_view_model.name }}</span></p>
       </td>
       <td>
-        {% for inflection in case_view_model.inflections_list.0 -%}
-        {% if inflection -%}
-        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% for stemmed_inflection in case_view_model.stemmed_inflections_list.0 -%}
+        {% if stemmed_inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stemmed_inflection }}</div>
         {% endif -%}
         {% endfor -%}
       </td>
       <td>
-        {% for inflection in case_view_model.inflections_list.1 -%}
-        {% if inflection -%}
-        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% for stemmed_inflection in case_view_model.stemmed_inflections_list.1 -%}
+        {% if stemmed_inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stemmed_inflection }}</div>
         {% endif -%}
         {% endfor -%}
       </td>
       <td>
-        {% for inflection in case_view_model.inflections_list.2 -%}
-        {% if inflection -%}
-        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% for stemmed_inflection in case_view_model.stemmed_inflections_list.2 -%}
+        {% if stemmed_inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stemmed_inflection }}</div>
         {% endif -%}
         {% endfor -%}
       </td>
       <td>
-        {% for inflection in case_view_model.inflections_list.3 -%}
-        {% if inflection -%}
-        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% for stemmed_inflection in case_view_model.stemmed_inflections_list.3 -%}
+        {% if stemmed_inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stemmed_inflection }}</div>
         {% endif -%}
         {% endfor -%}
       </td>
       <td>
-        {% for inflection in case_view_model.inflections_list.4 -%}
-        {% if inflection -%}
-        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% for stemmed_inflection in case_view_model.stemmed_inflections_list.4 -%}
+        {% if stemmed_inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stemmed_inflection }}</div>
         {% endif -%}
         {% endfor -%}
       </td>
       <td>
-        {% for inflection in case_view_model.inflections_list.5 -%}
-        {% if inflection -%}
-        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% for stemmed_inflection in case_view_model.stemmed_inflections_list.5 -%}
+        {% if stemmed_inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stemmed_inflection }}</div>
         {% endif -%}
         {% endfor -%}
       </td>
@@ -70,9 +70,9 @@
     <tr>
       <td><span class="pls-inflection-row-header">in comps</span></td>
       <td colspan="6">
-        {% for inflection in in_comps_inflections -%}
-        {% if inflection -%}
-        <div class="pls-inflection-inflected-word">{{ stem }}<span class="pls-inflection-inflected-word-suffix">{{ inflection }}</span></div>
+        {% for stemmed_inflection in in_stemmed_comps_inflections -%}
+        {% if stemmed_inflection -%}
+        <div class="pls-inflection-inflected-word">{{ stemmed_inflection }}</div>
         {% endif -%}
         {% endfor -%}
       </td>
