@@ -56,7 +56,7 @@ fn create_template_view_model(
     table_name: &str,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
-    stem: &str
+    stem: &str,
 ) -> Result<Vec<CaseViewModel>, String> {
     let sql = r#"select * from _case_values where name <> """#;
     let values = exec_sql(sql)?;
@@ -66,7 +66,8 @@ fn create_template_view_model(
             r#"SELECT inflections FROM '{}' WHERE "case" = '{}' AND special_pron_class = 'dual' AND "number" = 'sg'"#,
             table_name, case
         );
-        let stemmed_inflections = inflections::get_inflections_stemmed(&sql, &exec_sql, &stem, transliterate)?;
+        let stemmed_inflections =
+            inflections::get_inflections_stemmed(&sql, &exec_sql, &stem, transliterate)?;
 
         let view_model = CaseViewModel {
             name: case.to_owned(),
@@ -82,8 +83,8 @@ fn create_template_view_model_for_in_comps(
     table_name: &str,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
-    stem: &str
-) -> Result<Vec<String>,String> {
+    stem: &str,
+) -> Result<Vec<String>, String> {
     let sql = format!(
         r#"SELECT inflections FROM '{}' WHERE "case" = '' AND special_pron_class = '' AND "number" = ''"#,
         table_name
