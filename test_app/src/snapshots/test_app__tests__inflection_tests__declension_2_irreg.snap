@@ -39,12 +39,12 @@ expression: html
       <td>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kamma</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammaṃ</span></div>
+        <div class="pls-inflection-inflected-word">kamma</div>
+        <div class="pls-inflection-inflected-word">kammaṃ</div>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammāni</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammā</span></div>
+        <div class="pls-inflection-inflected-word">kammāni</div>
+        <div class="pls-inflection-inflected-word">kammā</div>
         </td>
     </tr>
     <tr>
@@ -60,12 +60,12 @@ expression: html
       <td>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kamma</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammaṃ</span></div>
+        <div class="pls-inflection-inflected-word">kamma</div>
+        <div class="pls-inflection-inflected-word">kammaṃ</div>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammāni</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kamme</span></div>
+        <div class="pls-inflection-inflected-word">kammāni</div>
+        <div class="pls-inflection-inflected-word">kamme</div>
         </td>
     </tr>
     <tr>
@@ -81,12 +81,12 @@ expression: html
       <td>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammena</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammunā</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammanā</span></div>
+        <div class="pls-inflection-inflected-word">kammena</div>
+        <div class="pls-inflection-inflected-word">kammunā</div>
+        <div class="pls-inflection-inflected-word">kammanā</div>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammehi</span></div>
+        <div class="pls-inflection-inflected-word">kammehi</div>
         </td>
     </tr>
     <tr>
@@ -102,11 +102,11 @@ expression: html
       <td>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammassa</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammuno</span></div>
+        <div class="pls-inflection-inflected-word">kammassa</div>
+        <div class="pls-inflection-inflected-word">kammuno</div>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammānaṃ</span></div>
+        <div class="pls-inflection-inflected-word">kammānaṃ</div>
         </td>
     </tr>
     <tr>
@@ -122,12 +122,12 @@ expression: html
       <td>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammasmā</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammamhā</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammunā</span></div>
+        <div class="pls-inflection-inflected-word">kammasmā</div>
+        <div class="pls-inflection-inflected-word">kammamhā</div>
+        <div class="pls-inflection-inflected-word">kammunā</div>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammehi</span></div>
+        <div class="pls-inflection-inflected-word">kammehi</div>
         </td>
     </tr>
     <tr>
@@ -143,11 +143,11 @@ expression: html
       <td>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammassa</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammuno</span></div>
+        <div class="pls-inflection-inflected-word">kammassa</div>
+        <div class="pls-inflection-inflected-word">kammuno</div>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammānaṃ</span></div>
+        <div class="pls-inflection-inflected-word">kammānaṃ</div>
         </td>
     </tr>
     <tr>
@@ -163,13 +163,13 @@ expression: html
       <td>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kamme</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammasmiṃ</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammamhi</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammani</span></div>
+        <div class="pls-inflection-inflected-word">kamme</div>
+        <div class="pls-inflection-inflected-word">kammasmiṃ</div>
+        <div class="pls-inflection-inflected-word">kammamhi</div>
+        <div class="pls-inflection-inflected-word">kammani</div>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammesu</span></div>
+        <div class="pls-inflection-inflected-word">kammesu</div>
         </td>
     </tr>
     <tr>
@@ -185,17 +185,17 @@ expression: html
       <td>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kamma</span></div>
+        <div class="pls-inflection-inflected-word">kamma</div>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammāni</span></div>
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kammā</span></div>
+        <div class="pls-inflection-inflected-word">kammāni</div>
+        <div class="pls-inflection-inflected-word">kammā</div>
         </td>
     </tr>
     <tr>
       <td><span class="pls-inflection-row-header">in comps</span></td>
       <td colspan="6">
-        <div class="pls-inflection-inflected-word"><span class="pls-inflection-inflected-word-suffix">kamma</span></div>
+        <div class="pls-inflection-inflected-word">kamma</div>
         </td>
     </tr>
   </tbody>
