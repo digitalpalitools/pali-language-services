@@ -80,7 +80,7 @@ fn create_template_view_model(
                     let stemmed_inflections = inflections::get_inflections_stemmed(
                         &sql,
                         &exec_sql,
-                        stem.to_string(),
+                        &stem,
                         transliterate,
                     )?;
                     stemmed_inflections_list.push(stemmed_inflections);
