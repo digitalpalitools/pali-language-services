@@ -18,13 +18,13 @@ lazy_static! {
 #[derive(Serialize)]
 struct TenseViewModel {
     name: String,
-    stemmed_inflections_list: Vec<Vec<String>>,
+    inflections_list: Vec<Vec<String>>,
 }
 
 #[derive(Serialize)]
 struct TemplateViewModel<'a> {
     stem: &'a str,
-    tense_view_models: Vec<TenseViewModel>,
+    view_models: Vec<TenseViewModel>,
 }
 
 pub fn create_html_body(
@@ -37,7 +37,7 @@ pub fn create_html_body(
         create_template_view_model(&table_name, transliterate, &exec_sql, &stem)?;
     let vm = TemplateViewModel {
         stem,
-        tense_view_models,
+        view_models: tense_view_models,
     };
     let context = Context::from_serialize(&vm).map_err(|e| e.to_string())?;
     TEMPLATES
@@ -69,7 +69,7 @@ fn create_template_view_model(
             continue;
         }
 
-        let mut stemmed_inflections_list: Vec<Vec<String>> = Vec::new();
+        let mut inflections_list: Vec<Vec<String>> = Vec::new();
         for p in values[1].iter().flatten() {
             for ar in values[2].iter().flatten() {
                 for n in values[3].iter().flatten() {
@@ -77,20 +77,20 @@ fn create_template_view_model(
                         r#"SELECT inflections FROM '{}' WHERE tense = '{}' AND person = '{}' AND actreflx = '{}' AND "number" = '{}'"#,
                         table_name, t, p, ar, n,
                     );
-                    let stemmed_inflections = inflections::get_inflections_stemmed(
-                        &sql,
-                        &exec_sql,
+                    let inflections = inflections::get_inflections(
                         &stem,
+                        &sql,
                         transliterate,
-                    )?;
-                    stemmed_inflections_list.push(stemmed_inflections);
+                        &exec_sql,
+                    );
+                    inflections_list.push(inflections);
                 }
             }
         }
 
         let view_model = TenseViewModel {
             name: t.to_owned(),
-            stemmed_inflections_list,
+            inflections_list,
         };
         view_models.push(view_model);
     }

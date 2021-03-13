@@ -18,7 +18,7 @@ lazy_static! {
 #[derive(Serialize)]
 struct CaseViewModel {
     name: String,
-    stemmed_inflections: Vec<String>,
+    inflections: Vec<String>,
 }
 
 #[derive(Serialize)]
@@ -26,7 +26,7 @@ struct TemplateViewModel<'a> {
     table_name: &'a str,
     stem: &'a str,
     view_models: Vec<CaseViewModel>,
-    in_stemmed_comps_inflections: Vec<String>,
+    in_comps_inflections: Vec<String>,
 }
 
 pub fn create_html_body(
@@ -36,14 +36,14 @@ pub fn create_html_body(
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Result<String, String> {
     let view_models = create_template_view_model(&table_name, transliterate, &exec_sql, &stem)?;
-    let in_stemmed_comps_inflections =
-        create_template_view_model_for_in_comps(&table_name, transliterate, &exec_sql, &stem)?;
+    let in_comps_inflections =
+        create_template_view_model_for_in_comps(&table_name, transliterate, &exec_sql, &stem);
 
     let vm = TemplateViewModel {
         table_name,
         stem: &transliterate(stem)?,
         view_models,
-        in_stemmed_comps_inflections,
+        in_comps_inflections,
     };
 
     let context = Context::from_serialize(&vm).map_err(|e| e.to_string())?;
@@ -66,12 +66,12 @@ fn create_template_view_model(
             r#"SELECT inflections FROM '{}' WHERE "case" = '{}' AND special_pron_class = 'dual' AND "number" = 'sg'"#,
             table_name, case
         );
-        let stemmed_inflections =
-            inflections::get_inflections_stemmed(&sql, &exec_sql, &stem, transliterate)?;
+        let inflections =
+            inflections::get_inflections(&stem, &sql, transliterate, &exec_sql);
 
         let view_model = CaseViewModel {
             name: case.to_owned(),
-            stemmed_inflections,
+            inflections,
         };
         view_models.push(view_model);
     }
@@ -84,11 +84,11 @@ fn create_template_view_model_for_in_comps(
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
     stem: &str,
-) -> Result<Vec<String>, String> {
+) -> Vec<String> {
     let sql = format!(
         r#"SELECT inflections FROM '{}' WHERE "case" = '' AND special_pron_class = '' AND "number" = ''"#,
         table_name
     );
 
-    inflections::get_inflections_stemmed(&sql, &exec_sql, &stem, transliterate)
+    inflections::get_inflections(&stem, &sql, transliterate, &exec_sql)
 }

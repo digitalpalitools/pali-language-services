@@ -12,9 +12,9 @@
         <p><span class="pls-inflection-row-header">{{ view_model.name }}</span></p>
       </td>
       <td>
-        {% for stemmed_inflection in view_model.stemmed_inflections -%}
-        {% if stemmed_inflection -%}
-        <div class="pls-inflection-inflected-word">{{ stemmed_inflection }}</div>
+        {% for inflection in view_model.inflections -%}
+        {% if inflection -%}
+        <div class="pls-inflection-inflected-word">{{ inflection }}</div>
         {% endif -%}
         {% endfor -%}
       </td>
@@ -24,9 +24,9 @@
     <tr>
       <td><span class="pls-inflection-row-header">in comps</span></td>
       <td colspan="6">
-        {% for stemmed_inflection in in_stemmed_comps_inflections -%}
-        {% if stemmed_inflection -%}
-        <div class="pls-inflection-inflected-word">{{ stemmed_inflection }}</div>
+        {% for inflection in in_comps_inflections -%}
+        {% if inflection -%}
+        <div class="pls-inflection-inflected-word">{{ inflection }}</div>
         {% endif -%}
         {% endfor -%}
       </td>

@@ -18,7 +18,7 @@ lazy_static! {
 #[derive(Serialize, Debug)]
 struct CaseViewModel {
     name: String,
-    stemmed_inflections_list: Vec<Vec<String>>,
+    inflections_list: Vec<Vec<String>>,
 }
 
 #[derive(Serialize, Debug)]
@@ -27,7 +27,7 @@ struct TemplateViewModel<'a> {
     pron_type: &'a str,
     stem: &'a str,
     view_models: Vec<CaseViewModel>,
-    in_stemmed_comps_inflections: Vec<String>,
+    in_comps_inflections: Vec<String>,
 }
 
 pub fn create_html_body(
@@ -39,17 +39,17 @@ pub fn create_html_body(
 ) -> Result<String, String> {
     let view_models =
         create_template_view_model(&pron_type, &table_name, transliterate, &exec_sql, &stem)?;
-    let in_stemmed_comps_inflections = Vec::new();
+    let in_comps_inflections = Vec::new();
 
-    let vm = TemplateViewModel {
+    let template_view_model = TemplateViewModel {
         table_name,
         pron_type,
         stem: &transliterate(stem)?,
         view_models,
-        in_stemmed_comps_inflections,
+        in_comps_inflections,
     };
 
-    let context = Context::from_serialize(&vm).map_err(|e| e.to_string())?;
+    let context = Context::from_serialize(&template_view_model).map_err(|e| e.to_string())?;
     TEMPLATES
         .render("declension_pron_x", &context)
         .map_err(|e| e.to_string())
@@ -69,20 +69,20 @@ fn create_template_view_model(
     let values = exec_sql(sql)?;
     let mut view_models: Vec<CaseViewModel> = Vec::new();
     for case in values[0].iter().flatten() {
-        let mut stemmed_inflections_list: Vec<Vec<String>> = Vec::new();
+        let mut inflections_list: Vec<Vec<String>> = Vec::new();
         for number in values[1].iter().flatten() {
             let sql = format!(
                 r#"SELECT inflections FROM '{}' WHERE "case" = '{}' AND special_pron_class = '{}' AND "number" = '{}'"#,
                 table_name, case, pron_type, number
             );
-            let stemmed_inflections =
-                inflections::get_inflections_stemmed(&sql, &exec_sql, &stem, transliterate)?;
-            stemmed_inflections_list.push(stemmed_inflections);
+            let inflections =
+                inflections::get_inflections(&stem, &sql, transliterate, &exec_sql);
+            inflections_list.push(inflections);
         }
 
         let view_model = CaseViewModel {
             name: case.to_owned(),
-            stemmed_inflections_list,
+            inflections_list,
         };
         view_models.push(view_model);
     }

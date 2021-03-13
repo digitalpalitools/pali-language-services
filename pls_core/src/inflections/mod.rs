@@ -237,7 +237,20 @@ pub fn generate_all_inflected_words(
     Ok(inflected_words)
 }
 
+fn join_and_transliterate_if_not_empty(
+    stem: &str,
+    suffix: &str,
+    transliterate: fn(&str) -> Result<String, String>,
+) -> String {
+    if suffix.is_empty() {
+        "".to_string()
+    } else {
+        transliterate(&format!("{}{}", stem, suffix)).unwrap_or_else(|e| e)
+    }
+}
+
 fn get_inflections(
+    stem: &str,
     sql: &str,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
@@ -252,26 +265,11 @@ fn get_inflections(
         }
         Err(e) => e,
     };
+
     let inflections: Vec<String> = res
         .split(',')
-        .map(|s| transliterate(s).unwrap_or_else(|e| e))
+        .map(|s| join_and_transliterate_if_not_empty(stem, s, transliterate))
         .collect();
 
     inflections
-}
-
-pub fn get_inflections_stemmed(
-    sql: &str,
-    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
-    stem: &str,
-    transliterate: fn(&str) -> Result<String, String>,
-) -> Result<Vec<String>, String> {
-    let mut inflections = get_inflections(&sql, |s| Ok(s.to_string()), &exec_sql);
-    for inflection in inflections.iter_mut() {
-        if !inflection.is_empty() {
-            *inflection =
-                transliterate(&format!("{}{}", stem.to_owned(), inflection)).unwrap_or_else(|e| e);
-        }
-    }
-    Ok(inflections)
 }

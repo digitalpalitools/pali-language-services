@@ -18,15 +18,15 @@ lazy_static! {
 #[derive(Serialize)]
 struct CaseViewModel {
     name: String,
-    stemmed_inflections_list: Vec<Vec<String>>,
+    inflections_list: Vec<Vec<String>>,
 }
 
 #[derive(Serialize)]
 struct TemplateViewModel<'a> {
     table_name: &'a str,
     stem: &'a str,
-    case_view_models: Vec<CaseViewModel>,
-    in_stemmed_comps_inflections: Vec<String>,
+    view_models: Vec<CaseViewModel>,
+    in_comps_inflections: Vec<String>,
 }
 
 pub fn create_html_body(
@@ -35,18 +35,18 @@ pub fn create_html_body(
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Result<String, String> {
-    let case_view_models = create_template_view_model(&table_name, transliterate, &exec_sql, stem)?;
-    let in_stemmed_comps_inflections =
-        create_template_view_model_for_in_comps(&table_name, transliterate, &exec_sql, stem)?;
+    let view_models = create_template_view_model(&table_name, transliterate, &exec_sql, stem)?;
+    let in_comps_inflections =
+        create_template_view_model_for_in_comps(&table_name, transliterate, &exec_sql, stem);
 
-    let vm = TemplateViewModel {
+    let template_view_model = TemplateViewModel {
         table_name,
         stem,
-        case_view_models,
-        in_stemmed_comps_inflections,
+        view_models,
+        in_comps_inflections,
     };
 
-    let context = Context::from_serialize(&vm).map_err(|e| e.to_string())?;
+    let context = Context::from_serialize(&template_view_model).map_err(|e| e.to_string())?;
     TEMPLATES
         .render("declension", &context)
         .map_err(|e| e.to_string())
@@ -66,22 +66,22 @@ fn create_template_view_model(
     let values = exec_sql(sql)?;
     let mut view_models: Vec<CaseViewModel> = Vec::new();
     for case in values[0].iter().flatten() {
-        let mut stemmed_inflections_list: Vec<Vec<String>> = Vec::new();
+        let mut inflections_list: Vec<Vec<String>> = Vec::new();
         for gender in values[1].iter().flatten() {
             for number in values[2].iter().flatten() {
                 let sql = format!(
                     r#"SELECT inflections FROM '{}' WHERE "case" = '{}' AND gender = '{}' AND "number" = '{}'"#,
                     table_name, case, gender, number
                 );
-                let stemmed_inflections =
-                    inflections::get_inflections_stemmed(&sql, &exec_sql, &stem, transliterate)?;
-                stemmed_inflections_list.push(stemmed_inflections);
+                let inflections =
+                    inflections::get_inflections(&stem, &sql, transliterate, &exec_sql);
+                inflections_list.push(inflections);
             }
         }
 
         let view_model = CaseViewModel {
             name: case.to_owned(),
-            stemmed_inflections_list,
+            inflections_list,
         };
         view_models.push(view_model);
     }
@@ -94,11 +94,11 @@ fn create_template_view_model_for_in_comps(
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
     stem: &str,
-) -> Result<Vec<String>, String> {
+) -> Vec<String> {
     let sql = format!(
         r#"SELECT inflections FROM '{}' WHERE "case" = '' AND gender = '' AND "number" = ''"#,
         table_name
     );
 
-    inflections::get_inflections_stemmed(&sql, &exec_sql, &stem, transliterate)
+    inflections::get_inflections(&stem, &sql, transliterate, &exec_sql)
 }
