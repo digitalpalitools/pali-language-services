@@ -1,5 +1,5 @@
 ---
-source: pls_core/src/lib.rs
+source: pls_core/src/inflections/mod.rs
 expression: output
 
 ---
