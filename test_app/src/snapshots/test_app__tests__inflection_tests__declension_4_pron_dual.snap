@@ -6,11 +6,11 @@ expression: html
 <div class="pls-inflection-root">
   <header class="pls-inflection-header">
     <summary class="pls-inflection-summary">ubha &ndash; "ubha pron dual" (like )</summary>
-  </header>
-<table class="pls-inflection-table pls-inflection-type-conjugation">
+    </header>
+<table class="pls-inflection-table pls-inflection-type-declension">
   <thead>
     <tr>
-      <td><span class="pls-inflection-table-title">ubha_pron_dual</span></td>
+      <td><span class="pls-inflection-table-title">ubha pron dual</span></td>
       <td><span class="pls-inflection-col-header">dual</span></td>
     </tr>
   </thead>
@@ -70,13 +70,6 @@ expression: html
       </td>
       <td>
         <div class="pls-inflection-inflected-word">ubhosu</div>
-        </td>
-    </tr>
-    <tr>
-      <td>
-        <p><span class="pls-inflection-row-header">voc</span></p>
-      </td>
-      <td>
         </td>
     </tr>
     <tr>

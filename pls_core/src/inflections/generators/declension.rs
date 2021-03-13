@@ -1,4 +1,5 @@
 use crate::inflections;
+use crate::inflections::generators;
 use serde::Serialize;
 use tera::{Context, Tera};
 
@@ -23,24 +24,25 @@ struct CaseViewModel {
 
 #[derive(Serialize)]
 struct TemplateViewModel<'a> {
-    table_name: &'a str,
+    pattern: &'a str,
     stem: &'a str,
     view_models: Vec<CaseViewModel>,
     in_comps_inflections: Vec<String>,
 }
 
 pub fn create_html_body(
-    table_name: &str,
+    pattern: &str,
     stem: &str,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Result<String, String> {
-    let view_models = create_template_view_model(&table_name, transliterate, &exec_sql, stem)?;
+    let table_name = &generators::get_table_name_from_pattern(pattern);
+    let view_models = create_case_view_models(&table_name, transliterate, &exec_sql, stem)?;
     let in_comps_inflections =
-        create_template_view_model_for_in_comps(&table_name, transliterate, &exec_sql, stem);
+        create_template_view_model_for_in_comps(table_name, transliterate, &exec_sql, stem);
 
     let template_view_model = TemplateViewModel {
-        table_name,
+        pattern,
         stem,
         view_models,
         in_comps_inflections,
@@ -52,7 +54,7 @@ pub fn create_html_body(
         .map_err(|e| e.to_string())
 }
 
-fn create_template_view_model(
+fn create_case_view_models(
     table_name: &str,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,

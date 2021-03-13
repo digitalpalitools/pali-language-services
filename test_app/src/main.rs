@@ -44,7 +44,7 @@ fn main() -> Result<(), String> {
     println!("ā > bh? {:#?}", x > pls_core::alphabet::PaliAlphabet::BH);
 
     let html = pls_core::inflections::generate_inflection_table(
-        "bala 1",
+        "kāmaṃ 3",
         "the table is hosted here",
         "host version v0.0.1",
         |s| Ok(s.to_string()),
@@ -65,7 +65,7 @@ mod tests {
     #[test_case("ābādheti"; "conjugation - 1")]
     #[test_case("vassūpanāyikā"; "declension - 1")]
     #[test_case("kamma 1"; "declension - 2 - irreg")]
-    // #[test_case("kāmaṃ 3", "declension - 3 - ind"; "declension - 3 - ind")]
+    #[test_case("kāmaṃ 3"; "declension - 3 - ind")]
     #[test_case("ubha"; "declension - 4 - pron_dual")]
     #[test_case("maṃ"; "declension - 4 - pron_1st")]
     #[test_case("taṃ 3"; "declension - 4 - pron_2nd")]

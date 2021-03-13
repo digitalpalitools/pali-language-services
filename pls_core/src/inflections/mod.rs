@@ -1,5 +1,6 @@
 mod generators;
 
+use regex::{Error, Regex};
 use tera::{Context, Tera};
 
 lazy_static! {
@@ -10,10 +11,12 @@ lazy_static! {
         tera.autoescape_on(vec!["html", ".sql"]);
         tera
     };
+    static ref INDECLINABLE_CRACKER: Result<Regex, Error> = Regex::new(r" \d+$");
 }
 
 #[derive(Debug)]
 pub enum InflectionClass {
+    Indeclinable,
     Conjugation,
     Declension,
     DeclensionPron1st,
@@ -22,6 +25,7 @@ pub enum InflectionClass {
 }
 
 pub struct Pali1Metadata {
+    pub pali1: String,
     pub stem: String,
     pub pattern: String,
     pub inflection_class: InflectionClass,
@@ -51,7 +55,11 @@ fn inflection_class_from_str(ic: &str) -> InflectionClass {
     }
 }
 
-// TODO: No leading/trailing spaces in _stems.pattern and _index.name.
+fn get_stem_for_indeclinable(pali1: &str) -> Result<String, String> {
+    let regex = INDECLINABLE_CRACKER.as_ref().map_err(|e| e.to_string())?;
+    Ok(regex.replace(pali1, "").to_string())
+}
+
 fn get_pali1_metadata(
     pali1: &str,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
@@ -64,6 +72,7 @@ fn get_pali1_metadata(
     let stem = &results[0][0][0];
     let pattern = &results[0][0][1];
     let mut pm = Pali1Metadata {
+        pali1: pali1.to_string(),
         stem: if !stem.eq("*") {
             stem.clone()
         } else {
@@ -84,8 +93,16 @@ fn get_pali1_metadata(
         let like = &results[0][0][1];
 
         pm.inflection_class = inflection_class_from_str(inflection_class);
-        pm.like = like.to_string();
-    };
+        pm.like = if like.is_empty() {
+            format!("like {}", like)
+        } else {
+            "irregular".to_string()
+        };
+    } else if stem.eq("-") {
+        pm.inflection_class = InflectionClass::Indeclinable;
+        pm.pali1 = get_stem_for_indeclinable(&pm.pali1)?;
+        pm.like = "indeclinable".to_string();
+    }
 
     Ok(pm)
 }
@@ -159,13 +176,13 @@ fn get_inflections_for_pattern(
     exec_sql(&format!("Select * from {}", pattern))
 }
 
-fn get_words_for_indeclinable_stem(paliword: &str) -> Vec<InflectedWordMetadata> {
-    vec![InflectedWordMetadata {
-        inflected_word: paliword.chars().filter(|c| !c.is_digit(10)).collect(),
+fn get_words_for_indeclinable_stem(paliword: &str) -> Result<Vec<InflectedWordMetadata>, String> {
+    Ok(vec![InflectedWordMetadata {
+        inflected_word: get_stem_for_indeclinable(paliword)?,
         stem_word: paliword.to_string(),
         grammar: " ".to_string(),
         comment: "ind".to_string(),
-    }]
+    }])
 }
 
 fn get_words_for_irregular_stem(
@@ -230,7 +247,7 @@ pub fn generate_all_inflected_words(
     _exec_sql: fn(&str) -> Result<String, String>,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
     let inflected_words: Vec<InflectedWordMetadata> = match stem {
-        "-" => get_words_for_indeclinable_stem(paliword),
+        "-" => get_words_for_indeclinable_stem(paliword)?,
         "*" => get_words_for_irregular_stem(paliword, pattern, _exec_sql)?,
         _ => get_words_for_regular_stem(paliword, stem, pattern, _exec_sql)?,
     };

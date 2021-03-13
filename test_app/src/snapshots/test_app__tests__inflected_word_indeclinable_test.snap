@@ -3,7 +3,7 @@ source: test_app/src/main.rs
 expression: output
 
 ---
-- - "a "
+- - a
   - a 1
   - " "
   - ind

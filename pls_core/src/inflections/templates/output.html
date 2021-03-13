@@ -1,6 +1,10 @@
 <div class="pls-inflection-root">
   <header class="pls-inflection-header">
-    <summary class="pls-inflection-summary">{{ pali1 }} &ndash; "{{ pattern }}" (like {{ like }})</summary>
+    {% if pattern -%}
+    <summary class="pls-inflection-summary">{{ pali1 }} &ndash; "{{ pattern }}" ({{ like }})</summary>
+    {% else -%}
+    <summary class="pls-inflection-summary">{{ pali1 }} ({{ like }})</summary>
+    {% endif -%}
   </header>
 {{ body }}
   <footer class="pls-inflection-footer">

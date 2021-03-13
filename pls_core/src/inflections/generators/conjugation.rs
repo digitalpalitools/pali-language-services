@@ -1,4 +1,5 @@
 use crate::inflections;
+use crate::inflections::generators;
 use serde::Serialize;
 use tera::{Context, Tera};
 
@@ -28,13 +29,13 @@ struct TemplateViewModel<'a> {
 }
 
 pub fn create_html_body(
-    table_name: &str,
+    pattern: &str,
     stem: &str,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Result<String, String> {
-    let tense_view_models =
-        create_template_view_model(&table_name, transliterate, &exec_sql, &stem)?;
+    let table_name = &generators::get_table_name_from_pattern(pattern);
+    let tense_view_models = create_tense_view_models(table_name, transliterate, &exec_sql, &stem)?;
     let vm = TemplateViewModel {
         stem,
         view_models: tense_view_models,
@@ -45,7 +46,7 @@ pub fn create_html_body(
         .map_err(|e| e.to_string())
 }
 
-fn create_template_view_model(
+fn create_tense_view_models(
     table_name: &str,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
@@ -77,12 +78,8 @@ fn create_template_view_model(
                         r#"SELECT inflections FROM '{}' WHERE tense = '{}' AND person = '{}' AND actreflx = '{}' AND "number" = '{}'"#,
                         table_name, t, p, ar, n,
                     );
-                    let inflections = inflections::get_inflections(
-                        &stem,
-                        &sql,
-                        transliterate,
-                        &exec_sql,
-                    );
+                    let inflections =
+                        inflections::get_inflections(&stem, &sql, transliterate, &exec_sql);
                     inflections_list.push(inflections);
                 }
             }

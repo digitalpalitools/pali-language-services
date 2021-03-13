@@ -6,11 +6,11 @@ expression: html
 <div class="pls-inflection-root">
   <header class="pls-inflection-header">
     <summary class="pls-inflection-summary">taṃ 3 &ndash; "tvaṃ pron 2nd" (like )</summary>
-  </header>
-<table class="pls-inflection-table pls-inflection-type-conjugation">
+    </header>
+<table class="pls-inflection-table pls-inflection-type-declension">
   <thead>
     <tr>
-      <td><span class="pls-inflection-table-title">tvaṃ_pron_2nd</span></td>
+      <td><span class="pls-inflection-table-title">tvaṃ pron 2nd</span></td>
       <td><span class="pls-inflection-col-header">2nd sg</span></td>
       <td><span class="pls-inflection-col-header">2nd pl</span></td>
     </tr>
@@ -108,15 +108,6 @@ expression: html
         </td>
       <td>
         <div class="pls-inflection-inflected-word">tumhesu</div>
-        </td>
-    </tr>
-    <tr>
-      <td>
-        <p><span class="pls-inflection-row-header">voc</span></p>
-      </td>
-      <td>
-        </td>
-      <td>
         </td>
     </tr>
     <tr>
