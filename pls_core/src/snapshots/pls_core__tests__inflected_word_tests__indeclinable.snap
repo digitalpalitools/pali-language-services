@@ -1,5 +1,5 @@
 ---
-source: test_app/src/main.rs
+source: pls_core/src/lib.rs
 expression: output
 
 ---

@@ -241,15 +241,15 @@ fn get_words_for_regular_stem(
 }
 
 pub fn generate_all_inflected_words(
-    paliword: &str,
+    pali1: &str,
     stem: &str,
     pattern: &str,
     _exec_sql: fn(&str) -> Result<String, String>,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
     let inflected_words: Vec<InflectedWordMetadata> = match stem {
-        "-" => get_words_for_indeclinable_stem(paliword)?,
-        "*" => get_words_for_irregular_stem(paliword, pattern, _exec_sql)?,
-        _ => get_words_for_regular_stem(paliword, stem, pattern, _exec_sql)?,
+        "-" => get_words_for_indeclinable_stem(pali1)?,
+        "*" => get_words_for_irregular_stem(pali1, pattern, _exec_sql)?,
+        _ => get_words_for_regular_stem(pali1, stem, pattern, _exec_sql)?,
     };
     Ok(inflected_words)
 }
