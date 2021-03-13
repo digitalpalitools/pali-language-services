@@ -1,5 +1,5 @@
 use crate::inflections;
-use crate::inflections::generators;
+use crate::inflections::{generators, SqlQuery};
 use serde::Serialize;
 use tera::{Context, Tera};
 
@@ -33,10 +33,10 @@ pub fn create_html_body(
     pattern: &str,
     stem: &str,
     transliterate: fn(&str) -> Result<String, String>,
-    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
+    q: &SqlQuery,
 ) -> Result<String, String> {
     let table_name = &generators::get_table_name_from_pattern(pattern);
-    let tense_view_models = create_tense_view_models(table_name, transliterate, &exec_sql, &stem)?;
+    let tense_view_models = create_tense_view_models(table_name, transliterate, &q, &stem)?;
     let vm = TemplateViewModel {
         stem,
         view_models: tense_view_models,
@@ -47,11 +47,8 @@ pub fn create_html_body(
         .map_err(|e| e.to_string())
 }
 
-fn query_has_no_results(
-    query: &str,
-    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
-) -> Result<bool, String> {
-    let count = &exec_sql(&query)?[0][0][0];
+fn query_has_no_results(query: &str, q: &SqlQuery) -> Result<bool, String> {
+    let count = &q.exec(&query)?[0][0][0];
     Ok(count.eq("0"))
 }
 
@@ -62,9 +59,7 @@ struct ParameterValues {
     pub n_values: Vec<String>,
 }
 
-fn query_parameter_values(
-    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
-) -> Result<ParameterValues, String> {
+fn query_parameter_values(q: &SqlQuery) -> Result<ParameterValues, String> {
     let sql = r#"
         select * from _tense_values where name <> "";
         select * from _person_values where name <> "";
@@ -72,7 +67,7 @@ fn query_parameter_values(
         select * from _number_values where name <> "" and name <> "dual";
     "#;
 
-    let mut values = exec_sql(sql)?;
+    let mut values = q.exec(sql)?;
     Ok(ParameterValues {
         t_values: values.remove(0).into_iter().flatten().collect(),
         p_values: values.remove(0).into_iter().flatten().collect(),
@@ -84,10 +79,10 @@ fn query_parameter_values(
 fn create_tense_view_models(
     table_name: &str,
     transliterate: fn(&str) -> Result<String, String>,
-    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
+    q: &SqlQuery,
     stem: &str,
 ) -> Result<Vec<TenseViewModel>, String> {
-    let pvs = query_parameter_values(&exec_sql)?;
+    let pvs = query_parameter_values(&q)?;
 
     let mut view_models: Vec<TenseViewModel> = Vec::new();
     for t in &pvs.t_values {
@@ -96,7 +91,7 @@ fn create_tense_view_models(
                 r#"select cast(count(*) as text) from {} where tense = "{}""#,
                 table_name, t
             ),
-            &exec_sql,
+            &q,
         )? {
             continue;
         }
@@ -105,7 +100,7 @@ fn create_tense_view_models(
         for ar in &pvs.ar_values {
             ar_values_exist.push(!query_has_no_results(
                 &format!(r#"select cast(count(*) as text) from '{}' where tense = "{}" and actreflx = "{}""#, table_name, t, ar),
-                &exec_sql,
+                &q,
             )?);
         }
 
@@ -117,8 +112,7 @@ fn create_tense_view_models(
                         r#"SELECT inflections FROM '{}' WHERE tense = '{}' AND person = '{}' AND actreflx = '{}' AND "number" = '{}'"#,
                         table_name, t, p, ar, n,
                     );
-                    let inflections =
-                        inflections::get_inflections(&stem, &sql, transliterate, &exec_sql);
+                    let inflections = inflections::get_inflections(&stem, &sql, transliterate, &q);
                     inflections_list.push(inflections);
                 }
             }

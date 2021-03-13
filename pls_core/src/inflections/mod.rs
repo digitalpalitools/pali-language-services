@@ -32,15 +32,33 @@ pub struct Pali1Metadata {
     pub like: String,
 }
 
+pub struct SqlQuery {
+    exec_sql_query: fn(&str) -> Result<String, String>,
+}
+
+impl SqlQuery {
+    fn new(exec_sql_query: fn(&str) -> Result<String, String>) -> SqlQuery {
+        SqlQuery { exec_sql_query }
+    }
+
+    fn exec(&self, query: &str) -> Result<Vec<Vec<Vec<String>>>, String> {
+        let result_str = (self.exec_sql_query)(&query)?;
+        let result: Vec<Vec<Vec<String>>> =
+            serde_json::from_str(&result_str).map_err(|e| e.to_string())?;
+        Ok(result)
+    }
+}
+
 pub fn generate_inflection_table(
     pali1: &str,
     host_url: &str,
     host_version: &str,
     transliterate: fn(&str) -> Result<String, String>,
-    exec_sql: fn(&str) -> Result<String, String>,
+    exec_sql_query: fn(&str) -> Result<String, String>,
 ) -> Result<String, String> {
-    let pm = get_pali1_metadata(pali1, transliterate, exec_sql_structured(exec_sql))?;
-    let body = generators::create_html_body(&pm, transliterate, exec_sql_structured(exec_sql))?;
+    let q = SqlQuery::new(exec_sql_query);
+    let pm = get_pali1_metadata(pali1, transliterate, &q)?;
+    let body = generators::create_html_body(&pm, transliterate, &q)?;
 
     generate_output(&pm, pali1, host_url, host_version, &body, transliterate)
 }
@@ -63,13 +81,13 @@ fn get_stem_for_indeclinable(pali1: &str) -> Result<String, String> {
 fn get_pali1_metadata(
     pali1: &str,
     transliterate: fn(&str) -> Result<String, String>,
-    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
+    q: &SqlQuery,
 ) -> Result<Pali1Metadata, String> {
     let sql = format!(
         r#"select stem, pattern from '_stems' where pāli1 = "{}""#,
         pali1,
     );
-    let results = exec_sql(&sql)?;
+    let results = q.exec(&sql)?;
     let stem = &results[0][0][0];
     let pattern = &results[0][0][1];
     let mut pm = Pali1Metadata {
@@ -89,7 +107,7 @@ fn get_pali1_metadata(
             r#"select inflection_class, like from '_index' where name = "{}""#,
             pattern
         );
-        let results = exec_sql(&sql)?;
+        let results = q.exec(&sql)?;
         let inflection_class = &results[0][0][0];
         let like = &results[0][0][1];
 
@@ -139,18 +157,6 @@ fn generate_output(
         .map_err(|e| e.to_string())
 }
 
-fn exec_sql_structured<F>(f: F) -> impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>
-where
-    F: Fn(&str) -> Result<String, String>,
-{
-    move |sql| {
-        let result_str = f(&sql)?;
-        let result: Vec<Vec<Vec<String>>> =
-            serde_json::from_str(&result_str).map_err(|e| e.to_string())?;
-        Ok(result)
-    }
-}
-
 #[derive(Debug, Clone)]
 pub struct InflectedWordMetadata {
     pub inflected_word: String,
@@ -172,9 +178,9 @@ impl InflectedWordMetadata {
 
 fn get_inflections_for_pattern(
     pattern: &str,
-    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
+    q: &SqlQuery,
 ) -> Result<Vec<Vec<Vec<String>>>, String> {
-    exec_sql(&format!("Select * from {}", pattern))
+    q.exec(&format!("Select * from {}", pattern))
 }
 
 fn get_words_for_indeclinable_stem(pali1: &str) -> Result<Vec<InflectedWordMetadata>, String> {
@@ -189,12 +195,11 @@ fn get_words_for_indeclinable_stem(pali1: &str) -> Result<Vec<InflectedWordMetad
 fn get_words_for_irregular_stem(
     pali1: &str,
     pattern: &str,
-    exec_sql: fn(&str) -> Result<String, String>,
+    q: &SqlQuery,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
-    let inflections: Vec<Vec<String>> =
-        get_inflections_for_pattern(pattern, exec_sql_structured(exec_sql))?
-            .pop()
-            .ok_or_else(|| format!("No pattern found for {}", pattern))?;
+    let inflections: Vec<Vec<String>> = get_inflections_for_pattern(pattern, &q)?
+        .pop()
+        .ok_or_else(|| format!("No pattern found for {}", pattern))?;
     let mut inflected_words_irregular_stem: Vec<InflectedWordMetadata> = Vec::new();
     for mut inflection_row in inflections {
         for inflection in inflection_row
@@ -217,13 +222,12 @@ fn get_words_for_regular_stem(
     pali1: &str,
     stem: &str,
     pattern: &str,
-    exec_sql: fn(&str) -> Result<String, String>,
+    q: &SqlQuery,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
     let mut inflected_words_regular_stem: Vec<InflectedWordMetadata> = Vec::new();
-    let inflections: Vec<Vec<String>> =
-        get_inflections_for_pattern(pattern, exec_sql_structured(exec_sql))?
-            .pop()
-            .ok_or_else(|| format!("No pattern found for {}", pattern))?;
+    let inflections: Vec<Vec<String>> = get_inflections_for_pattern(pattern, &q)?
+        .pop()
+        .ok_or_else(|| format!("No pattern found for {}", pattern))?;
     for mut inflection_row in inflections {
         for inflection in inflection_row
             .pop()
@@ -245,12 +249,13 @@ pub fn generate_all_inflected_words(
     pali1: &str,
     stem: &str,
     pattern: &str,
-    exec_sql: fn(&str) -> Result<String, String>,
+    exec_sql_query: fn(&str) -> Result<String, String>,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
+    let q = SqlQuery::new(exec_sql_query);
     let inflected_words: Vec<InflectedWordMetadata> = match stem {
         "-" => get_words_for_indeclinable_stem(pali1)?,
-        "*" => get_words_for_irregular_stem(pali1, pattern, exec_sql)?,
-        _ => get_words_for_regular_stem(pali1, stem, pattern, exec_sql)?,
+        "*" => get_words_for_irregular_stem(pali1, pattern, &q)?,
+        _ => get_words_for_regular_stem(pali1, stem, pattern, &q)?,
     };
     Ok(inflected_words)
 }
@@ -271,9 +276,9 @@ fn get_inflections(
     stem: &str,
     sql: &str,
     transliterate: fn(&str) -> Result<String, String>,
-    exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
+    q: &SqlQuery,
 ) -> Vec<String> {
-    let res = match exec_sql(&sql) {
+    let res = match q.exec(&sql) {
         Ok(x) => {
             if x.len() == 1 && x[0].len() == 1 && x[0][0].len() == 1 {
                 x[0][0][0].to_string()
@@ -355,7 +360,7 @@ mod tests {
             |s| Ok(psuedo_transliterate(s)),
             exec_sql,
         )
-            .unwrap_or_else(|e| e);
+        .unwrap_or_else(|e| e);
 
         insta::assert_snapshot!(html);
     }
