@@ -5,8 +5,14 @@ expression: html
 ---
 <div class="pls-inflection-root">
   <header class="pls-inflection-header">
-    <summary class="pls-inflection-summary">^kamma 1$ &ndash; "kamma nt" (irregular)</summary>
-    </header>
+    <summary>
+      <div class="pls-inflection-summary-word-info">^kamma 1$ &ndash; "kamma nt" (irregular)</div>
+      <div class="pls-inflection-summary-definition">
+        <span class="pls-inflection-summary-definition-pos">(nt)</span>&nbsp;
+        <span class="pls-inflection-summary-definition-meaning">action, deed, doing</span>
+      </div>
+    </summary>
+  </header>
 <table class="pls-inflection-table pls-inflection-type-declension">
   <thead>
     <tr>
@@ -22,7 +28,7 @@ expression: html
   <tbody>
     <tr>
       <td>
-        <p><span class="pls-inflection-row-header">nom</span></p>
+        <span class="pls-inflection-row-header">nom</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^kamma$</div>
@@ -35,7 +41,7 @@ expression: html
       </tr>
     <tr>
       <td>
-        <p><span class="pls-inflection-row-header">acc</span></p>
+        <span class="pls-inflection-row-header">acc</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^kamma$</div>
@@ -48,7 +54,7 @@ expression: html
       </tr>
     <tr>
       <td>
-        <p><span class="pls-inflection-row-header">instr</span></p>
+        <span class="pls-inflection-row-header">instr</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^kammena$</div>
@@ -61,7 +67,7 @@ expression: html
       </tr>
     <tr>
       <td>
-        <p><span class="pls-inflection-row-header">dat</span></p>
+        <span class="pls-inflection-row-header">dat</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^kammassa$</div>
@@ -73,7 +79,7 @@ expression: html
       </tr>
     <tr>
       <td>
-        <p><span class="pls-inflection-row-header">abl</span></p>
+        <span class="pls-inflection-row-header">abl</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^kammasmā$</div>
@@ -86,7 +92,7 @@ expression: html
       </tr>
     <tr>
       <td>
-        <p><span class="pls-inflection-row-header">gen</span></p>
+        <span class="pls-inflection-row-header">gen</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^kammassa$</div>
@@ -98,7 +104,7 @@ expression: html
       </tr>
     <tr>
       <td>
-        <p><span class="pls-inflection-row-header">loc</span></p>
+        <span class="pls-inflection-row-header">loc</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^kamme$</div>
@@ -112,7 +118,7 @@ expression: html
       </tr>
     <tr>
       <td>
-        <p><span class="pls-inflection-row-header">voc</span></p>
+        <span class="pls-inflection-row-header">voc</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^kamma$</div>

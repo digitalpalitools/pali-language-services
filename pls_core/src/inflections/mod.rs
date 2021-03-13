@@ -1,6 +1,7 @@
 mod generators;
 
 use regex::{Error, Regex};
+use serde::Serialize;
 use tera::{Context, Tera};
 
 lazy_static! {
@@ -28,6 +29,8 @@ pub struct Pali1Metadata {
     pub pali1: String,
     pub stem: String,
     pub pattern: String,
+    pub pos: String,
+    pub meaning: String,
     pub inflection_class: InflectionClass,
     pub like: String,
 }
@@ -84,7 +87,7 @@ fn get_pali1_metadata(
     q: &SqlQuery,
 ) -> Result<Pali1Metadata, String> {
     let sql = format!(
-        r#"select stem, pattern from '_stems' where pāli1 = "{}""#,
+        r#"select stem, pattern, pos, definition from '_stems' where pāli1 = "{}""#,
         pali1,
     );
     let results = q.exec(&sql)?;
@@ -93,11 +96,13 @@ fn get_pali1_metadata(
     let mut pm = Pali1Metadata {
         pali1: pali1.to_string(),
         stem: if !stem.eq("*") {
-            stem.clone()
+            stem.to_owned()
         } else {
             "".to_string()
         },
-        pattern: pattern.clone(),
+        pattern: pattern.to_owned(),
+        pos: results[0][0][2].to_owned(),
+        meaning: results[0][0][3].to_owned(),
         inflection_class: InflectionClass::Declension,
         like: "".to_string(),
     };
@@ -126,6 +131,19 @@ fn get_pali1_metadata(
     Ok(pm)
 }
 
+#[derive(Serialize)]
+struct ViewModel<'a> {
+    pub pali1: &'a str,
+    pub pattern: &'a str,
+    pub like: &'a str,
+    pub pos: &'a str,
+    pub meaning: &'a str,
+    pub body: &'a str,
+    pub feedback_form_url: &'a str,
+    pub host_url: &'a str,
+    pub host_version: &'a str,
+}
+
 fn generate_output(
     pm: &Pali1Metadata,
     pali1: &str,
@@ -143,15 +161,19 @@ fn generate_output(
         }
     };
 
-    let mut context = Context::new();
-    context.insert("pali1", &transliterate(pali1)?);
-    context.insert("pattern", &pm.pattern);
-    context.insert("like", &pm.like);
-    context.insert("body", &body);
-    context.insert("feedback_form_url", &feedback_form_url);
-    context.insert("host_url", &host_url);
-    context.insert("host_version", &host_version);
+    let vm = ViewModel {
+        pali1: &transliterate(pali1)?,
+        pattern: &pm.pattern,
+        like: &pm.like,
+        pos: &pm.pos,
+        meaning: &pm.meaning,
+        body: &body,
+        feedback_form_url: &feedback_form_url,
+        host_url: &host_url,
+        host_version: &host_version,
+    };
 
+    let context = Context::from_serialize(&vm).map_err(|e| e.to_string())?;
     TEMPLATES
         .render("output", &context)
         .map_err(|e| e.to_string())
