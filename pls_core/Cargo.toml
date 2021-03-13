@@ -20,11 +20,9 @@ version = "1.6.1"
 default-features = false
 
 [dev-dependencies]
-cargo-watch = "7.5.0"
 proptest = "0.10.1"
 test-case = "1.1.0"
 insta = "1.7.0"
-cargo-insta = "1.7.0"
 
 [dev-dependencies.rusqlite]
 version = "0.24.2"

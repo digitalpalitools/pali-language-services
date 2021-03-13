@@ -297,6 +297,11 @@ fn get_inflections(
     inflections
 }
 
+fn query_has_no_results(query: &str, q: &SqlQuery) -> Result<bool, String> {
+    let count = &q.exec(&query)?[0][0][0];
+    Ok(count.eq("0"))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -352,6 +357,7 @@ mod tests {
     #[test_case("ubha"; "declension - 4 - pron_dual")]
     #[test_case("maṃ"; "declension - 4 - pron_1st")]
     #[test_case("taṃ 3"; "declension - 4 - pron_2nd")]
+    #[test_case("pañca"; "declension - 5 - only x gender")]
     fn inflection_tests(pali1: &str) {
         let html = generate_inflection_table(
             pali1,

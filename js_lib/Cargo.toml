@@ -18,7 +18,6 @@ console_error_panic_hook = "0.1.6"
 
 
 [dev-dependencies]
-cargo-watch = "7.5.0"
 proptest = "0.10.1"
 test-case = "1.1.0"
 wasm-bindgen-test = "0.3.19"

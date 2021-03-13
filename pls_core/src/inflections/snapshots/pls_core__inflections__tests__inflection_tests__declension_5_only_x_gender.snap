@@ -1,0 +1,119 @@
+---
+source: pls_core/src/inflections/mod.rs
+expression: html
+
+---
+<div class="pls-inflection-root">
+  <header class="pls-inflection-header">
+    <summary class="pls-inflection-summary">^pañca$ &ndash; "a1 card" (like ^pañca$)</summary>
+    </header>
+<table class="pls-inflection-table pls-inflection-type-declension">
+  <thead>
+    <tr>
+      <td><span class="pls-inflection-table-title">a1 card</span></td>
+      <td colspan="2"><span class="pls-inflection-col-header">x</span></td>
+      </tr>
+    <tr>
+      <td><span class="pls-inflection-row-header">case</span></td>
+      <td><span class="pls-inflection-col-header">sg</span></td>
+      <td><span class="pls-inflection-col-header">pl</span></td>
+      </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">nom</span></p>
+      </td>
+      <td>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^pañca$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">acc</span></p>
+      </td>
+      <td>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^pañca$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">instr</span></p>
+      </td>
+      <td>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^pañcahi$</div>
+        <div class="pls-inflection-inflected-word">^pañcabhi$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">dat</span></p>
+      </td>
+      <td>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^pañcannaṃ$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">abl</span></p>
+      </td>
+      <td>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^pañcahi$</div>
+        <div class="pls-inflection-inflected-word">^pañcabhi$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">gen</span></p>
+      </td>
+      <td>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^pañcannaṃ$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">loc</span></p>
+      </td>
+      <td>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^pañcasu$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <p><span class="pls-inflection-row-header">voc</span></p>
+      </td>
+      <td>
+        </td>
+      <td>
+        </td>
+      </tr>
+    <tr>
+      <td><span class="pls-inflection-row-header">in comps</span></td>
+      <td colspan="6">
+        <div class="pls-inflection-inflected-word">^pañca$</div>
+        </td>
+    </tr>
+  </tbody>
+</table>
+
+  <footer class="pls-inflection-footer">
+    <a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeoxZiqvIWadaLeuXF4f44NCqEn49-B8KNbSvNer5jxgRYdtQ/viewform?entry.267696921=test case&entry.1433863141=v0.1">
+      spot a mistake? something missing? fix it here!
+    </a>
+  </footer>
+</div>
+

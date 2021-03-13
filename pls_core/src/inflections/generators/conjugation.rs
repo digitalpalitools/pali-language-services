@@ -47,11 +47,6 @@ pub fn create_html_body(
         .map_err(|e| e.to_string())
 }
 
-fn query_has_no_results(query: &str, q: &SqlQuery) -> Result<bool, String> {
-    let count = &q.exec(&query)?[0][0][0];
-    Ok(count.eq("0"))
-}
-
 struct ParameterValues {
     pub t_values: Vec<String>,
     pub p_values: Vec<String>,
@@ -67,12 +62,12 @@ fn query_parameter_values(q: &SqlQuery) -> Result<ParameterValues, String> {
         select * from _number_values where name <> "" and name <> "dual";
     "#;
 
-    let mut values = q.exec(sql)?;
+    let values = q.exec(sql)?;
     Ok(ParameterValues {
-        t_values: values.remove(0).into_iter().flatten().collect(),
-        p_values: values.remove(0).into_iter().flatten().collect(),
-        ar_values: values.remove(0).into_iter().flatten().collect(),
-        n_values: values.remove(0).into_iter().flatten().collect(),
+        t_values: values[0].to_owned().into_iter().flatten().collect(),
+        p_values: values[1].to_owned().into_iter().flatten().collect(),
+        ar_values: values[2].to_owned().into_iter().flatten().collect(),
+        n_values: values[3].to_owned().into_iter().flatten().collect(),
     })
 }
 
@@ -86,7 +81,7 @@ fn create_tense_view_models(
 
     let mut view_models: Vec<TenseViewModel> = Vec::new();
     for t in &pvs.t_values {
-        if query_has_no_results(
+        if inflections::query_has_no_results(
             &format!(
                 r#"select cast(count(*) as text) from {} where tense = "{}""#,
                 table_name, t
@@ -98,7 +93,7 @@ fn create_tense_view_models(
 
         let mut ar_values_exist: Vec<bool> = Vec::new();
         for ar in &pvs.ar_values {
-            ar_values_exist.push(!query_has_no_results(
+            ar_values_exist.push(!inflections::query_has_no_results(
                 &format!(r#"select cast(count(*) as text) from '{}' where tense = "{}" and actreflx = "{}""#, table_name, t, ar),
                 &q,
             )?);
