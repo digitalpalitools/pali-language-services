@@ -49,6 +49,10 @@ mod tests {
         serde_json::to_string(&table).map_err(|x| x.to_string())
     }
 
+    fn psuedo_transliterate(s: &str) -> String {
+        format!("^{}$", s)
+    }
+
     #[test_case("ābādheti"; "conjugation - 1")]
     #[test_case("vassūpanāyikā"; "declension - 1")]
     #[test_case("kamma 1"; "declension - 2 - irreg")]
@@ -61,7 +65,7 @@ mod tests {
             pali1,
             "test case",
             "v0.1",
-            |s| Ok(s.to_string()),
+            |s| Ok(psuedo_transliterate(s)),
             exec_sql,
         )
         .unwrap_or_else(|e| e);

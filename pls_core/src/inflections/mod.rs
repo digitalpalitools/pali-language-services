@@ -39,7 +39,7 @@ pub fn generate_inflection_table(
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql: fn(&str) -> Result<String, String>,
 ) -> Result<String, String> {
-    let pm = get_pali1_metadata(pali1, exec_sql_structured(exec_sql))?;
+    let pm = get_pali1_metadata(pali1, transliterate, exec_sql_structured(exec_sql))?;
     let body = generators::create_html_body(&pm, transliterate, exec_sql_structured(exec_sql))?;
 
     generate_output(&pm, pali1, host_url, host_version, &body, transliterate)
@@ -62,6 +62,7 @@ fn get_stem_for_indeclinable(pali1: &str) -> Result<String, String> {
 
 fn get_pali1_metadata(
     pali1: &str,
+    transliterate: fn(&str) -> Result<String, String>,
     exec_sql: impl Fn(&str) -> Result<Vec<Vec<Vec<String>>>, String>,
 ) -> Result<Pali1Metadata, String> {
     let sql = format!(
@@ -93,8 +94,8 @@ fn get_pali1_metadata(
         let like = &results[0][0][1];
 
         pm.inflection_class = inflection_class_from_str(inflection_class);
-        pm.like = if like.is_empty() {
-            format!("like {}", like)
+        pm.like = if !like.is_empty() {
+            format!("like {}", transliterate(like)?)
         } else {
             "irregular".to_string()
         };
@@ -127,7 +128,7 @@ fn generate_output(
     let mut context = Context::new();
     context.insert("pali1", &transliterate(pali1)?);
     context.insert("pattern", &pm.pattern);
-    context.insert("like", &transliterate(&pm.like)?);
+    context.insert("like", &pm.like);
     context.insert("body", &body);
     context.insert("feedback_form_url", &feedback_form_url);
     context.insert("host_url", &host_url);
@@ -176,22 +177,22 @@ fn get_inflections_for_pattern(
     exec_sql(&format!("Select * from {}", pattern))
 }
 
-fn get_words_for_indeclinable_stem(paliword: &str) -> Result<Vec<InflectedWordMetadata>, String> {
+fn get_words_for_indeclinable_stem(pali1: &str) -> Result<Vec<InflectedWordMetadata>, String> {
     Ok(vec![InflectedWordMetadata {
-        inflected_word: get_stem_for_indeclinable(paliword)?,
-        stem_word: paliword.to_string(),
+        inflected_word: get_stem_for_indeclinable(pali1)?,
+        stem_word: pali1.to_string(),
         grammar: " ".to_string(),
         comment: "ind".to_string(),
     }])
 }
 
 fn get_words_for_irregular_stem(
-    paliword: &str,
+    pali1: &str,
     pattern: &str,
-    _exec_sql: fn(&str) -> Result<String, String>,
+    exec_sql: fn(&str) -> Result<String, String>,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
     let inflections: Vec<Vec<String>> =
-        get_inflections_for_pattern(pattern, exec_sql_structured(_exec_sql))?
+        get_inflections_for_pattern(pattern, exec_sql_structured(exec_sql))?
             .pop()
             .ok_or_else(|| format!("No pattern found for {}", pattern))?;
     let mut inflected_words_irregular_stem: Vec<InflectedWordMetadata> = Vec::new();
@@ -203,7 +204,7 @@ fn get_words_for_irregular_stem(
         {
             inflected_words_irregular_stem.push(InflectedWordMetadata {
                 inflected_word: inflection.to_string(),
-                stem_word: paliword.to_string(),
+                stem_word: pali1.to_string(),
                 grammar: inflection_row.join(" ").to_string(),
                 comment: "*".to_string(),
             })
@@ -213,14 +214,14 @@ fn get_words_for_irregular_stem(
 }
 
 fn get_words_for_regular_stem(
-    paliword: &str,
+    pali1: &str,
     stem: &str,
     pattern: &str,
-    _exec_sql: fn(&str) -> Result<String, String>,
+    exec_sql: fn(&str) -> Result<String, String>,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
     let mut inflected_words_regular_stem: Vec<InflectedWordMetadata> = Vec::new();
     let inflections: Vec<Vec<String>> =
-        get_inflections_for_pattern(pattern, exec_sql_structured(_exec_sql))?
+        get_inflections_for_pattern(pattern, exec_sql_structured(exec_sql))?
             .pop()
             .ok_or_else(|| format!("No pattern found for {}", pattern))?;
     for mut inflection_row in inflections {
@@ -231,7 +232,7 @@ fn get_words_for_regular_stem(
         {
             inflected_words_regular_stem.push(InflectedWordMetadata {
                 inflected_word: [stem, inflection].join("").to_string(),
-                stem_word: paliword.to_string(),
+                stem_word: pali1.to_string(),
                 grammar: inflection_row.join(" ").to_string(),
                 comment: " ".to_string(),
             })
@@ -244,12 +245,12 @@ pub fn generate_all_inflected_words(
     pali1: &str,
     stem: &str,
     pattern: &str,
-    _exec_sql: fn(&str) -> Result<String, String>,
+    exec_sql: fn(&str) -> Result<String, String>,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
     let inflected_words: Vec<InflectedWordMetadata> = match stem {
         "-" => get_words_for_indeclinable_stem(pali1)?,
-        "*" => get_words_for_irregular_stem(pali1, pattern, _exec_sql)?,
-        _ => get_words_for_regular_stem(pali1, stem, pattern, _exec_sql)?,
+        "*" => get_words_for_irregular_stem(pali1, pattern, exec_sql)?,
+        _ => get_words_for_regular_stem(pali1, stem, pattern, exec_sql)?,
     };
     Ok(inflected_words)
 }

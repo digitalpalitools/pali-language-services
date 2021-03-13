@@ -1,18 +1,18 @@
 ---
-source: test_app/src/main.rs
+source: pls_core/src/lib.rs
 expression: html
 
 ---
 <div class="pls-inflection-root">
   <header class="pls-inflection-header">
-    <summary class="pls-inflection-summary">kāmaṃ 3 (indeclinable)</summary>
+    <summary class="pls-inflection-summary">^kāmaṃ 3$ (indeclinable)</summary>
     </header>
 <table class="pls-inflection-table pls-inflection-type-indeclinable">
   <tbody>
     <tr>
       <td><span class="pls-inflection-row-header">indeclinable</span></td>
       <td>
-        <div class="pls-inflection-inflected-word">kāmaṃ</div>
+        <div class="pls-inflection-inflected-word">^kāmaṃ$</div>
       </td>
     </tr>
   </tbody>
