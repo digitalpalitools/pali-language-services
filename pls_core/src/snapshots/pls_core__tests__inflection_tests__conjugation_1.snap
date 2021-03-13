@@ -12,15 +12,12 @@ expression: html
       <tr>
         <td><span class="pls-inflection-table-title">pr</span></td>
         <td colspan="2"><span class="pls-inflection-col-header">active</span></td>
-        <td colspan="2"><span class="pls-inflection-col-header">reflexive</span></td>
-      </tr>
+        </tr>
       <tr>
         <td><span class="pls-inflection-row-header">person</span></td>
         <td><span class="pls-inflection-col-header">singular</span></td>
         <td><span class="pls-inflection-col-header">plural</span></td>
-        <td><span class="pls-inflection-col-header">singular</span></td>
-        <td><span class="pls-inflection-col-header">plural</span></td>
-      </tr>
+        </tr>
     </thead>
     <tbody>
       <tr>
@@ -31,11 +28,7 @@ expression: html
         <td>
           <div class="pls-inflection-inflected-word">^ābādhenti$</div>
           </td>
-        <td>
-          </td>
-        <td>
-          </td>
-      </tr>
+        </tr>
       <tr>
         <td><span class="pls-inflection-row-header">pr 2nd</span></td>
         <td>
@@ -44,11 +37,7 @@ expression: html
         <td>
           <div class="pls-inflection-inflected-word">^ābādhetha$</div>
           </td>
-        <td>
-          </td>
-        <td>
-          </td>
-      </tr>
+        </tr>
       <tr>
         <td><span class="pls-inflection-row-header">pr 1st</span></td>
         <td>
@@ -57,11 +46,7 @@ expression: html
         <td>
           <div class="pls-inflection-inflected-word">^ābādhema$</div>
           </td>
-        <td>
-          </td>
-        <td>
-          </td>
-      </tr>
+        </tr>
     </tbody>
   </table>
 
@@ -71,14 +56,14 @@ expression: html
         <td><span class="pls-inflection-table-title">imp</span></td>
         <td colspan="2"><span class="pls-inflection-col-header">active</span></td>
         <td colspan="2"><span class="pls-inflection-col-header">reflexive</span></td>
-      </tr>
+        </tr>
       <tr>
         <td><span class="pls-inflection-row-header">person</span></td>
         <td><span class="pls-inflection-col-header">singular</span></td>
         <td><span class="pls-inflection-col-header">plural</span></td>
         <td><span class="pls-inflection-col-header">singular</span></td>
         <td><span class="pls-inflection-col-header">plural</span></td>
-      </tr>
+        </tr>
     </thead>
     <tbody>
       <tr>
@@ -95,7 +80,7 @@ expression: html
         <td>
           <div class="pls-inflection-inflected-word">^ābādhentaṃ$</div>
           </td>
-      </tr>
+        </tr>
       <tr>
         <td><span class="pls-inflection-row-header">imp 2nd</span></td>
         <td>
@@ -110,7 +95,7 @@ expression: html
         <td>
           <div class="pls-inflection-inflected-word">^ābādhevho$</div>
           </td>
-      </tr>
+        </tr>
       <tr>
         <td><span class="pls-inflection-row-header">imp 1st</span></td>
         <td>
@@ -125,7 +110,7 @@ expression: html
         <td>
           <div class="pls-inflection-inflected-word">^ābādhemase$</div>
           </td>
-      </tr>
+        </tr>
     </tbody>
   </table>
 
@@ -135,14 +120,14 @@ expression: html
         <td><span class="pls-inflection-table-title">opt</span></td>
         <td colspan="2"><span class="pls-inflection-col-header">active</span></td>
         <td colspan="2"><span class="pls-inflection-col-header">reflexive</span></td>
-      </tr>
+        </tr>
       <tr>
         <td><span class="pls-inflection-row-header">person</span></td>
         <td><span class="pls-inflection-col-header">singular</span></td>
         <td><span class="pls-inflection-col-header">plural</span></td>
         <td><span class="pls-inflection-col-header">singular</span></td>
         <td><span class="pls-inflection-col-header">plural</span></td>
-      </tr>
+        </tr>
     </thead>
     <tbody>
       <tr>
@@ -160,7 +145,7 @@ expression: html
         <td>
           <div class="pls-inflection-inflected-word">^ābādheraṃ$</div>
           </td>
-      </tr>
+        </tr>
       <tr>
         <td><span class="pls-inflection-row-header">opt 2nd</span></td>
         <td>
@@ -178,7 +163,7 @@ expression: html
           <div class="pls-inflection-inflected-word">^ābādheyyavho$</div>
           <div class="pls-inflection-inflected-word">^ābādheyyāvho$</div>
           </td>
-      </tr>
+        </tr>
       <tr>
         <td><span class="pls-inflection-row-header">opt 1st</span></td>
         <td>
@@ -197,7 +182,7 @@ expression: html
         <td>
           <div class="pls-inflection-inflected-word">^ābādheyyāmhe$</div>
           </td>
-      </tr>
+        </tr>
     </tbody>
   </table>
 
@@ -207,14 +192,14 @@ expression: html
         <td><span class="pls-inflection-table-title">fut</span></td>
         <td colspan="2"><span class="pls-inflection-col-header">active</span></td>
         <td colspan="2"><span class="pls-inflection-col-header">reflexive</span></td>
-      </tr>
+        </tr>
       <tr>
         <td><span class="pls-inflection-row-header">person</span></td>
         <td><span class="pls-inflection-col-header">singular</span></td>
         <td><span class="pls-inflection-col-header">plural</span></td>
         <td><span class="pls-inflection-col-header">singular</span></td>
         <td><span class="pls-inflection-col-header">plural</span></td>
-      </tr>
+        </tr>
     </thead>
     <tbody>
       <tr>
@@ -231,7 +216,7 @@ expression: html
         <td>
           <div class="pls-inflection-inflected-word">^ābādhessante$</div>
           </td>
-      </tr>
+        </tr>
       <tr>
         <td><span class="pls-inflection-row-header">fut 2nd</span></td>
         <td>
@@ -246,7 +231,7 @@ expression: html
         <td>
           <div class="pls-inflection-inflected-word">^ābādhessavhe$</div>
           </td>
-      </tr>
+        </tr>
       <tr>
         <td><span class="pls-inflection-row-header">fut 1st</span></td>
         <td>
@@ -261,7 +246,7 @@ expression: html
         <td>
           <div class="pls-inflection-inflected-word">^ābādhessāmhe$</div>
           </td>
-      </tr>
+        </tr>
     </tbody>
   </table>
 
