@@ -3,6 +3,7 @@ mod generators;
 use regex::{Error, Regex};
 use serde::Serialize;
 use tera::{Context, Tera};
+use crate::alphabet::string_compare;
 
 lazy_static! {
     static ref TEMPLATES: Tera = {
@@ -311,11 +312,11 @@ fn get_inflections(
         Err(e) => e,
     };
 
-    let inflections: Vec<String> = res
+    let mut inflections: Vec<String> = res
         .split(',')
         .map(|s| join_and_transliterate_if_not_empty(stem, s, transliterate))
         .collect();
-
+    inflections.sort_by(|a, b| Ord::cmp(&string_compare(a, b),&0));
     inflections
 }
 
