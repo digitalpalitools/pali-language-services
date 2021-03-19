@@ -2,15 +2,15 @@
   <thead>
     <tr>
       <td><span class="pls-inflection-table-title">{{ pattern }}</span></td>
-      <td><span class="pls-inflection-col-header">{{ pron_type }} sg</span></td>
-      <td><span class="pls-inflection-col-header">{{ pron_type }} pl</span></td>
+      <td><span class="pls-inflection-col-header">{{ pron_type }} {{ abbrev_map["sg"] }}</span></td>
+      <td><span class="pls-inflection-col-header">{{ pron_type }} {{ abbrev_map["pl"] }}</span></td>
     </tr>
   </thead>
   <tbody>
     {% for view_model in view_models -%}
     <tr>
       <td>
-        <span class="pls-inflection-row-header">{{ view_model.name }}</span>
+        <span class="pls-inflection-row-header">{{ abbrev_map[view_model.name] }}</span>
       </td>
       <td>
         {% for inflection in view_model.inflections_list.0 -%}
