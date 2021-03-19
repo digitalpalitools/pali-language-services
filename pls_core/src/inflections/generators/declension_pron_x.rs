@@ -45,6 +45,7 @@ pub fn create_html_body(
     let view_models = create_case_view_models(&pron_type, &table_name, transliterate, &q, &stem)?;
     let in_comps_inflections = Vec::new();
     let abbrev_map = inflections::get_abbreviations_for_locale(locale, q)?;
+
     let template_view_model = TemplateViewModel {
         pattern,
         pron_type,

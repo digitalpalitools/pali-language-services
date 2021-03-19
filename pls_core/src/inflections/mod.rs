@@ -65,6 +65,7 @@ pub fn generate_inflection_table(
     let q = SqlQuery::new(exec_sql_query);
     let pm = get_pali1_metadata(pali1, transliterate, &q)?;
     let body = generators::create_html_body(&pm, transliterate, &q, locale)?;
+
     generate_output(&pm, pali1, host_url, host_version, &body, transliterate)
 }
 
