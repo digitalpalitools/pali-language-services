@@ -398,21 +398,32 @@ mod tests {
         format!("^{}$", s)
     }
 
-    #[test_case("ābādheti"; "conjugation - 1")]
-    #[test_case("vassūpanāyikā"; "declension - 1")]
-    #[test_case("kamma 1"; "declension - 2 - irreg")]
-    #[test_case("kāmaṃ 3"; "declension - 3 - ind")]
-    #[test_case("ubha"; "declension - 4 - pron_dual")]
-    #[test_case("maṃ"; "declension - 4 - pron_1st")]
-    #[test_case("taṃ 3"; "declension - 4 - pron_2nd")]
-    #[test_case("pañca"; "declension - 5 - only x gender")]
-    fn inflection_tests(pali1: &str) {
+    #[test_case("ābādheti","latn"; "conjugation - 1 - latn")]
+    #[test_case("vassūpanāyikā","latn"; "declension - 1 - latn ")]
+    #[test_case("kamma 1","latn"; "declension - 2 - irreg - latn")]
+    #[test_case("kāmaṃ 3","latn"; "declension - 3 - ind - latn")]
+    #[test_case("ubha","latn"; "declension - 4 - pron_dual - latn")]
+    #[test_case("maṃ","latn"; "declension - 4 - pron_1st - latn")]
+    #[test_case("taṃ 3","latn"; "declension - 4 - pron_2nd - latn")]
+    #[test_case("pañca","latn"; "declension - 5 - only x gender - latn")]
+    #[test_case("ābādheti","xx"; "conjugation - 1 - xx")]
+    #[test_case("vassūpanāyikā","xx"; "declension - 1 - xx ")]
+    #[test_case("kamma 1","xx"; "declension - 2 - irreg - xx")]
+    #[test_case("kāmaṃ 3","xx"; "declension - 3 - ind - xx")]
+    #[test_case("ubha","xx"; "declension - 4 - pron_dual - xx")]
+    #[test_case("maṃ","xx"; "declension - 4 - pron_1st - xx")]
+    #[test_case("taṃ 3","xx"; "declension - 4 - pron_2nd - xx")]
+    #[test_case("pañca","xx"; "declension - 5 - only x gender - xx")]
+    #[test_case("pañca","deva"; "declension - 5 - only x gender - deva")]
+
+    fn inflection_tests(pali1: &str, locale: &str ) {
         let html = generate_inflection_table(
             pali1,
             "test case",
             "v0.1",
             |s| Ok(psuedo_transliterate(s)),
             exec_sql,
+            locale,
         )
         .unwrap_or_else(|e| e);
 

@@ -16,18 +16,18 @@ expression: html
 <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
-        <td><span class="pls-inflection-table-title">pr</span></td>
-        <td colspan="2"><span class="pls-inflection-col-header">act</span></td>
+        <td><span class="pls-inflection-table-title">^pr$</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">^act$</span></td>
         </tr>
       <tr>
         <td><span class="pls-inflection-row-header"></span></td>
-        <td><span class="pls-inflection-col-header">sg</span></td>
-        <td><span class="pls-inflection-col-header">pl</span></td>
+        <td><span class="pls-inflection-col-header">^sg$</span></td>
+        <td><span class="pls-inflection-col-header">^pl$</span></td>
         </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="pls-inflection-row-header">pr 3rd</span></td>
+        <td><span class="pls-inflection-row-header">^pr$ ^3rd$</span></td>
         <td>
           <div class="pls-inflection-inflected-word">^ābādheti$</div>
           </td>
@@ -36,7 +36,7 @@ expression: html
           </td>
         </tr>
       <tr>
-        <td><span class="pls-inflection-row-header">pr 2nd</span></td>
+        <td><span class="pls-inflection-row-header">^pr$ ^2nd$</span></td>
         <td>
           <div class="pls-inflection-inflected-word">^ābādhesi$</div>
           </td>
@@ -45,7 +45,7 @@ expression: html
           </td>
         </tr>
       <tr>
-        <td><span class="pls-inflection-row-header">pr 1st</span></td>
+        <td><span class="pls-inflection-row-header">^pr$ ^1st$</span></td>
         <td>
           <div class="pls-inflection-inflected-word">^ābādhemi$</div>
           </td>
@@ -59,21 +59,21 @@ expression: html
 <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
-        <td><span class="pls-inflection-table-title">imp</span></td>
-        <td colspan="2"><span class="pls-inflection-col-header">act</span></td>
-        <td colspan="2"><span class="pls-inflection-col-header">reflx</span></td>
+        <td><span class="pls-inflection-table-title">^imp$</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">^act$</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">^reflx$</span></td>
         </tr>
       <tr>
         <td><span class="pls-inflection-row-header"></span></td>
-        <td><span class="pls-inflection-col-header">sg</span></td>
-        <td><span class="pls-inflection-col-header">pl</span></td>
-        <td><span class="pls-inflection-col-header">sg</span></td>
-        <td><span class="pls-inflection-col-header">pl</span></td>
+        <td><span class="pls-inflection-col-header">^sg$</span></td>
+        <td><span class="pls-inflection-col-header">^pl$</span></td>
+        <td><span class="pls-inflection-col-header">^sg$</span></td>
+        <td><span class="pls-inflection-col-header">^pl$</span></td>
         </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="pls-inflection-row-header">imp 3rd</span></td>
+        <td><span class="pls-inflection-row-header">^imp$ ^3rd$</span></td>
         <td>
           <div class="pls-inflection-inflected-word">^ābādhetu$</div>
           </td>
@@ -88,7 +88,7 @@ expression: html
           </td>
         </tr>
       <tr>
-        <td><span class="pls-inflection-row-header">imp 2nd</span></td>
+        <td><span class="pls-inflection-row-header">^imp$ ^2nd$</span></td>
         <td>
           <div class="pls-inflection-inflected-word">^ābādhehi$</div>
           </td>
@@ -103,7 +103,7 @@ expression: html
           </td>
         </tr>
       <tr>
-        <td><span class="pls-inflection-row-header">imp 1st</span></td>
+        <td><span class="pls-inflection-row-header">^imp$ ^1st$</span></td>
         <td>
           <div class="pls-inflection-inflected-word">^ābādhemi$</div>
           </td>
@@ -123,21 +123,21 @@ expression: html
 <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
-        <td><span class="pls-inflection-table-title">opt</span></td>
-        <td colspan="2"><span class="pls-inflection-col-header">act</span></td>
-        <td colspan="2"><span class="pls-inflection-col-header">reflx</span></td>
+        <td><span class="pls-inflection-table-title">^opt$</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">^act$</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">^reflx$</span></td>
         </tr>
       <tr>
         <td><span class="pls-inflection-row-header"></span></td>
-        <td><span class="pls-inflection-col-header">sg</span></td>
-        <td><span class="pls-inflection-col-header">pl</span></td>
-        <td><span class="pls-inflection-col-header">sg</span></td>
-        <td><span class="pls-inflection-col-header">pl</span></td>
+        <td><span class="pls-inflection-col-header">^sg$</span></td>
+        <td><span class="pls-inflection-col-header">^pl$</span></td>
+        <td><span class="pls-inflection-col-header">^sg$</span></td>
+        <td><span class="pls-inflection-col-header">^pl$</span></td>
         </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="pls-inflection-row-header">opt 3rd</span></td>
+        <td><span class="pls-inflection-row-header">^opt$ ^3rd$</span></td>
         <td>
           <div class="pls-inflection-inflected-word">^ābādheyya$</div>
           <div class="pls-inflection-inflected-word">^ābādhe$</div>
@@ -153,7 +153,7 @@ expression: html
           </td>
         </tr>
       <tr>
-        <td><span class="pls-inflection-row-header">opt 2nd</span></td>
+        <td><span class="pls-inflection-row-header">^opt$ ^2nd$</span></td>
         <td>
           <div class="pls-inflection-inflected-word">^ābādheyyāsi$</div>
           <div class="pls-inflection-inflected-word">^ābādhe$</div>
@@ -171,7 +171,7 @@ expression: html
           </td>
         </tr>
       <tr>
-        <td><span class="pls-inflection-row-header">opt 1st</span></td>
+        <td><span class="pls-inflection-row-header">^opt$ ^1st$</span></td>
         <td>
           <div class="pls-inflection-inflected-word">^ābādheyyaṃ$</div>
           <div class="pls-inflection-inflected-word">^ābādheyyāmi$</div>
@@ -195,21 +195,21 @@ expression: html
 <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
-        <td><span class="pls-inflection-table-title">fut</span></td>
-        <td colspan="2"><span class="pls-inflection-col-header">act</span></td>
-        <td colspan="2"><span class="pls-inflection-col-header">reflx</span></td>
+        <td><span class="pls-inflection-table-title">^fut$</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">^act$</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">^reflx$</span></td>
         </tr>
       <tr>
         <td><span class="pls-inflection-row-header"></span></td>
-        <td><span class="pls-inflection-col-header">sg</span></td>
-        <td><span class="pls-inflection-col-header">pl</span></td>
-        <td><span class="pls-inflection-col-header">sg</span></td>
-        <td><span class="pls-inflection-col-header">pl</span></td>
+        <td><span class="pls-inflection-col-header">^sg$</span></td>
+        <td><span class="pls-inflection-col-header">^pl$</span></td>
+        <td><span class="pls-inflection-col-header">^sg$</span></td>
+        <td><span class="pls-inflection-col-header">^pl$</span></td>
         </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="pls-inflection-row-header">fut 3rd</span></td>
+        <td><span class="pls-inflection-row-header">^fut$ ^3rd$</span></td>
         <td>
           <div class="pls-inflection-inflected-word">^ābādhessati$</div>
           </td>
@@ -224,7 +224,7 @@ expression: html
           </td>
         </tr>
       <tr>
-        <td><span class="pls-inflection-row-header">fut 2nd</span></td>
+        <td><span class="pls-inflection-row-header">^fut$ ^2nd$</span></td>
         <td>
           <div class="pls-inflection-inflected-word">^ābādhessasi$</div>
           </td>
@@ -239,7 +239,7 @@ expression: html
           </td>
         </tr>
       <tr>
-        <td><span class="pls-inflection-row-header">fut 1st</span></td>
+        <td><span class="pls-inflection-row-header">^fut$ ^1st$</span></td>
         <td>
           <div class="pls-inflection-inflected-word">^ābādhessāmi$</div>
           </td>

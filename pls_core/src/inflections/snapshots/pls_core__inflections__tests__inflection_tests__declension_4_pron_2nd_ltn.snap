@@ -1,0 +1,133 @@
+---
+source: pls_core/src/inflections/mod.rs
+expression: html
+
+---
+<div class="pls-inflection-root">
+  <header class="pls-inflection-header">
+    <summary>
+      <div class="pls-inflection-summary-word-info">^taṃ 3$ &ndash; "tvaṃ pron 2nd" (irregular)</div>
+      <div class="pls-inflection-summary-definition">
+        <span class="pls-inflection-summary-definition-pos">(pron)</span>&nbsp;
+        <span class="pls-inflection-summary-definition-meaning">you (object)</span>
+      </div>
+    </summary>
+  </header>
+<table class="pls-inflection-table pls-inflection-type-declension">
+  <thead>
+    <tr>
+      <td><span class="pls-inflection-table-title">tvaṃ pron 2nd</span></td>
+      <td><span class="pls-inflection-col-header">2nd sg</span></td>
+      <td><span class="pls-inflection-col-header">2nd pl</span></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">nom</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tuvaṃ$</div>
+        <div class="pls-inflection-inflected-word">^tvaṃ$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tumhe$</div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">acc</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tavaṃ$</div>
+        <div class="pls-inflection-inflected-word">^taṃ$</div>
+        <div class="pls-inflection-inflected-word">^tuvaṃ$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tumhākaṃ$</div>
+        <div class="pls-inflection-inflected-word">^tumhe$</div>
+        <div class="pls-inflection-inflected-word">^vo$</div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">instr</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tayā$</div>
+        <div class="pls-inflection-inflected-word">^te$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tumhehi$</div>
+        <div class="pls-inflection-inflected-word">^vo$</div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">dat</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tava$</div>
+        <div class="pls-inflection-inflected-word">^tuyhaṃ$</div>
+        <div class="pls-inflection-inflected-word">^te$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tumhaṃ$</div>
+        <div class="pls-inflection-inflected-word">^tumhākaṃ$</div>
+        <div class="pls-inflection-inflected-word">^vo$</div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">abl</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tayā$</div>
+        <div class="pls-inflection-inflected-word">^tvāya$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tumhehi$</div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">gen</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tava$</div>
+        <div class="pls-inflection-inflected-word">^tuyhaṃ$</div>
+        <div class="pls-inflection-inflected-word">^te$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tumhaṃ$</div>
+        <div class="pls-inflection-inflected-word">^tumhākaṃ$</div>
+        <div class="pls-inflection-inflected-word">^vo$</div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">loc</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tayi$</div>
+        <div class="pls-inflection-inflected-word">^tvāyi$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^tumhesu$</div>
+        </td>
+    </tr>
+    <tr>
+      <td><span class="pls-inflection-row-header">in comps</span></td>
+      <td colspan="2">
+        </td>
+    </tr>
+  </tbody>
+</table>
+
+  <footer class="pls-inflection-footer">
+    <a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeoxZiqvIWadaLeuXF4f44NCqEn49-B8KNbSvNer5jxgRYdtQ/viewform?entry.267696921=test case&entry.1433863141=v0.1">
+      spot a mistake? something missing? fix it here!
+    </a>
+  </footer>
+</div>
+
