@@ -2,29 +2,29 @@
   <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>
-        <td><span class="pls-inflection-table-title">{{ view_model.name }}</span></td>
+        <td><span class="pls-inflection-table-title">{{ abbrev_map[view_model.name] }}</span></td>
         {% if view_model.ar_values_exist.0 -%}
-        <td colspan="2"><span class="pls-inflection-col-header">active</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">{{ abbrev_map["active"] }}</span></td>
         {% endif -%}
         {% if view_model.ar_values_exist.1 -%}
-        <td colspan="2"><span class="pls-inflection-col-header">reflexive</span></td>
+        <td colspan="2"><span class="pls-inflection-col-header">{{ abbrev_map["reflexive"] }}</span></td>
         {% endif -%}
       </tr>
       <tr>
-        <td><span class="pls-inflection-row-header">person</span></td>
+        <td><span class="pls-inflection-row-header"></span></td>
         {% if view_model.ar_values_exist.0 -%}
-        <td><span class="pls-inflection-col-header">singular</span></td>
-        <td><span class="pls-inflection-col-header">plural</span></td>
+        <td><span class="pls-inflection-col-header">{{ abbrev_map["singular"] }}</span></td>
+        <td><span class="pls-inflection-col-header">{{ abbrev_map["plural"] }}</span></td>
         {% endif -%}
         {% if view_model.ar_values_exist.1 -%}
-        <td><span class="pls-inflection-col-header">singular</span></td>
-        <td><span class="pls-inflection-col-header">plural</span></td>
+        <td><span class="pls-inflection-col-header">{{ abbrev_map["singular"] }}</span></td>
+        <td><span class="pls-inflection-col-header">{{ abbrev_map["plural"] }}</span></td>
         {% endif -%}
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><span class="pls-inflection-row-header">{{ view_model.name }} 3rd</span></td>
+        <td><span class="pls-inflection-row-header">{{ abbrev_map[view_model.name] }} {{ abbrev_map["3rd"] }}</span></td>
         {% if view_model.ar_values_exist.0 -%}
         <td>
           {% for inflection in view_model.inflections_list.0 -%}
@@ -59,7 +59,7 @@
         {% endif -%}
       </tr>
       <tr>
-        <td><span class="pls-inflection-row-header">{{ view_model.name }} 2nd</span></td>
+        <td><span class="pls-inflection-row-header">{{ abbrev_map[view_model.name] }} {{ abbrev_map["2nd"] }}</span></td>
         {% if view_model.ar_values_exist.0 -%}
         <td>
           {% for inflection in view_model.inflections_list.4 -%}
@@ -94,7 +94,7 @@
         {% endif -%}
       </tr>
       <tr>
-        <td><span class="pls-inflection-row-header">{{ view_model.name }} 1st</span></td>
+        <td><span class="pls-inflection-row-header">{{ abbrev_map[view_model.name] }} {{ abbrev_map["1st"] }}</span></td>
         {% if view_model.ar_values_exist.0 -%}
         <td>
           {% for inflection in view_model.inflections_list.8 -%}

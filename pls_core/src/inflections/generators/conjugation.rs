@@ -1,6 +1,7 @@
 use crate::inflections;
 use crate::inflections::{generators, SqlQuery};
 use serde::Serialize;
+use std::collections::HashMap;
 use tera::{Context, Tera};
 
 lazy_static! {
@@ -27,6 +28,7 @@ struct TenseViewModel {
 struct TemplateViewModel<'a> {
     stem: &'a str,
     view_models: Vec<TenseViewModel>,
+    abbrev_map: HashMap<String, String>,
 }
 
 pub fn create_html_body(
@@ -34,12 +36,15 @@ pub fn create_html_body(
     stem: &str,
     transliterate: fn(&str) -> Result<String, String>,
     q: &SqlQuery,
+    locale: &str,
 ) -> Result<String, String> {
     let table_name = &generators::get_table_name_from_pattern(pattern);
     let tense_view_models = create_tense_view_models(table_name, transliterate, &q, &stem)?;
+    let abbrev_map = inflections::get_abbreviations_for_locale(locale, q)?;
     let vm = TemplateViewModel {
         stem,
         view_models: tense_view_models,
+        abbrev_map,
     };
     let context = Context::from_serialize(&vm).map_err(|e| e.to_string())?;
     TEMPLATES

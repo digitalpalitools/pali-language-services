@@ -20,7 +20,7 @@ expression: html
       <td colspan="2"><span class="pls-inflection-col-header">x</span></td>
       </tr>
     <tr>
-      <td><span class="pls-inflection-row-header">case</span></td>
+      <td><span class="pls-inflection-row-header"></span></td>
       <td><span class="pls-inflection-col-header">sg</span></td>
       <td><span class="pls-inflection-col-header">pl</span></td>
       </tr>
