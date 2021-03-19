@@ -3,6 +3,7 @@ mod generators;
 use crate::alphabet::string_compare;
 use regex::{Error, Regex};
 use serde::Serialize;
+use std::collections::HashMap;
 use tera::{Context, Tera};
 
 lazy_static! {
@@ -59,11 +60,11 @@ pub fn generate_inflection_table(
     host_version: &str,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql_query: fn(&str) -> Result<String, String>,
+    locale: &str,
 ) -> Result<String, String> {
     let q = SqlQuery::new(exec_sql_query);
     let pm = get_pali1_metadata(pali1, transliterate, &q)?;
-    let body = generators::create_html_body(&pm, transliterate, &q)?;
-
+    let body = generators::create_html_body(&pm, transliterate, &q, locale)?;
     generate_output(&pm, pali1, host_url, host_version, &body, transliterate)
 }
 
@@ -323,6 +324,30 @@ fn get_inflections(
 fn query_has_no_results(query: &str, q: &SqlQuery) -> Result<bool, String> {
     let count = &q.exec(&query)?[0][0][0];
     Ok(count.eq("0"))
+}
+
+pub fn get_abbreviations_for_locale(
+    locale: &str,
+    q: &SqlQuery,
+) -> Result<HashMap<String, String>, String> {
+    let sql: String;
+    if locale == "xx" {
+        sql = "select name, description, '^' || name || '$' from _abbreviations".to_string();
+    } else if locale == "latn" {
+        sql = "select name, description, name from _abbreviations".to_string();
+    } else {
+        sql = format!(
+            r#"select name, description, {} from _abbreviations"#,
+            locale
+        );
+    }
+    let res = q.exec(&sql)?;
+    let mut abbrev_map = HashMap::new();
+    for i in res[0].iter() {
+        abbrev_map.insert(i[0].clone(), i[2].clone());
+        abbrev_map.insert(i[1].clone(), i[2].clone());
+    }
+    Ok(abbrev_map)
 }
 
 #[cfg(test)]
