@@ -49,7 +49,7 @@ fn main() -> Result<(), String> {
         "host version v0.0.1",
         |s| Ok(s.to_string()),
         exec_sql,
-        "latn",
+        "en",
     )?;
     println!("{:#?}", html);
 

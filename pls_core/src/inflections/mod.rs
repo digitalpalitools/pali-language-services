@@ -334,7 +334,7 @@ pub fn get_abbreviations_for_locale(
     let sql: String;
     if locale == "xx" {
         sql = "select name, description, '^' || name || '$' from _abbreviations".to_string();
-    } else if locale == "latn" {
+    } else if locale == "en" {
         sql = "select name, description, name from _abbreviations".to_string();
     } else {
         sql = format!(
