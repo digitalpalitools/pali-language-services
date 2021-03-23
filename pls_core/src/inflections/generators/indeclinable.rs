@@ -7,8 +7,8 @@ lazy_static! {
             "indeclinable",
             include_str!("templates/indeclinable.html"),
         )])
-        .unwrap();
-        tera.autoescape_on(vec!["html", ".sql"]);
+        .expect("Unexpected failure adding template");
+        tera.autoescape_on(vec!["html"]);
         tera
     };
 }

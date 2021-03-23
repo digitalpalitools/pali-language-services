@@ -52,7 +52,5 @@ fn main() -> Result<(), String> {
     )?;
     println!("{:#?}", html);
 
-    std::fs::write("d:/delme/inflections.txt", &html).unwrap();
-
     Ok(())
 }

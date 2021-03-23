@@ -10,8 +10,8 @@ lazy_static! {
             "conjugation",
             include_str!("templates/conjugation.html"),
         )])
-        .unwrap();
-        tera.autoescape_on(vec!["html", ".sql"]);
+        .expect("Unexpected failure adding template");
+        tera.autoescape_on(vec!["html"]);
         tera
     };
 }

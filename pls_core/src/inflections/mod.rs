@@ -9,8 +9,8 @@ lazy_static! {
     static ref TEMPLATES: Tera = {
         let mut tera = Tera::default();
         tera.add_raw_templates(vec![("output", include_str!("templates/output.html"))])
-            .unwrap();
-        tera.autoescape_on(vec!["html", ".sql"]);
+            .expect("Unexpected failure adding template");
+        tera.autoescape_on(vec!["html"]);
         tera
     };
     static ref INDECLINABLE_CRACKER: Result<Regex, Error> = Regex::new(r" \d+$");

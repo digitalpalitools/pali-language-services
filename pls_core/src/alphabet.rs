@@ -330,8 +330,8 @@ mod tests {
         fn string_compare_all(i1 in 0usize..PALI_ALPHABET_ROMAN.len(), i2 in 0usize..PALI_ALPHABET_ROMAN.len()) {
             let cmp_str = string_compare(PALI_ALPHABET_ROMAN[i1], PALI_ALPHABET_ROMAN[i2]);
 
-            let pali_char1 = PaliAlphabet::try_from(i1).unwrap();
-            let pali_char2 = PaliAlphabet::try_from(i2).unwrap();
+            let pali_char1 = PaliAlphabet::try_from(i1).expect("Catastrophic unhandlable error.");
+            let pali_char2 = PaliAlphabet::try_from(i2).expect("Catastrophic unhandlable error.");
             let cmp_char = (pali_char1 as isize - pali_char2 as isize).signum();
 
             assert_eq!(cmp_char, cmp_str);
@@ -349,12 +349,12 @@ mod tests {
 
         #[test]
         fn round_trip_pali_to_roman(index in 0usize..PALI_ALPHABET_ROMAN.len()) {
-            let pali_char = PaliAlphabet::try_from(index).unwrap();
+            let pali_char = PaliAlphabet::try_from(index).expect("Catastrophic unhandlable error.");
             let i: usize = pali_char.into();
             let str = PALI_ALPHABET_ROMAN[i];
 
             let tokenizer = CharacterTokenizer::new(str.chars());
-            let new_pali_char = tokenizer.map(|c| match c { Character::Pali(c) => c, _ => panic!("") }).next().unwrap();
+            let new_pali_char = tokenizer.map(|c| match c { Character::Pali(c) => c, _ => panic!("") }).next().expect("Catastrophic unhandlable error.");
 
             assert_eq!(new_pali_char, pali_char);
         }

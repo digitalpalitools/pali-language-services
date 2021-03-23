@@ -10,8 +10,8 @@ lazy_static! {
             "declension_pron_dual",
             include_str!("templates/declension_pron_dual.html"),
         )])
-        .unwrap();
-        tera.autoescape_on(vec!["html", ".sql"]);
+        .expect("Unexpected failure adding template");
+        tera.autoescape_on(vec!["html"]);
         tera
     };
 }
