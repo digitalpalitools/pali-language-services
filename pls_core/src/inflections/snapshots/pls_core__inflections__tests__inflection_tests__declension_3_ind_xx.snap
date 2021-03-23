@@ -16,7 +16,7 @@ expression: html
 <table class="pls-inflection-table pls-inflection-type-indeclinable">
   <tbody>
     <tr>
-      <td><span class="pls-inflection-row-header">indeclinable</span></td>
+      <td><span class="pls-inflection-row-header">^ind$</span></td>
       <td>
         <div class="pls-inflection-inflected-word">^kāmaṃ$</div>
       </td>

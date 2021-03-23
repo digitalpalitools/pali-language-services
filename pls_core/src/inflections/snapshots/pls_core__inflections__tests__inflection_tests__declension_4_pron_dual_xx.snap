@@ -17,13 +17,13 @@ expression: html
   <thead>
     <tr>
       <td><span class="pls-inflection-table-title">ubha pron dual</span></td>
-      <td><span class="pls-inflection-col-header">dual</span></td>
+      <td><span class="pls-inflection-col-header">^dual$</span></td>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <span class="pls-inflection-row-header">nom</span>
+        <span class="pls-inflection-row-header">^nom$</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^ubhe$</div>
@@ -32,7 +32,7 @@ expression: html
     </tr>
     <tr>
       <td>
-        <span class="pls-inflection-row-header">acc</span>
+        <span class="pls-inflection-row-header">^acc$</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^ubho$</div>
@@ -40,7 +40,7 @@ expression: html
     </tr>
     <tr>
       <td>
-        <span class="pls-inflection-row-header">instr</span>
+        <span class="pls-inflection-row-header">^instr$</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^ubhohi$</div>
@@ -48,7 +48,7 @@ expression: html
     </tr>
     <tr>
       <td>
-        <span class="pls-inflection-row-header">dat</span>
+        <span class="pls-inflection-row-header">^dat$</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^ubhinnaṃ$</div>
@@ -56,7 +56,7 @@ expression: html
     </tr>
     <tr>
       <td>
-        <span class="pls-inflection-row-header">abl</span>
+        <span class="pls-inflection-row-header">^abl$</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^ubhohi$</div>
@@ -64,7 +64,7 @@ expression: html
     </tr>
     <tr>
       <td>
-        <span class="pls-inflection-row-header">gen</span>
+        <span class="pls-inflection-row-header">^gen$</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^ubhinnaṃ$</div>
@@ -72,14 +72,14 @@ expression: html
     </tr>
     <tr>
       <td>
-        <span class="pls-inflection-row-header">loc</span>
+        <span class="pls-inflection-row-header">^loc$</span>
       </td>
       <td>
         <div class="pls-inflection-inflected-word">^ubhosu$</div>
         </td>
     </tr>
     <tr>
-      <td><span class="pls-inflection-row-header">in comps</span></td>
+      <td><span class="pls-inflection-row-header">^in comps$</span></td>
       <td colspan="6">
         <div class="pls-inflection-inflected-word">^ubho$</div>
         </td>
