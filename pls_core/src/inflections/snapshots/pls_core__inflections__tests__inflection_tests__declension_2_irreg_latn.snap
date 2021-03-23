@@ -17,10 +17,10 @@ expression: html
   <thead>
     <tr>
       <td><span class="pls-inflection-table-title">kamma nt</span></td>
-      <td colspan="2"><span class="pls-inflection-col-header">neuter</span></td>
+      <td colspan="2"><span class="pls-inflection-col-header">nt</span></td>
       </tr>
     <tr>
-      <td><span class="pls-inflection-row-header">case</span></td>
+      <td><span class="pls-inflection-row-header"></span></td>
       <td><span class="pls-inflection-col-header">sg</span></td>
       <td><span class="pls-inflection-col-header">pl</span></td>
       </tr>

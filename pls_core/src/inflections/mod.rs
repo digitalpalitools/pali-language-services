@@ -3,6 +3,7 @@ mod generators;
 use crate::alphabet::string_compare;
 use regex::{Error, Regex};
 use serde::Serialize;
+use std::collections::HashMap;
 use tera::{Context, Tera};
 
 lazy_static! {
@@ -59,10 +60,11 @@ pub fn generate_inflection_table(
     host_version: &str,
     transliterate: fn(&str) -> Result<String, String>,
     exec_sql_query: fn(&str) -> Result<String, String>,
+    locale: &str,
 ) -> Result<String, String> {
     let q = SqlQuery::new(exec_sql_query);
     let pm = get_pali1_metadata(pali1, transliterate, &q)?;
-    let body = generators::create_html_body(&pm, transliterate, &q)?;
+    let body = generators::create_html_body(&pm, transliterate, &q, locale)?;
 
     generate_output(&pm, pali1, host_url, host_version, &body, transliterate)
 }
@@ -325,6 +327,30 @@ fn query_has_no_results(query: &str, q: &SqlQuery) -> Result<bool, String> {
     Ok(count.eq("0"))
 }
 
+pub fn get_abbreviations_for_locale(
+    locale: &str,
+    q: &SqlQuery,
+) -> Result<HashMap<String, String>, String> {
+    let sql: String;
+    if locale == "xx" {
+        sql = "select name, description, '^' || name || '$' from _abbreviations".to_string();
+    } else if locale == "latn" {
+        sql = "select name, description, name from _abbreviations".to_string();
+    } else {
+        sql = format!(
+            r#"select name, description, {} from _abbreviations"#,
+            locale
+        );
+    }
+    let res = q.exec(&sql)?;
+    let mut abbrev_map = HashMap::new();
+    for i in res[0].iter() {
+        abbrev_map.insert(i[0].clone(), i[2].clone());
+        abbrev_map.insert(i[1].clone(), i[2].clone());
+    }
+    Ok(abbrev_map)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -373,24 +399,25 @@ mod tests {
         format!("^{}$", s)
     }
 
-    #[test_case("ābādheti"; "conjugation - 1")]
-    #[test_case("vassūpanāyikā"; "declension - 1")]
-    #[test_case("kamma 1"; "declension - 2 - irreg")]
-    #[test_case("kāmaṃ 3"; "declension - 3 - ind")]
-    #[test_case("ubha"; "declension - 4 - pron_dual")]
-    #[test_case("maṃ"; "declension - 4 - pron_1st")]
-    #[test_case("taṃ 3"; "declension - 4 - pron_2nd")]
-    #[test_case("pañca"; "declension - 5 - only x gender")]
-    fn inflection_tests(pali1: &str) {
+    #[test_case("ābādheti","latn"; "conjugation - 1 - latn")]
+    #[test_case("vassūpanāyikā","latn"; "declension - 1 - latn ")]
+    #[test_case("kamma 1","latn"; "declension - 2 - irreg - latn")]
+    #[test_case("kāmaṃ 3","latn"; "declension - 3 - ind - latn")]
+    #[test_case("ubha","latn"; "declension - 4 - pron_dual - latn")]
+    #[test_case("maṃ","latn"; "declension - 4 - pron_1st - latn")]
+    #[test_case("taṃ 3","latn"; "declension - 4 - pron_2nd - latn")]
+    #[test_case("pañca","latn"; "declension - 5 - only x gender - latn")]
+    #[test_case("ābādheti","xx"; "conjugation - 1 - xx")]
+    fn inflection_tests(pali1: &str, locale: &str) {
         let html = generate_inflection_table(
             pali1,
             "test case",
             "v0.1",
             |s| Ok(psuedo_transliterate(s)),
             exec_sql,
+            locale,
         )
         .unwrap_or_else(|e| e);
-
         insta::assert_snapshot!(html);
     }
 

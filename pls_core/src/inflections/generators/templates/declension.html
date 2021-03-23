@@ -3,35 +3,35 @@
     <tr>
       <td><span class="pls-inflection-table-title">{{ pattern }}</span></td>
       {% if g_values_exist.0 -%}
-      <td colspan="2"><span class="pls-inflection-col-header">masculine</span></td>
+      <td colspan="2"><span class="pls-inflection-col-header">{{ abbrev_map.masculine }}</span></td>
       {% endif -%}
       {% if g_values_exist.1 -%}
-      <td colspan="2"><span class="pls-inflection-col-header">feminine</span></td>
+      <td colspan="2"><span class="pls-inflection-col-header">{{ abbrev_map.feminine }}</span></td>
       {% endif -%}
       {% if g_values_exist.2 -%}
-      <td colspan="2"><span class="pls-inflection-col-header">neuter</span></td>
+      <td colspan="2"><span class="pls-inflection-col-header">{{ abbrev_map.neuter }}</span></td>
       {% endif -%}
       {% if g_values_exist.3 -%}
       <td colspan="2"><span class="pls-inflection-col-header">x</span></td>
       {% endif -%}
     </tr>
     <tr>
-      <td><span class="pls-inflection-row-header">case</span></td>
+      <td><span class="pls-inflection-row-header"></span></td>
       {% if g_values_exist.0 -%}
-      <td><span class="pls-inflection-col-header">sg</span></td>
-      <td><span class="pls-inflection-col-header">pl</span></td>
+      <td><span class="pls-inflection-col-header">{{ abbrev_map.sg }}</span></td>
+      <td><span class="pls-inflection-col-header">{{ abbrev_map.pl }}</span></td>
       {% endif -%}
       {% if g_values_exist.1 -%}
-      <td><span class="pls-inflection-col-header">sg</span></td>
-      <td><span class="pls-inflection-col-header">pl</span></td>
+      <td><span class="pls-inflection-col-header">{{ abbrev_map.sg }}</span></td>
+      <td><span class="pls-inflection-col-header">{{ abbrev_map.pl }}</span></td>
       {% endif -%}
       {% if g_values_exist.2 -%}
-      <td><span class="pls-inflection-col-header">sg</span></td>
-      <td><span class="pls-inflection-col-header">pl</span></td>
+      <td><span class="pls-inflection-col-header">{{ abbrev_map.sg }}</span></td>
+      <td><span class="pls-inflection-col-header">{{ abbrev_map.pl }}</span></td>
       {% endif -%}
       {% if g_values_exist.3 -%}
-      <td><span class="pls-inflection-col-header">sg</span></td>
-      <td><span class="pls-inflection-col-header">pl</span></td>
+      <td><span class="pls-inflection-col-header">{{ abbrev_map.sg }}</span></td>
+      <td><span class="pls-inflection-col-header">{{ abbrev_map.pl }}</span></td>
       {% endif -%}
     </tr>
   </thead>
@@ -39,7 +39,7 @@
     {% for view_model in view_models -%}
     <tr>
       <td>
-        <span class="pls-inflection-row-header">{{ view_model.name }}</span>
+        <span class="pls-inflection-row-header">{{ abbrev_map[view_model.name] }}</span>
       </td>
       {% if g_values_exist.0 -%}
       <td>
@@ -109,7 +109,7 @@
     {% endfor -%}
 
     <tr>
-      <td><span class="pls-inflection-row-header">in comps</span></td>
+      <td><span class="pls-inflection-row-header">{{ abbrev_map["in comps"] }}</span></td>
       <td colspan="6">
         {% for inflection in in_comps_inflections -%}
         {% if inflection -%}

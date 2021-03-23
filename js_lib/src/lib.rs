@@ -20,7 +20,12 @@ pub fn string_length(str1: &str) -> usize {
 }
 
 #[wasm_bindgen(js_name = generateInflectionTable)]
-pub fn generate_inflection_table(pali1: &str, host_url: &str, host_version: &str) -> String {
+pub fn generate_inflection_table(
+    pali1: &str,
+    host_url: &str,
+    host_version: &str,
+    locale: &str,
+) -> String {
     pls_core::inflections::generate_inflection_table(
         pali1,
         host_url,
@@ -37,6 +42,7 @@ pub fn generate_inflection_table(pali1: &str, host_url: &str, host_version: &str
                     .unwrap_or_else(|| "No exception string!".to_string())
             })
         },
+        locale,
     )
     .unwrap()
 }
