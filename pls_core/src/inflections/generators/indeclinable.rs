@@ -1,3 +1,5 @@
+use crate::inflections;
+use crate::inflections::SqlQuery;
 use tera::{Context, Tera};
 
 lazy_static! {
@@ -16,10 +18,14 @@ lazy_static! {
 pub fn create_html_body(
     pali1: &str,
     transliterate: fn(&str) -> Result<String, String>,
+    q: &SqlQuery,
+    locale: &str,
 ) -> Result<String, String> {
     let mut context = Context::new();
-    context.insert("inflection", &transliterate(pali1)?);
+    let abbrev_map = inflections::get_abbreviations_for_locale(locale, q)?;
 
+    context.insert("inflection", &transliterate(pali1)?);
+    context.insert("abbrev_map", &abbrev_map);
     TEMPLATES
         .render("indeclinable", &context)
         .map_err(|e| e.to_string())

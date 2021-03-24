@@ -13,7 +13,9 @@ pub fn create_html_body(
     locale: &str,
 ) -> Result<String, String> {
     match pm.inflection_class {
-        InflectionClass::Indeclinable => indeclinable::create_html_body(&pm.pali1, transliterate),
+        InflectionClass::Indeclinable => {
+            indeclinable::create_html_body(&pm.pali1, transliterate, &q, locale)
+        }
         InflectionClass::Conjugation => {
             conjugation::create_html_body(&pm.pattern, &pm.stem, transliterate, &q, locale)
         }

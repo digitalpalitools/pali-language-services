@@ -3,6 +3,30 @@ source: pls_core/src/inflections/mod.rs
 expression: output
 
 ---
+- - ahesuṃ
+  - ahesuṃ
+  - act aor 3rd pl
+  - "*"
+- - ahuṃ
+  - ahesuṃ
+  - act aor 3rd pl
+  - "*"
+- - ahuvimhe
+  - ahesuṃ
+  - reflx aor 1st pl
+  - "*"
+- - ahuvase
+  - ahesuṃ
+  - reflx aor 2nd sg
+  - "*"
+- - ahuvaṃ
+  - ahesuṃ
+  - reflx aor 1st sg
+  - "*"
+- - ahuṃ
+  - ahesuṃ
+  - reflx aor 1st sg
+  - "*"
 - - ahuvivhaṃ
   - ahesuṃ
   - reflx aor 2nd pl
@@ -18,14 +42,6 @@ expression: output
 - - ahuvāsiṃ
   - ahesuṃ
   - act aor 1st sg
-  - "*"
-- - ahosi
-  - ahesuṃ
-  - act aor 3rd sg
-  - "*"
-- - ahu
-  - ahesuṃ
-  - act aor 3rd sg
   - "*"
 - - ahuvo
   - ahesuṃ
@@ -43,37 +59,21 @@ expression: output
   - ahesuṃ
   - act aor 2nd pl
   - "*"
-- - ahuvase
+- - ahuvu
   - ahesuṃ
-  - reflx aor 2nd sg
+  - reflx aor 3rd pl
   - "*"
 - - ahuvā
   - ahesuṃ
   - reflx aor 3rd sg
   - "*"
-- - ahuvimhe
+- - ahosi
   - ahesuṃ
-  - reflx aor 1st pl
+  - act aor 3rd sg
   - "*"
-- - ahuvaṃ
+- - ahu
   - ahesuṃ
-  - reflx aor 1st sg
-  - "*"
-- - ahuṃ
-  - ahesuṃ
-  - reflx aor 1st sg
-  - "*"
-- - ahesuṃ
-  - ahesuṃ
-  - act aor 3rd pl
-  - "*"
-- - ahuṃ
-  - ahesuṃ
-  - act aor 3rd pl
-  - "*"
-- - ahuvu
-  - ahesuṃ
-  - reflx aor 3rd pl
+  - act aor 3rd sg
   - "*"
 - - ahumha
   - ahesuṃ

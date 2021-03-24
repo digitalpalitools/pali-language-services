@@ -3,6 +3,26 @@ source: pls_core/src/inflections/mod.rs
 expression: output
 
 ---
+- - ababassa
+  - ababa 1
+  - nt gen sg
+  - " "
+- - ababānaṃ
+  - ababa 1
+  - nt dat pl
+  - " "
+- - ababaṃ
+  - ababa 1
+  - nt acc sg
+  - " "
+- - ababāya
+  - ababa 1
+  - nt dat sg
+  - " "
+- - ababassa
+  - ababa 1
+  - nt dat sg
+  - " "
 - - ababā
   - ababa 1
   - nt abl sg
@@ -19,22 +39,6 @@ expression: output
   - ababa 1
   - nt abl sg
   - " "
-- - ababaṃ
-  - ababa 1
-  - nt nom sg
-  - " "
-- - ababa
-  - ababa 1
-  - "  "
-  - " "
-- - ababā
-  - ababa 1
-  - nt voc pl
-  - " "
-- - ababāni
-  - ababa 1
-  - nt voc pl
-  - " "
 - - ababe
   - ababa 1
   - nt acc pl
@@ -43,37 +47,45 @@ expression: output
   - ababa 1
   - nt acc pl
   - " "
+- - ababa
+  - ababa 1
+  - nt voc sg
+  - " "
+- - ababā
+  - ababa 1
+  - nt voc sg
+  - " "
+- - ababaṃ
+  - ababa 1
+  - nt voc sg
+  - " "
 - - ababena
   - ababa 1
   - nt instr sg
   - " "
-- - ababehi
+- - ababe
   - ababa 1
-  - nt instr pl
+  - nt loc sg
   - " "
-- - ababebhi
+- - ababamhi
   - ababa 1
-  - nt instr pl
+  - nt loc sg
   - " "
-- - ababassa
+- - ababasmiṃ
   - ababa 1
-  - nt gen sg
+  - nt loc sg
   - " "
-- - ababā
+- - ababa
   - ababa 1
-  - nt nom pl
-  - " "
-- - ababāni
-  - ababa 1
-  - nt nom pl
+  - "  "
   - " "
 - - ababaṃ
   - ababa 1
-  - nt acc sg
+  - nt nom sg
   - " "
-- - ababānaṃ
+- - ababesu
   - ababa 1
-  - nt gen pl
+  - nt loc pl
   - " "
 - - ababehi
   - ababa 1
@@ -87,44 +99,32 @@ expression: output
   - ababa 1
   - nt abl pl
   - " "
-- - ababānaṃ
+- - ababā
   - ababa 1
-  - nt dat pl
+  - nt voc pl
   - " "
-- - ababāya
+- - ababāni
   - ababa 1
-  - nt dat sg
+  - nt voc pl
   - " "
-- - ababassa
+- - ababehi
   - ababa 1
-  - nt dat sg
+  - nt instr pl
   - " "
-- - ababa
+- - ababebhi
   - ababa 1
-  - nt voc sg
+  - nt instr pl
   - " "
 - - ababā
   - ababa 1
-  - nt voc sg
+  - nt nom pl
   - " "
-- - ababaṃ
+- - ababāni
   - ababa 1
-  - nt voc sg
+  - nt nom pl
   - " "
-- - ababesu
+- - ababānaṃ
   - ababa 1
-  - nt loc pl
-  - " "
-- - ababe
-  - ababa 1
-  - nt loc sg
-  - " "
-- - ababamhi
-  - ababa 1
-  - nt loc sg
-  - " "
-- - ababasmiṃ
-  - ababa 1
-  - nt loc sg
+  - nt gen pl
   - " "
 
