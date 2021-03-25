@@ -16,7 +16,7 @@ This is a cross platform library usable both on frontend and backend.
   - [x] Compare order for strings
 - Inflections
   - [x] Generate inflection tables
-  - [ ] Generate all inflected words
+  - [x] Generate all inflected words
 - [x] Publish as npm library
 - [ ] Publish on crates.io
 
