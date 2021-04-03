@@ -9,22 +9,22 @@ use std::{convert::TryFrom, iter::Peekable};
 #[repr(usize)]
 pub enum PaliAlphabet {
     A,
-    AA,
+    Aa,
     I,
-    II,
+    Ii,
     U,
-    UU,
+    Uu,
     E,
     O, // vowels - 0-7
     K,
-    KH,
+    Kh,
     G,
-    GH,
+    Gh,
     QuoteN, // guttural - 8-12
     C,
-    CH,
+    Ch,
     J,
-    JH,
+    Jh,
     TildeN, // palatal - 13-17
     DotT,
     DotTH,
@@ -32,14 +32,14 @@ pub enum PaliAlphabet {
     DotDH,
     DotN, // retroflex cerebral - 18-22
     T,
-    TH,
+    Th,
     D,
-    DH,
+    Dh,
     N, // dental - 23-27
     P,
-    PH,
+    Ph,
     B,
-    BH,
+    Bh,
     M, // labial - 28-32
     Y,
     R,
