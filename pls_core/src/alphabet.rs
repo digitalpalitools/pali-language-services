@@ -27,9 +27,9 @@ pub enum PaliAlphabet {
     Jh,
     TildeN, // palatal - 13-17
     DotT,
-    DotTH,
+    DotTh,
     DotD,
-    DotDH,
+    DotDh,
     DotN, // retroflex cerebral - 18-22
     T,
     Th,
@@ -175,12 +175,12 @@ impl<'a> Iterator for CharacterTokenizer<'a> {
             Some('ṭ') => Some(parse_multichar_letter(
                 &mut self.source,
                 PaliAlphabet::DotT,
-                PaliAlphabet::DotTH,
+                PaliAlphabet::DotTh,
             )),
             Some('ḍ') => Some(parse_multichar_letter(
                 &mut self.source,
                 PaliAlphabet::DotD,
-                PaliAlphabet::DotDH,
+                PaliAlphabet::DotDh,
             )),
             Some('ṇ') => Some(parse_singlechar_letter(PaliAlphabet::DotN)),
             Some('t') => Some(parse_multichar_letter(
