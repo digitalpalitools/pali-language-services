@@ -348,6 +348,18 @@ pub fn get_abbreviations_for_locale(
         abbrev_map.insert(i[0].clone(), i[2].clone());
         abbrev_map.insert(i[1].clone(), i[2].clone());
     }
+    let list_of_required_keys = [
+        "nom", "acc", "instr", "dat", "abl", "gen", "loc", "voc", "in comps", "masc", "fem", "nt",
+        "x", "sg", "pl", "dual", "act", "reflx", "pr", "fut", "aor", "opt", "imp", "cond",
+        "imperf", "perf", "1st", "2nd", "3rd", "irreg", "gram", "ind", "abs", "adj", "adv", "base",
+        "card", "case", "comp", "cs", "ger", "idiom", "inf", "like", "ordin", "person", "pp",
+        "prefix", "pron", "prp", "ptp", "root", "sandhi", "suffix", "ve",
+    ];
+    for i in list_of_required_keys.iter() {
+        if !abbrev_map.contains_key(&i.to_string()) {
+            abbrev_map.insert(i.to_string(), format!("{} ABBREVIATION NOT FOUND", i));
+        }
+    }
     Ok(abbrev_map)
 }
 
