@@ -356,9 +356,9 @@ pub fn get_abbreviations_for_locale(
         "prefix", "pron", "prp", "ptp", "root", "sandhi", "suffix", "ve",
     ];
     for i in list_of_required_keys.iter() {
-        if !abbrev_map.contains_key(&i.to_string()) {
-            abbrev_map.insert(i.to_string(), format!("{} ABBREVIATION NOT FOUND", i));
-        }
+        abbrev_map
+            .entry(i.to_string())
+            .or_insert(format!("{} ABBREVIATION NOT FOUND", i));
     }
     Ok(abbrev_map)
 }
