@@ -4,7 +4,7 @@ use crate::alphabet::string_compare;
 use regex::{Error, Regex};
 use serde::Serialize;
 use std::collections::HashMap;
-use tera::{Context, Tera};
+use tera::{Context, Tera, Value};
 
 lazy_static! {
     static ref TEMPLATES: Tera = {
@@ -283,6 +283,16 @@ pub fn generate_all_inflected_words(
         _ => get_words_for_regular_stem(pali1, stem, pattern, &q)?,
     };
     Ok(inflected_words)
+}
+
+pub fn localise_abbrev(value: &Value, arg: &HashMap<String, Value>) -> tera::Result<Value> {
+    let localised_abbrev = &arg["hmap"][value.as_str().unwrap()];
+    if localised_abbrev.is_null() {
+        let error_string = format!("Error: abbreviation not found for {}", value);
+        println!("{}", error_string);
+        return Err(tera::Error::msg(error_string));
+    }
+    Ok(serde_json::value::to_value(localised_abbrev).unwrap())
 }
 
 fn join_and_transliterate_if_not_empty(
