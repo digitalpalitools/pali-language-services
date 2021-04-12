@@ -2,14 +2,14 @@
   <thead>
     <tr>
       <td><span class="pls-inflection-table-title">{{ pattern }}</span></td>
-      <td><span class="pls-inflection-col-header">{{ abbrev_map["dual"] }}</span></td>
+      <td><span class="pls-inflection-col-header">{{ "dual" | localise_abbrev(hmap = abbrev_map) }}</span></td>
     </tr>
   </thead>
   <tbody>
     {% for view_model in view_models -%}
     <tr>
       <td>
-        <span class="pls-inflection-row-header">{{ abbrev_map[view_model.name] }}</span>
+        <span class="pls-inflection-row-header">{{ view_model.name | localise_abbrev(hmap = abbrev_map) }}</span>
       </td>
       <td>
         {% for inflection in view_model.inflections -%}
@@ -22,7 +22,7 @@
     {% endfor -%}
 
     <tr>
-      <td><span class="pls-inflection-row-header">{{ abbrev_map["in comps"] }}</span></td>
+      <td><span class="pls-inflection-row-header">{{ "in comps" | localise_abbrev(hmap = abbrev_map) }}</span></td>
       <td colspan="6">
         {% for inflection in in_comps_inflections -%}
         {% if inflection -%}
