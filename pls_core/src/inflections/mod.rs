@@ -37,17 +37,14 @@ pub struct Pali1Metadata {
     pub like: String,
 }
 
-pub struct SqlQuery {
-    exec_sql_query: fn(&str) -> Result<String, String>,
-}
-
-impl SqlQuery {
-    fn new(exec_sql_query: fn(&str) -> Result<String, String>) -> SqlQuery {
-        SqlQuery { exec_sql_query }
-    }
-
-    fn exec(&self, query: &str) -> Result<Vec<Vec<Vec<String>>>, String> {
-        let result_str = (self.exec_sql_query)(&query)?;
+pub trait InflectionsHost<'a> {
+    fn get_locale(&self) -> &'a str;
+    fn get_version(&self) -> &'a str;
+    fn get_url(&self) -> &'a str;
+    fn transliterate(&self, s: &str) -> Result<String, String>;
+    fn exec_sql_query_core(&self, sql: &str) -> Result<String, String>;
+    fn exec_sql_query(&self, sql: &str) -> Result<Vec<Vec<Vec<String>>>, String> {
+        let result_str = self.exec_sql_query_core(sql)?;
         let result: Vec<Vec<Vec<String>>> =
             serde_json::from_str(&result_str).map_err(|e| e.to_string())?;
         Ok(result)
@@ -56,17 +53,12 @@ impl SqlQuery {
 
 pub fn generate_inflection_table(
     pali1: &str,
-    host_url: &str,
-    host_version: &str,
-    transliterate: fn(&str) -> Result<String, String>,
-    exec_sql_query: fn(&str) -> Result<String, String>,
-    locale: &str,
+    host: &dyn InflectionsHost,
 ) -> Result<String, String> {
-    let q = SqlQuery::new(exec_sql_query);
-    let pm = get_pali1_metadata(pali1, transliterate, &q)?;
-    let body = generators::create_html_body(&pm, transliterate, &q, locale)?;
+    let pm = get_pali1_metadata(pali1, host)?;
+    let body = generators::create_html_body(&pm, host)?;
 
-    generate_output(&pm, pali1, host_url, host_version, &body, transliterate)
+    generate_output(&pm, pali1, &body, host)
 }
 
 fn inflection_class_from_str(ic: &str) -> InflectionClass {
@@ -84,16 +76,12 @@ fn get_stem_for_indeclinable(pali1: &str) -> Result<String, String> {
     Ok(regex.replace(pali1, "").to_string())
 }
 
-fn get_pali1_metadata(
-    pali1: &str,
-    transliterate: fn(&str) -> Result<String, String>,
-    q: &SqlQuery,
-) -> Result<Pali1Metadata, String> {
+fn get_pali1_metadata(pali1: &str, host: &dyn InflectionsHost) -> Result<Pali1Metadata, String> {
     let sql = format!(
         r#"select stem, pattern, pos, definition from '_stems' where pāli1 = "{}""#,
         pali1,
     );
-    let results = q.exec(&sql)?;
+    let results = host.exec_sql_query(&sql)?;
     let stem = &results[0][0][0];
     let pattern = &results[0][0][1];
     let mut pm = Pali1Metadata {
@@ -115,13 +103,13 @@ fn get_pali1_metadata(
             r#"select inflection_class, like from '_index' where name = "{}""#,
             pattern
         );
-        let results = q.exec(&sql)?;
+        let results = host.exec_sql_query(&sql)?;
         let inflection_class = &results[0][0][0];
         let like = &results[0][0][1];
 
         pm.inflection_class = inflection_class_from_str(inflection_class);
         pm.like = if !like.is_empty() {
-            format!("like {}", transliterate(like)?)
+            format!("like {}", host.transliterate(like)?)
         } else {
             "irregular".to_string()
         };
@@ -150,10 +138,8 @@ struct ViewModel<'a> {
 fn generate_output(
     pm: &Pali1Metadata,
     pali1: &str,
-    host_url: &str,
-    host_version: &str,
     body: &str,
-    transliterate: fn(&str) -> Result<String, String>,
+    host: &dyn InflectionsHost,
 ) -> Result<String, String> {
     let feedback_form_url = match pm.inflection_class {
         InflectionClass::Conjugation => {
@@ -165,15 +151,15 @@ fn generate_output(
     };
 
     let vm = ViewModel {
-        pali1: &transliterate(pali1)?,
+        pali1: &host.transliterate(pali1)?,
         pattern: &pm.pattern,
         like: &pm.like,
         pos: &pm.pos,
         meaning: &pm.meaning,
         body: &body,
         feedback_form_url: &feedback_form_url,
-        host_url: &host_url,
-        host_version: &host_version,
+        host_url: host.get_url(),
+        host_version: host.get_version(),
     };
 
     let context = Context::from_serialize(&vm).map_err(|e| e.to_string())?;
@@ -203,9 +189,9 @@ impl InflectedWordMetadata {
 
 fn get_inflections_for_pattern(
     pattern: &str,
-    q: &SqlQuery,
+    host: &dyn InflectionsHost,
 ) -> Result<Vec<Vec<Vec<String>>>, String> {
-    q.exec(&format!("Select * from {}", pattern))
+    host.exec_sql_query(&format!("Select * from {}", pattern))
 }
 
 fn get_words_for_indeclinable_stem(pali1: &str) -> Result<Vec<InflectedWordMetadata>, String> {
@@ -220,9 +206,9 @@ fn get_words_for_indeclinable_stem(pali1: &str) -> Result<Vec<InflectedWordMetad
 fn get_words_for_irregular_stem(
     pali1: &str,
     pattern: &str,
-    q: &SqlQuery,
+    host: &dyn InflectionsHost,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
-    let inflections: Vec<Vec<String>> = get_inflections_for_pattern(pattern, &q)?
+    let inflections: Vec<Vec<String>> = get_inflections_for_pattern(pattern, host)?
         .pop()
         .ok_or_else(|| format!("No pattern found for {}", pattern))?;
     let mut inflected_words_irregular_stem: Vec<InflectedWordMetadata> = Vec::new();
@@ -247,10 +233,10 @@ fn get_words_for_regular_stem(
     pali1: &str,
     stem: &str,
     pattern: &str,
-    q: &SqlQuery,
+    host: &dyn InflectionsHost,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
     let mut inflected_words_regular_stem: Vec<InflectedWordMetadata> = Vec::new();
-    let inflections: Vec<Vec<String>> = get_inflections_for_pattern(pattern, &q)?
+    let inflections: Vec<Vec<String>> = get_inflections_for_pattern(pattern, host)?
         .pop()
         .ok_or_else(|| format!("No pattern found for {}", pattern))?;
     for mut inflection_row in inflections {
@@ -274,13 +260,12 @@ pub fn generate_all_inflected_words(
     pali1: &str,
     stem: &str,
     pattern: &str,
-    exec_sql_query: fn(&str) -> Result<String, String>,
+    host: &dyn InflectionsHost,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
-    let q = SqlQuery::new(exec_sql_query);
     let inflected_words: Vec<InflectedWordMetadata> = match stem {
         "-" => get_words_for_indeclinable_stem(pali1)?,
-        "*" => get_words_for_irregular_stem(pali1, pattern, &q)?,
-        _ => get_words_for_regular_stem(pali1, stem, pattern, &q)?,
+        "*" => get_words_for_irregular_stem(pali1, pattern, host)?,
+        _ => get_words_for_regular_stem(pali1, stem, pattern, host)?,
     };
     Ok(inflected_words)
 }
@@ -288,22 +273,18 @@ pub fn generate_all_inflected_words(
 fn join_and_transliterate_if_not_empty(
     stem: &str,
     suffix: &str,
-    transliterate: fn(&str) -> Result<String, String>,
+    host: &dyn InflectionsHost,
 ) -> String {
     if suffix.is_empty() {
         "".to_string()
     } else {
-        transliterate(&format!("{}{}", stem, suffix)).unwrap_or_else(|e| e)
+        host.transliterate(&format!("{}{}", stem, suffix))
+            .unwrap_or_else(|e| e)
     }
 }
 
-fn get_inflections(
-    stem: &str,
-    sql: &str,
-    transliterate: fn(&str) -> Result<String, String>,
-    q: &SqlQuery,
-) -> Vec<String> {
-    let res = match q.exec(&sql) {
+fn get_inflections(stem: &str, sql: &str, host: &dyn InflectionsHost) -> Vec<String> {
+    let res = match host.exec_sql_query(&sql) {
         Ok(x) => {
             if x.len() == 1 && x[0].len() == 1 && x[0][0].len() == 1 {
                 x[0][0][0].to_string()
@@ -316,33 +297,32 @@ fn get_inflections(
 
     let mut inflections: Vec<String> = res
         .split(',')
-        .map(|s| join_and_transliterate_if_not_empty(stem, s, transliterate))
+        .map(|s| join_and_transliterate_if_not_empty(stem, s, host))
         .collect();
     inflections.sort_by(|a, b| Ord::cmp(&string_compare(a, b), &0));
     inflections
 }
 
-fn query_has_no_results(query: &str, q: &SqlQuery) -> Result<bool, String> {
-    let count = &q.exec(&query)?[0][0][0];
+fn query_has_no_results(query: &str, host: &dyn InflectionsHost) -> Result<bool, String> {
+    let count = &host.exec_sql_query(&query)?[0][0][0];
     Ok(count.eq("0"))
 }
 
 pub fn get_abbreviations_for_locale(
-    locale: &str,
-    q: &SqlQuery,
+    host: &dyn InflectionsHost,
 ) -> Result<HashMap<String, String>, String> {
-    let sql: String;
-    if locale == "xx" {
-        sql = "select name, description, '^' || name || '$' from _abbreviations".to_string();
+    let locale = host.get_locale();
+    let sql = if locale == "xx" {
+        "select name, description, '^' || name || '$' from _abbreviations".to_string()
     } else if locale == "en" {
-        sql = "select name, description, name from _abbreviations".to_string();
+        "select name, description, name from _abbreviations".to_string()
     } else {
-        sql = format!(
+        format!(
             r#"select name, description, {} from _abbreviations"#,
             locale
-        );
-    }
-    let res = q.exec(&sql)?;
+        )
+    };
+    let res = host.exec_sql_query(&sql)?;
     let mut abbrev_map = HashMap::new();
     for i in res[0].iter() {
         abbrev_map.insert(i[0].clone(), i[2].clone());
@@ -356,6 +336,42 @@ mod tests {
     use super::*;
     use rusqlite::{Connection, Row, NO_PARAMS};
     use test_case::test_case;
+
+    struct Host<'a> {
+        locale: &'a str,
+        version: &'a str,
+        url: &'a str,
+        psuedo_transliterate: bool,
+    }
+
+    impl<'a> InflectionsHost<'a> for Host<'a> {
+        fn get_locale(&self) -> &'a str {
+            self.locale
+        }
+
+        fn get_version(&self) -> &'a str {
+            self.version
+        }
+
+        fn get_url(&self) -> &'a str {
+            self.url
+        }
+
+        fn transliterate(&self, s: &str) -> Result<String, String> {
+            let ret = if self.psuedo_transliterate {
+                s.to_string()
+            } else {
+                format!("^{}$", s)
+            };
+
+            Ok(ret)
+        }
+
+        fn exec_sql_query_core(&self, sql: &str) -> Result<String, String> {
+            let table = exec_sql_core(&sql).map_err(|x| x.to_string())?;
+            serde_json::to_string(&table).map_err(|x| x.to_string())
+        }
+    }
 
     fn get_row_cells(row: &Row) -> Vec<String> {
         let cells: Vec<String> = row
@@ -390,15 +406,6 @@ mod tests {
         Ok(result)
     }
 
-    fn exec_sql(sql: &str) -> Result<String, String> {
-        let table = exec_sql_core(&sql).map_err(|x| x.to_string())?;
-        serde_json::to_string(&table).map_err(|x| x.to_string())
-    }
-
-    fn psuedo_transliterate(s: &str) -> String {
-        format!("^{}$", s)
-    }
-
     #[test_case("ābādheti","xx"; "conjugation - 1 - xx")]
     #[test_case("vassūpanāyikā","xx"; "declension - 1 - xx ")]
     #[test_case("kamma 1","xx"; "declension - 2 - irreg - xx")]
@@ -411,11 +418,12 @@ mod tests {
     fn inflection_tests(pali1: &str, locale: &str) {
         let html = generate_inflection_table(
             pali1,
-            "test case",
-            "v0.1",
-            |s| Ok(psuedo_transliterate(s)),
-            exec_sql,
-            locale,
+            &Host {
+                locale,
+                url: "test case",
+                version: "v0.1",
+                psuedo_transliterate: true,
+            },
         )
         .unwrap_or_else(|e| e);
         insta::assert_snapshot!(html);
@@ -425,8 +433,15 @@ mod tests {
     #[test_case("ababa 1", "abab", "a_nt"; "regular")]
     #[test_case("ahesuṃ", "*", "ahosi_aor"; "irregular")]
     fn inflected_word_tests(pali1: &str, stem: &str, pattern: &str) {
+        let h = Host {
+            locale: "en",
+            url: "test case",
+            version: "v0.1",
+            psuedo_transliterate: true,
+        };
+
         let output: Vec<(String, String, String, String)> =
-            generate_all_inflected_words(pali1, stem, pattern, exec_sql)
+            generate_all_inflected_words(pali1, stem, pattern, &h)
                 .unwrap_or_else(|_e| Vec::new())
                 .iter_mut()
                 .map(|x| x.clone().simple_representation())

@@ -1,5 +1,5 @@
 use crate::inflections;
-use crate::inflections::{generators, SqlQuery};
+use crate::inflections::{generators, InflectionsHost};
 use serde::Serialize;
 use std::collections::HashMap;
 use tera::{Context, Tera};
@@ -34,13 +34,11 @@ struct TemplateViewModel<'a> {
 pub fn create_html_body(
     pattern: &str,
     stem: &str,
-    transliterate: fn(&str) -> Result<String, String>,
-    q: &SqlQuery,
-    locale: &str,
+    host: &dyn InflectionsHost,
 ) -> Result<String, String> {
     let table_name = &generators::get_table_name_from_pattern(pattern);
-    let tense_view_models = create_tense_view_models(table_name, transliterate, &q, &stem)?;
-    let abbrev_map = inflections::get_abbreviations_for_locale(locale, q)?;
+    let tense_view_models = create_tense_view_models(table_name, &stem, host)?;
+    let abbrev_map = inflections::get_abbreviations_for_locale(host)?;
     let vm = TemplateViewModel {
         stem,
         view_models: tense_view_models,
@@ -59,7 +57,7 @@ struct ParameterValues {
     pub n_values: Vec<String>,
 }
 
-fn query_parameter_values(q: &SqlQuery) -> Result<ParameterValues, String> {
+fn query_parameter_values(host: &dyn InflectionsHost) -> Result<ParameterValues, String> {
     let sql = r#"
         select * from _tense_values where name <> "";
         select * from _person_values where name <> "";
@@ -67,7 +65,7 @@ fn query_parameter_values(q: &SqlQuery) -> Result<ParameterValues, String> {
         select * from _number_values where name <> "" and name <> "dual";
     "#;
 
-    let values = q.exec(sql)?;
+    let values = host.exec_sql_query(sql)?;
     Ok(ParameterValues {
         t_values: values[0].to_owned().into_iter().flatten().collect(),
         p_values: values[1].to_owned().into_iter().flatten().collect(),
@@ -78,11 +76,10 @@ fn query_parameter_values(q: &SqlQuery) -> Result<ParameterValues, String> {
 
 fn create_tense_view_models(
     table_name: &str,
-    transliterate: fn(&str) -> Result<String, String>,
-    q: &SqlQuery,
     stem: &str,
+    host: &dyn InflectionsHost,
 ) -> Result<Vec<TenseViewModel>, String> {
-    let pvs = query_parameter_values(&q)?;
+    let pvs = query_parameter_values(host)?;
 
     let mut view_models: Vec<TenseViewModel> = Vec::new();
     for t in &pvs.t_values {
@@ -91,7 +88,7 @@ fn create_tense_view_models(
                 r#"select cast(count(*) as text) from {} where tense = "{}""#,
                 table_name, t
             ),
-            &q,
+            host,
         )? {
             continue;
         }
@@ -100,7 +97,7 @@ fn create_tense_view_models(
         for ar in &pvs.ar_values {
             ar_values_exist.push(!inflections::query_has_no_results(
                 &format!(r#"select cast(count(*) as text) from '{}' where tense = "{}" and actreflx = "{}""#, table_name, t, ar),
-                &q,
+                host,
             )?);
         }
 
@@ -112,7 +109,7 @@ fn create_tense_view_models(
                         r#"SELECT inflections FROM '{}' WHERE tense = '{}' AND person = '{}' AND actreflx = '{}' AND "number" = '{}'"#,
                         table_name, t, p, ar, n,
                     );
-                    let inflections = inflections::get_inflections(&stem, &sql, transliterate, &q);
+                    let inflections = inflections::get_inflections(&stem, &sql, host);
                     inflections_list.push(inflections);
                 }
             }
