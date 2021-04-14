@@ -61,8 +61,8 @@ impl<'a> InflectionsHost<'a> for Host {
 
 fn main() -> Result<(), String> {
     println!("{:?}", pls_core::alphabet::PALI_ALPHABET_ROMAN);
-    let x = pls_core::alphabet::PaliAlphabet::AA;
-    println!("ā > bh? {:#?}", x > pls_core::alphabet::PaliAlphabet::BH);
+    let x = pls_core::alphabet::PaliAlphabet::Aa;
+    println!("ā > bh? {:#?}", x > pls_core::alphabet::PaliAlphabet::Bh);
 
     let html = pls_core::inflections::generate_inflection_table("kāmaṃ 3", &Host {})?;
     println!("{:#?}", html);
