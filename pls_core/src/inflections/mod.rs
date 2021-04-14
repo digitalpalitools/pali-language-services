@@ -359,9 +359,9 @@ mod tests {
 
         fn transliterate(&self, s: &str) -> Result<String, String> {
             let ret = if self.psuedo_transliterate {
-                s.to_string()
-            } else {
                 format!("^{}$", s)
+            } else {
+                s.to_string()
             };
 
             Ok(ret)
