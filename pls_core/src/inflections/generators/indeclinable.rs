@@ -1,5 +1,5 @@
 use crate::inflections;
-use crate::inflections::InflectionsHost;
+use crate::inflections::PlsInflectionsHost;
 use tera::{Context, Tera};
 
 lazy_static! {
@@ -15,7 +15,7 @@ lazy_static! {
     };
 }
 
-pub fn create_html_body(pali1: &str, host: &dyn InflectionsHost) -> Result<String, String> {
+pub fn create_html_body(pali1: &str, host: &dyn PlsInflectionsHost) -> Result<String, String> {
     let mut context = Context::new();
     let abbrev_map = inflections::get_abbreviations_for_locale(host)?;
 

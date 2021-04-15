@@ -1,4 +1,4 @@
-use pls_core::inflections::InflectionsHost;
+use pls_core::inflections::PlsInflectionsHost;
 use rusqlite::{Connection, Row, NO_PARAMS};
 
 fn get_row_cells(row: &Row) -> Vec<String> {
@@ -36,7 +36,7 @@ fn exec_sql_core(sql: &str) -> rusqlite::Result<Vec<Vec<Vec<String>>>, rusqlite:
 
 struct Host {}
 
-impl<'a> InflectionsHost<'a> for Host {
+impl<'a> PlsInflectionsHost<'a> for Host {
     fn get_locale(&self) -> &'a str {
         "en"
     }

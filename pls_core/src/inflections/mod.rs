@@ -37,7 +37,7 @@ pub struct Pali1Metadata {
     pub like: String,
 }
 
-pub trait InflectionsHost<'a> {
+pub trait PlsInflectionsHost<'a> {
     fn get_locale(&self) -> &'a str;
     fn get_version(&self) -> &'a str;
     fn get_url(&self) -> &'a str;
@@ -53,7 +53,7 @@ pub trait InflectionsHost<'a> {
 
 pub fn generate_inflection_table(
     pali1: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
     let pm = get_pali1_metadata(pali1, host)?;
     let body = generators::create_html_body(&pm, host)?;
@@ -76,7 +76,7 @@ fn get_stem_for_indeclinable(pali1: &str) -> Result<String, String> {
     Ok(regex.replace(pali1, "").to_string())
 }
 
-fn get_pali1_metadata(pali1: &str, host: &dyn InflectionsHost) -> Result<Pali1Metadata, String> {
+fn get_pali1_metadata(pali1: &str, host: &dyn PlsInflectionsHost) -> Result<Pali1Metadata, String> {
     let sql = format!(
         r#"select stem, pattern, pos, definition from '_stems' where pāli1 = "{}""#,
         pali1,
@@ -139,7 +139,7 @@ fn generate_output(
     pm: &Pali1Metadata,
     pali1: &str,
     body: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
     let feedback_form_url = match pm.inflection_class {
         InflectionClass::Conjugation => {
@@ -189,7 +189,7 @@ impl InflectedWordMetadata {
 
 fn get_inflections_for_pattern(
     pattern: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<Vec<Vec<Vec<String>>>, String> {
     host.exec_sql_query(&format!("Select * from {}", pattern))
 }
@@ -206,7 +206,7 @@ fn get_words_for_indeclinable_stem(pali1: &str) -> Result<Vec<InflectedWordMetad
 fn get_words_for_irregular_stem(
     pali1: &str,
     pattern: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
     let inflections: Vec<Vec<String>> = get_inflections_for_pattern(pattern, host)?
         .pop()
@@ -233,7 +233,7 @@ fn get_words_for_regular_stem(
     pali1: &str,
     stem: &str,
     pattern: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
     let mut inflected_words_regular_stem: Vec<InflectedWordMetadata> = Vec::new();
     let inflections: Vec<Vec<String>> = get_inflections_for_pattern(pattern, host)?
@@ -260,7 +260,7 @@ pub fn generate_all_inflected_words(
     pali1: &str,
     stem: &str,
     pattern: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<Vec<InflectedWordMetadata>, String> {
     let inflected_words: Vec<InflectedWordMetadata> = match stem {
         "-" => get_words_for_indeclinable_stem(pali1)?,
@@ -273,7 +273,7 @@ pub fn generate_all_inflected_words(
 fn join_and_transliterate_if_not_empty(
     stem: &str,
     suffix: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> String {
     if suffix.is_empty() {
         "".to_string()
@@ -283,7 +283,7 @@ fn join_and_transliterate_if_not_empty(
     }
 }
 
-fn get_inflections(stem: &str, sql: &str, host: &dyn InflectionsHost) -> Vec<String> {
+fn get_inflections(stem: &str, sql: &str, host: &dyn PlsInflectionsHost) -> Vec<String> {
     let res = match host.exec_sql_query(&sql) {
         Ok(x) => {
             if x.len() == 1 && x[0].len() == 1 && x[0][0].len() == 1 {
@@ -303,13 +303,13 @@ fn get_inflections(stem: &str, sql: &str, host: &dyn InflectionsHost) -> Vec<Str
     inflections
 }
 
-fn query_has_no_results(query: &str, host: &dyn InflectionsHost) -> Result<bool, String> {
+fn query_has_no_results(query: &str, host: &dyn PlsInflectionsHost) -> Result<bool, String> {
     let count = &host.exec_sql_query(&query)?[0][0][0];
     Ok(count.eq("0"))
 }
 
 pub fn get_abbreviations_for_locale(
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<HashMap<String, String>, String> {
     let locale = host.get_locale();
     let sql = if locale == "xx" {
@@ -344,7 +344,7 @@ mod tests {
         psuedo_transliterate: bool,
     }
 
-    impl<'a> InflectionsHost<'a> for Host<'a> {
+    impl<'a> PlsInflectionsHost<'a> for Host<'a> {
         fn get_locale(&self) -> &'a str {
             self.locale
         }

@@ -1,5 +1,5 @@
 use crate::inflections;
-use crate::inflections::{generators, InflectionsHost};
+use crate::inflections::{generators, PlsInflectionsHost};
 use serde::Serialize;
 use std::collections::HashMap;
 use tera::{Context, Tera};
@@ -37,7 +37,7 @@ pub fn create_html_body(
     pron_type: &str,
     pattern: &str,
     stem: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
     let table_name = &generators::get_table_name_from_pattern(pattern);
     let view_models = create_case_view_models(&pron_type, &table_name, &stem, host)?;
@@ -63,7 +63,7 @@ fn create_case_view_models(
     pron_type: &str,
     table_name: &str,
     stem: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<Vec<CaseViewModel>, String> {
     let sql = r#"
         select * from _case_values where name <> "" and name <> "voc";

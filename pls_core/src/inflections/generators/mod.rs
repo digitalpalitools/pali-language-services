@@ -1,4 +1,4 @@
-use crate::inflections::{InflectionClass, InflectionsHost, Pali1Metadata};
+use crate::inflections::{InflectionClass, Pali1Metadata, PlsInflectionsHost};
 
 mod conjugation;
 mod declension;
@@ -6,7 +6,10 @@ mod declension_pron_dual;
 mod declension_pron_x;
 mod indeclinable;
 
-pub fn create_html_body(pm: &Pali1Metadata, host: &dyn InflectionsHost) -> Result<String, String> {
+pub fn create_html_body(
+    pm: &Pali1Metadata,
+    host: &dyn PlsInflectionsHost,
+) -> Result<String, String> {
     match pm.inflection_class {
         InflectionClass::Indeclinable => indeclinable::create_html_body(&pm.pali1, host),
         InflectionClass::Conjugation => conjugation::create_html_body(&pm.pattern, &pm.stem, host),

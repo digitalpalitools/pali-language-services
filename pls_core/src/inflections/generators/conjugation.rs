@@ -1,5 +1,5 @@
 use crate::inflections;
-use crate::inflections::{generators, InflectionsHost};
+use crate::inflections::{generators, PlsInflectionsHost};
 use serde::Serialize;
 use std::collections::HashMap;
 use tera::{Context, Tera};
@@ -34,7 +34,7 @@ struct TemplateViewModel<'a> {
 pub fn create_html_body(
     pattern: &str,
     stem: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
     let table_name = &generators::get_table_name_from_pattern(pattern);
     let tense_view_models = create_tense_view_models(table_name, &stem, host)?;
@@ -57,7 +57,7 @@ struct ParameterValues {
     pub n_values: Vec<String>,
 }
 
-fn query_parameter_values(host: &dyn InflectionsHost) -> Result<ParameterValues, String> {
+fn query_parameter_values(host: &dyn PlsInflectionsHost) -> Result<ParameterValues, String> {
     let sql = r#"
         select * from _tense_values where name <> "";
         select * from _person_values where name <> "";
@@ -77,7 +77,7 @@ fn query_parameter_values(host: &dyn InflectionsHost) -> Result<ParameterValues,
 fn create_tense_view_models(
     table_name: &str,
     stem: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<Vec<TenseViewModel>, String> {
     let pvs = query_parameter_values(host)?;
 

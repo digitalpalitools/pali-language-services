@@ -1,5 +1,5 @@
 use crate::inflections;
-use crate::inflections::{generators, InflectionsHost};
+use crate::inflections::{generators, PlsInflectionsHost};
 use serde::Serialize;
 use std::collections::HashMap;
 use tera::{Context, Tera};
@@ -36,7 +36,7 @@ struct TemplateViewModel<'a> {
 pub fn create_html_body(
     pattern: &str,
     stem: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
     let table_name = &generators::get_table_name_from_pattern(pattern);
     let (view_models, g_values_exist) = create_case_view_models(&table_name, stem, host)?;
@@ -64,7 +64,7 @@ struct ParameterValues {
     pub n_values: Vec<String>,
 }
 
-fn query_parameter_values(host: &dyn InflectionsHost) -> Result<ParameterValues, String> {
+fn query_parameter_values(host: &dyn PlsInflectionsHost) -> Result<ParameterValues, String> {
     let sql = r#"
         select * from _case_values where name <> "";
         select * from _gender_values where name <> "";
@@ -82,7 +82,7 @@ fn query_parameter_values(host: &dyn InflectionsHost) -> Result<ParameterValues,
 fn create_case_view_models(
     table_name: &str,
     stem: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<(Vec<CaseViewModel>, Vec<bool>), String> {
     let pvs = query_parameter_values(host)?;
 
@@ -124,7 +124,7 @@ fn create_case_view_models(
 fn create_template_view_model_for_in_comps(
     table_name: &str,
     stem: &str,
-    host: &dyn InflectionsHost,
+    host: &dyn PlsInflectionsHost,
 ) -> Vec<String> {
     let sql = format!(
         r#"SELECT inflections FROM '{}' WHERE "case" = '' AND gender = '' AND "number" = ''"#,
