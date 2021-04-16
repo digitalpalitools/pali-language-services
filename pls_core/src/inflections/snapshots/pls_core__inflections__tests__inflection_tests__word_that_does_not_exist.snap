@@ -1,0 +1,6 @@
+---
+source: pls_core/src/inflections/mod.rs
+expression: html
+
+---
+Word 'xyz' not found in db.

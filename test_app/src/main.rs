@@ -57,6 +57,10 @@ impl<'a> PlsInflectionsHost<'a> for Host {
         let table = exec_sql_core(&sql).map_err(|x| x.to_string())?;
         serde_json::to_string(&table).map_err(|x| x.to_string())
     }
+
+    fn log_warning(&self, msg: &str) {
+        println!("WARNING: {}", msg)
+    }
 }
 
 fn main() -> Result<(), String> {
@@ -64,7 +68,7 @@ fn main() -> Result<(), String> {
     let x = pls_core::alphabet::PaliAlphabet::Aa;
     println!("ā > bh? {:#?}", x > pls_core::alphabet::PaliAlphabet::Bh);
 
-    let html = pls_core::inflections::generate_inflection_table("kāmaṃ 3", &Host {})?;
+    let html = pls_core::inflections::generate_inflection_table("kāmaṃ 31", &Host {})?;
     println!("{:#?}", html);
 
     Ok(())

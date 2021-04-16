@@ -49,6 +49,7 @@ pub trait PlsInflectionsHost<'a> {
             serde_json::from_str(&result_str).map_err(|e| e.to_string())?;
         Ok(result)
     }
+    fn log_warning(&self, msg: &str);
 }
 
 pub fn generate_inflection_table(
@@ -82,6 +83,12 @@ fn get_pali1_metadata(pali1: &str, host: &dyn PlsInflectionsHost) -> Result<Pali
         pali1,
     );
     let results = host.exec_sql_query(&sql)?;
+    if results.len() != 1 || results[0].len() != 1 || results[0][0].len() != 4 {
+        let msg =  format!("Word '{}' not found in db.", pali1);
+        host.log_warning(&msg);
+        return Err(msg);
+    }
+
     let stem = &results[0][0][0];
     let pattern = &results[0][0][1];
     let mut pm = Pali1Metadata {
@@ -371,6 +378,10 @@ mod tests {
             let table = exec_sql_core(&sql).map_err(|x| x.to_string())?;
             serde_json::to_string(&table).map_err(|x| x.to_string())
         }
+
+        fn log_warning(&self, msg: &str) {
+            println!("WARNING: {}", msg)
+        }
     }
 
     fn get_row_cells(row: &Row) -> Vec<String> {
@@ -415,6 +426,7 @@ mod tests {
     #[test_case("taṃ 3","xx"; "declension - 4 - pron_2nd - xx")]
     #[test_case("pañca","xx"; "declension - 5 - only x gender - xx")]
     #[test_case("ābādheti","en"; "conjugation - 1 - en")]
+    #[test_case("xyz","xxx"; "word that does not exist")]
     fn inflection_tests(pali1: &str, locale: &str) {
         let html = generate_inflection_table(
             pali1,
