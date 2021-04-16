@@ -84,7 +84,7 @@ fn get_pali1_metadata(pali1: &str, host: &dyn PlsInflectionsHost) -> Result<Pali
     );
     let results = host.exec_sql_query(&sql)?;
     if results.len() != 1 || results[0].len() != 1 || results[0][0].len() != 4 {
-        let msg =  format!("Word '{}' not found in db.", pali1);
+        let msg = format!("Word '{}' not found in db.", pali1);
         host.log_warning(&msg);
         return Err(msg);
     }
