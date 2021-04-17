@@ -1,5 +1,5 @@
 use crate::inflections;
-use crate::inflections::{generators, localise_abbrev, SqlQuery};
+use crate::inflections::{generators, localise_abbrev, PlsInflectionsHost};
 use serde::Serialize;
 use std::collections::HashMap;
 use tera::{Context, Tera};
@@ -37,16 +37,12 @@ struct TemplateViewModel<'a> {
 pub fn create_html_body(
     pattern: &str,
     stem: &str,
-    transliterate: fn(&str) -> Result<String, String>,
-    q: &SqlQuery,
-    locale: &str,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
     let table_name = &generators::get_table_name_from_pattern(pattern);
-    let (view_models, g_values_exist) =
-        create_case_view_models(&table_name, transliterate, &q, stem)?;
-    let abbrev_map = inflections::get_abbreviations_for_locale(locale, q)?;
-    let in_comps_inflections =
-        create_template_view_model_for_in_comps(table_name, transliterate, &q, stem);
+    let (view_models, g_values_exist) = create_case_view_models(&table_name, stem, host)?;
+    let abbrev_map = inflections::get_abbreviations_for_locale(host)?;
+    let in_comps_inflections = create_template_view_model_for_in_comps(table_name, stem, host);
 
     let template_view_model = TemplateViewModel {
         pattern,
@@ -69,14 +65,14 @@ struct ParameterValues {
     pub n_values: Vec<String>,
 }
 
-fn query_parameter_values(q: &SqlQuery) -> Result<ParameterValues, String> {
+fn query_parameter_values(host: &dyn PlsInflectionsHost) -> Result<ParameterValues, String> {
     let sql = r#"
         select * from _case_values where name <> "";
         select * from _gender_values where name <> "";
         select * from _number_values where name <> "" and name <> "dual";
     "#;
 
-    let values = q.exec(sql)?;
+    let values = host.exec_sql_query(sql)?;
     Ok(ParameterValues {
         c_values: values[0].to_owned().into_iter().flatten().collect(),
         g_values: values[1].to_owned().into_iter().flatten().collect(),
@@ -86,11 +82,10 @@ fn query_parameter_values(q: &SqlQuery) -> Result<ParameterValues, String> {
 
 fn create_case_view_models(
     table_name: &str,
-    transliterate: fn(&str) -> Result<String, String>,
-    q: &SqlQuery,
     stem: &str,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<(Vec<CaseViewModel>, Vec<bool>), String> {
-    let pvs = query_parameter_values(&q)?;
+    let pvs = query_parameter_values(host)?;
 
     let mut g_values_exist: Vec<bool> = Vec::new();
     for g in &pvs.g_values {
@@ -99,7 +94,7 @@ fn create_case_view_models(
                 r#"select cast(count(*) as text) from '{}' where gender = "{}""#,
                 table_name, g
             ),
-            &q,
+            host,
         )?);
     }
 
@@ -112,7 +107,7 @@ fn create_case_view_models(
                     r#"SELECT inflections FROM '{}' WHERE "case" = '{}' AND gender = '{}' AND "number" = '{}'"#,
                     table_name, c, g, n
                 );
-                let inflections = inflections::get_inflections(&stem, &sql, transliterate, &q);
+                let inflections = inflections::get_inflections(&stem, &sql, host);
                 inflections_list.push(inflections);
             }
         }
@@ -129,14 +124,13 @@ fn create_case_view_models(
 
 fn create_template_view_model_for_in_comps(
     table_name: &str,
-    transliterate: fn(&str) -> Result<String, String>,
-    q: &SqlQuery,
     stem: &str,
+    host: &dyn PlsInflectionsHost,
 ) -> Vec<String> {
     let sql = format!(
         r#"SELECT inflections FROM '{}' WHERE "case" = '' AND gender = '' AND "number" = ''"#,
         table_name
     );
 
-    inflections::get_inflections(&stem, &sql, transliterate, &q)
+    inflections::get_inflections(&stem, &sql, host)
 }

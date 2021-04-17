@@ -1,5 +1,5 @@
 use crate::inflections;
-use crate::inflections::{generators, localise_abbrev, SqlQuery};
+use crate::inflections::{generators, localise_abbrev, PlsInflectionsHost};
 use serde::Serialize;
 use std::collections::HashMap;
 use tera::{Context, Tera};
@@ -36,19 +36,16 @@ struct TemplateViewModel<'a> {
 pub fn create_html_body(
     pattern: &str,
     stem: &str,
-    transliterate: fn(&str) -> Result<String, String>,
-    q: &SqlQuery,
-    locale: &str,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
     let table_name = &generators::get_table_name_from_pattern(pattern);
-    let view_models = create_case_view_models(table_name, transliterate, &q, &stem)?;
-    let in_comps_inflections =
-        create_template_view_model_for_in_comps(table_name, transliterate, &q, &stem);
-    let abbrev_map = inflections::get_abbreviations_for_locale(locale, q)?;
+    let view_models = create_case_view_models(table_name, &stem, host)?;
+    let in_comps_inflections = create_template_view_model_for_in_comps(table_name, &stem, host);
+    let abbrev_map = inflections::get_abbreviations_for_locale(host)?;
 
     let vm = TemplateViewModel {
         pattern,
-        stem: &transliterate(stem)?,
+        stem: &host.transliterate(stem)?,
         view_models,
         in_comps_inflections,
         abbrev_map,
@@ -62,19 +59,18 @@ pub fn create_html_body(
 
 fn create_case_view_models(
     table_name: &str,
-    transliterate: fn(&str) -> Result<String, String>,
-    q: &SqlQuery,
     stem: &str,
+    host: &dyn PlsInflectionsHost,
 ) -> Result<Vec<CaseViewModel>, String> {
     let sql = r#"select * from _case_values where name <> "" and name <> "voc""#;
-    let values = q.exec(sql)?;
+    let values = host.exec_sql_query(sql)?;
     let mut view_models: Vec<CaseViewModel> = Vec::new();
     for case in values[0].iter().flatten() {
         let sql = format!(
             r#"SELECT inflections FROM '{}' WHERE "case" = '{}' AND special_pron_class = 'dual' AND "number" = 'sg'"#,
             table_name, case
         );
-        let inflections = inflections::get_inflections(&stem, &sql, transliterate, &q);
+        let inflections = inflections::get_inflections(&stem, &sql, host);
 
         let view_model = CaseViewModel {
             name: case.to_owned(),
@@ -88,14 +84,13 @@ fn create_case_view_models(
 
 fn create_template_view_model_for_in_comps(
     table_name: &str,
-    transliterate: fn(&str) -> Result<String, String>,
-    q: &SqlQuery,
     stem: &str,
+    host: &dyn PlsInflectionsHost,
 ) -> Vec<String> {
     let sql = format!(
         r#"SELECT inflections FROM '{}' WHERE "case" = '' AND special_pron_class = '' AND "number" = ''"#,
         table_name
     );
 
-    inflections::get_inflections(&stem, &sql, transliterate, &q)
+    inflections::get_inflections(&stem, &sql, host)
 }
