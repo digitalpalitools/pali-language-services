@@ -3,8 +3,5 @@ source: pls_core/src/inflections/mod.rs
 expression: output
 
 ---
-- - a
-  - a 1
-  - " "
-  - ind
+- a
 

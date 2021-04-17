@@ -175,104 +175,68 @@ fn generate_output(
         .map_err(|e| e.to_string())
 }
 
-#[derive(Debug, Clone)]
-pub struct InflectedWordMetadata {
-    pub inflected_word: String,
-    pub stem_word: String,
-    pub grammar: String,
-    pub comment: String,
-}
-
-impl InflectedWordMetadata {
-    pub fn simple_representation(self) -> (String, String, String, String) {
-        (
-            self.inflected_word,
-            self.stem_word,
-            self.grammar,
-            self.comment,
-        )
-    }
-}
-
-fn get_inflections_for_pattern(
+fn get_inflection_suffixes_for_pattern(
     pattern: &str,
     host: &dyn PlsInflectionsHost,
 ) -> Result<Vec<Vec<Vec<String>>>, String> {
     host.exec_sql_query(&format!("Select * from {}", pattern))
 }
 
-fn get_words_for_indeclinable_stem(pali1: &str) -> Result<Vec<InflectedWordMetadata>, String> {
-    Ok(vec![InflectedWordMetadata {
-        inflected_word: get_stem_for_indeclinable(pali1)?,
-        stem_word: pali1.to_string(),
-        grammar: " ".to_string(),
-        comment: "ind".to_string(),
-    }])
+fn get_all_inflections_for_indeclinables(pali1: &str) -> Result<Vec<String>, String> {
+    Ok(vec![get_stem_for_indeclinable(pali1)?])
 }
 
-fn get_words_for_irregular_stem(
-    pali1: &str,
+fn get_all_inflections_for_irregulars(
     pattern: &str,
     host: &dyn PlsInflectionsHost,
-) -> Result<Vec<InflectedWordMetadata>, String> {
-    let inflections: Vec<Vec<String>> = get_inflections_for_pattern(pattern, host)?
+) -> Result<Vec<String>, String> {
+    let suffixes: Vec<Vec<String>> = get_inflection_suffixes_for_pattern(pattern, host)?
         .pop()
         .ok_or_else(|| format!("No pattern found for {}", pattern))?;
-    let mut inflected_words_irregular_stem: Vec<InflectedWordMetadata> = Vec::new();
-    for mut inflection_row in inflections {
-        for inflection in inflection_row
+    let mut inflections: Vec<String> = Vec::new();
+    for mut suffix_row in suffixes {
+        for suffix in suffix_row
             .pop()
             .ok_or_else(|| format!("No pattern found for {}", pattern))?
             .split(',')
         {
-            inflected_words_irregular_stem.push(InflectedWordMetadata {
-                inflected_word: inflection.to_string(),
-                stem_word: pali1.to_string(),
-                grammar: inflection_row.join(" ").to_string(),
-                comment: "*".to_string(),
-            })
+            inflections.push(suffix.to_string())
         }
     }
-    Ok(inflected_words_irregular_stem)
+    Ok(inflections)
 }
 
-fn get_words_for_regular_stem(
-    pali1: &str,
+fn get_all_inflections_for_regulars(
     stem: &str,
     pattern: &str,
     host: &dyn PlsInflectionsHost,
-) -> Result<Vec<InflectedWordMetadata>, String> {
-    let mut inflected_words_regular_stem: Vec<InflectedWordMetadata> = Vec::new();
-    let inflections: Vec<Vec<String>> = get_inflections_for_pattern(pattern, host)?
+) -> Result<Vec<String>, String> {
+    let mut inflections: Vec<String> = Vec::new();
+    let suffixes: Vec<Vec<String>> = get_inflection_suffixes_for_pattern(pattern, host)?
         .pop()
         .ok_or_else(|| format!("No pattern found for {}", pattern))?;
-    for mut inflection_row in inflections {
-        for inflection in inflection_row
+    for mut suffix_row in suffixes {
+        for suffix in suffix_row
             .pop()
             .ok_or_else(|| format!("No pattern found for {}", pattern))?
             .split(',')
         {
-            inflected_words_regular_stem.push(InflectedWordMetadata {
-                inflected_word: [stem, inflection].join("").to_string(),
-                stem_word: pali1.to_string(),
-                grammar: inflection_row.join(" ").to_string(),
-                comment: " ".to_string(),
-            })
+            inflections.push(format!("{}{}", stem, suffix))
         }
     }
-    Ok(inflected_words_regular_stem)
+    Ok(inflections)
 }
 
-pub fn generate_all_inflected_words(
+pub fn generate_all_inflections(
     pali1: &str,
     stem: &str,
     pattern: &str,
     host: &dyn PlsInflectionsHost,
-) -> Result<Vec<InflectedWordMetadata>, String> {
-    let inflected_words: Vec<InflectedWordMetadata> = match stem {
-        "-" => get_words_for_indeclinable_stem(pali1)?,
-        "*" => get_words_for_irregular_stem(pali1, pattern, host)?,
-        _ => get_words_for_regular_stem(pali1, stem, pattern, host)?,
+) -> Result<Vec<String>, String> {
+    let inflected_words: Vec<String> = match stem {
+        "-" => get_all_inflections_for_indeclinables(pali1)?,
+        "*" => get_all_inflections_for_irregulars(pattern, host)?,
+        _ => get_all_inflections_for_regulars(stem, pattern, host)?,
     };
     Ok(inflected_words)
 }
@@ -452,12 +416,8 @@ mod tests {
             psuedo_transliterate: true,
         };
 
-        let output: Vec<(String, String, String, String)> =
-            generate_all_inflected_words(pali1, stem, pattern, &h)
-                .unwrap_or_else(|_e| Vec::new())
-                .iter_mut()
-                .map(|x| x.clone().simple_representation())
-                .collect();
+        let output: Vec<String> =
+            generate_all_inflections(pali1, stem, pattern, &h).unwrap_or_else(|_e| Vec::new());
 
         insta::assert_yaml_snapshot!(output);
     }
