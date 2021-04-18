@@ -273,7 +273,7 @@ pub fn generate_all_inflected_words(
 pub fn localise_abbrev(value: &Value, arg: &HashMap<String, Value>) -> tera::Result<Value> {
     let localised_abbrev = &arg["hmap"][value
         .as_str()
-        .ok_or_else(|| format!("Error while converting value to str."))?];
+        .ok_or_else(|| "Error while converting value to str.".to_string())?];
     if localised_abbrev.is_null() {
         let error_string = format!("Error: abbreviation not found for {}", value);
         println!("{}", error_string);
