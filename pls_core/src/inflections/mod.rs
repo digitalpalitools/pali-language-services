@@ -62,6 +62,26 @@ pub fn generate_inflection_table(
     generate_output(&pm, pali1, &body, host)
 }
 
+pub fn generate_all_inflections(
+    pali1: &str,
+    host: &dyn PlsInflectionsHost,
+) -> Result<Vec<String>, String> {
+    let pm = get_pali1_metadata(pali1, host)?;
+    let table_name = get_table_name_from_pattern(&pm.pattern);
+
+    let inflected_words: Vec<String> = match pm.stem.as_ref() {
+        "-" => get_all_inflections_for_indeclinables(pali1)?,
+        "*" => get_all_inflections_for_irregulars(&table_name, host)?,
+        _ => get_all_inflections_for_regulars(&pm.stem, &table_name, host)?,
+    };
+
+    Ok(inflected_words)
+}
+
+fn get_table_name_from_pattern(pattern: &str) -> String {
+    pattern.replace(" ", "_")
+}
+
 fn inflection_class_from_str(ic: &str) -> InflectionClass {
     match ic {
         "verb" => InflectionClass::Conjugation,
@@ -225,20 +245,6 @@ fn get_all_inflections_for_regulars(
         }
     }
     Ok(inflections)
-}
-
-pub fn generate_all_inflections(
-    pali1: &str,
-    stem: &str,
-    pattern: &str,
-    host: &dyn PlsInflectionsHost,
-) -> Result<Vec<String>, String> {
-    let inflected_words: Vec<String> = match stem {
-        "-" => get_all_inflections_for_indeclinables(pali1)?,
-        "*" => get_all_inflections_for_irregulars(pattern, host)?,
-        _ => get_all_inflections_for_regulars(stem, pattern, host)?,
-    };
-    Ok(inflected_words)
 }
 
 fn join_and_transliterate_if_not_empty(
@@ -405,11 +411,11 @@ mod tests {
         insta::assert_snapshot!(html);
     }
 
-    #[test_case("a 1", "-", ""; "indeclinable")]
-    #[test_case("ababa 1", "abab", "a_nt"; "regular")]
-    #[test_case("ahesuṃ", "*", "ahosi_aor"; "irregular")]
-    fn inflected_word_tests(pali1: &str, stem: &str, pattern: &str) {
-        let h = Host {
+    #[test_case("a 1"; "indeclinable")]
+    #[test_case("ababa 1"; "regular")]
+    #[test_case("ahesuṃ"; "irregular")]
+    fn inflected_word_tests(pali1: &str) {
+        let host = Host {
             locale: "en",
             url: "test case",
             version: "v0.1",
@@ -417,7 +423,7 @@ mod tests {
         };
 
         let output: Vec<String> =
-            generate_all_inflections(pali1, stem, pattern, &h).unwrap_or_else(|_e| Vec::new());
+            generate_all_inflections(pali1, &host).unwrap_or_else(|_e| Vec::new());
 
         insta::assert_yaml_snapshot!(output);
     }

@@ -1,5 +1,30 @@
 use pls_core::inflections::PlsInflectionsHost;
 use rusqlite::{Connection, Row, NO_PARAMS};
+use std::path::PathBuf;
+
+fn main() -> Result<(), String> {
+    println!("{:?}", pls_core::alphabet::PALI_ALPHABET_ROMAN);
+    let x = pls_core::alphabet::PaliAlphabet::Aa;
+    println!("ā > bh? {:#?}", x > pls_core::alphabet::PaliAlphabet::Bh);
+
+    let html = pls_core::inflections::generate_all_inflections("ababa 1", &Host {})?;
+    println!("{:#?}", html);
+
+    Ok(())
+}
+
+fn resolve_file_in_manifest_dir(file_name: &str) -> Result<PathBuf, String> {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+    let p1 = root.join(file_name);
+    let file_path = if p1.exists() {
+        p1
+    } else {
+        let p1 = root.parent().ok_or("")?;
+        p1.join(file_name)
+    };
+
+    Ok(file_path)
+}
 
 fn get_row_cells(row: &Row) -> Vec<String> {
     let cells: Vec<String> = row
@@ -18,7 +43,8 @@ fn get_row_cells(row: &Row) -> Vec<String> {
 }
 
 fn exec_sql_core(sql: &str) -> rusqlite::Result<Vec<Vec<Vec<String>>>, rusqlite::Error> {
-    let conn = Connection::open("../inflections.db")?;
+    let conn =
+        Connection::open(&resolve_file_in_manifest_dir("inflections.db").expect("must exist"))?;
     let mut result: Vec<Vec<Vec<String>>> = Vec::new();
     for s in sql.split(';').filter(|s| !s.trim().is_empty()) {
         let mut stmt = conn.prepare(&s)?;
@@ -61,15 +87,4 @@ impl<'a> PlsInflectionsHost<'a> for Host {
     fn log_warning(&self, msg: &str) {
         println!("WARNING: {}", msg)
     }
-}
-
-fn main() -> Result<(), String> {
-    println!("{:?}", pls_core::alphabet::PALI_ALPHABET_ROMAN);
-    let x = pls_core::alphabet::PaliAlphabet::Aa;
-    println!("ā > bh? {:#?}", x > pls_core::alphabet::PaliAlphabet::Bh);
-
-    let html = pls_core::inflections::generate_inflection_table("kāmaṃ 31", &Host {})?;
-    println!("{:#?}", html);
-
-    Ok(())
 }

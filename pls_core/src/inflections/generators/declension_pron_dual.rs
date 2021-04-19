@@ -1,5 +1,5 @@
 use crate::inflections;
-use crate::inflections::{generators, PlsInflectionsHost};
+use crate::inflections::{get_table_name_from_pattern, PlsInflectionsHost};
 use serde::Serialize;
 use std::collections::HashMap;
 use tera::{Context, Tera};
@@ -37,7 +37,7 @@ pub fn create_html_body(
     stem: &str,
     host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
-    let table_name = &generators::get_table_name_from_pattern(pattern);
+    let table_name = &get_table_name_from_pattern(pattern);
     let view_models = create_case_view_models(table_name, &stem, host)?;
     let in_comps_inflections = create_template_view_model_for_in_comps(table_name, &stem, host);
     let abbrev_map = inflections::get_abbreviations_for_locale(host)?;
