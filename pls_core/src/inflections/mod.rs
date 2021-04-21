@@ -461,4 +461,36 @@ mod tests {
 
         insta::assert_yaml_snapshot!(output);
     }
+
+    #[test_case("xx", "missingAbbreviation")]
+    #[test_case("xx", "pl")]
+    #[test_case("en", "pl")]
+    fn localise_abbrev_filter_test(locale: &str, word: &str) {
+        let mut tera = Tera::default();
+        tera.register_filter("localise_abbrev", localise_abbrev);
+        tera.add_raw_templates(vec![(
+            "test_file",
+            include_str!("./generators/templates/test_file.html"),
+        )])
+        .expect("Unexpected failure adding template");
+        tera.autoescape_on(vec!["html"]);
+
+        let host = Host {
+            locale,
+            url: "test case",
+            version: "v0.1",
+            psuedo_transliterate: true,
+        };
+
+        let abbrev_map = get_abbreviations_for_locale(&host);
+        let mut context = Context::new();
+        context.insert("abbrev_map", &abbrev_map.ok());
+        context.insert("word", &word);
+
+        let html = tera
+            .render("test_file", &context)
+            .map_err(|e| e.to_string())
+            .unwrap_or_else(|e| e);
+        insta::assert_snapshot!(html);
+    }
 }
