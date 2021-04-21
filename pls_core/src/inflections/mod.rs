@@ -49,6 +49,7 @@ pub trait PlsInflectionsHost<'a> {
             serde_json::from_str(&result_str).map_err(|e| e.to_string())?;
         Ok(result)
     }
+    fn log_warning(&self, msg: &str);
 }
 
 pub fn generate_inflection_table(
@@ -59,6 +60,26 @@ pub fn generate_inflection_table(
     let body = generators::create_html_body(&pm, host)?;
 
     generate_output(&pm, pali1, &body, host)
+}
+
+pub fn generate_all_inflections(
+    pali1: &str,
+    host: &dyn PlsInflectionsHost,
+) -> Result<Vec<String>, String> {
+    let pm = get_pali1_metadata(pali1, host)?;
+    let table_name = get_table_name_from_pattern(&pm.pattern);
+
+    let inflected_words: Vec<String> = match pm.stem.as_ref() {
+        "-" => get_all_inflections_for_indeclinables(pali1)?,
+        "*" => get_all_inflections_for_irregulars(&table_name, host)?,
+        _ => get_all_inflections_for_regulars(&pm.stem, &table_name, host)?,
+    };
+
+    Ok(inflected_words)
+}
+
+fn get_table_name_from_pattern(pattern: &str) -> String {
+    pattern.replace(" ", "_")
 }
 
 fn inflection_class_from_str(ic: &str) -> InflectionClass {
@@ -82,6 +103,10 @@ fn get_pali1_metadata(pali1: &str, host: &dyn PlsInflectionsHost) -> Result<Pali
         pali1,
     );
     let results = host.exec_sql_query(&sql)?;
+    if results.len() != 1 || results[0].len() != 1 || results[0][0].len() != 4 {
+        return Err(format!("Word '{}' not found in db.", pali1));
+    }
+
     let stem = &results[0][0][0];
     let pattern = &results[0][0][1];
     let mut pm = Pali1Metadata {
@@ -168,106 +193,56 @@ fn generate_output(
         .map_err(|e| e.to_string())
 }
 
-#[derive(Debug, Clone)]
-pub struct InflectedWordMetadata {
-    pub inflected_word: String,
-    pub stem_word: String,
-    pub grammar: String,
-    pub comment: String,
-}
-
-impl InflectedWordMetadata {
-    pub fn simple_representation(self) -> (String, String, String, String) {
-        (
-            self.inflected_word,
-            self.stem_word,
-            self.grammar,
-            self.comment,
-        )
-    }
-}
-
-fn get_inflections_for_pattern(
+fn get_inflection_suffixes_for_pattern(
     pattern: &str,
     host: &dyn PlsInflectionsHost,
 ) -> Result<Vec<Vec<Vec<String>>>, String> {
     host.exec_sql_query(&format!("Select * from {}", pattern))
 }
 
-fn get_words_for_indeclinable_stem(pali1: &str) -> Result<Vec<InflectedWordMetadata>, String> {
-    Ok(vec![InflectedWordMetadata {
-        inflected_word: get_stem_for_indeclinable(pali1)?,
-        stem_word: pali1.to_string(),
-        grammar: " ".to_string(),
-        comment: "ind".to_string(),
-    }])
+fn get_all_inflections_for_indeclinables(pali1: &str) -> Result<Vec<String>, String> {
+    Ok(vec![get_stem_for_indeclinable(pali1)?])
 }
 
-fn get_words_for_irregular_stem(
-    pali1: &str,
+fn get_all_inflections_for_irregulars(
     pattern: &str,
     host: &dyn PlsInflectionsHost,
-) -> Result<Vec<InflectedWordMetadata>, String> {
-    let inflections: Vec<Vec<String>> = get_inflections_for_pattern(pattern, host)?
+) -> Result<Vec<String>, String> {
+    let suffixes: Vec<Vec<String>> = get_inflection_suffixes_for_pattern(pattern, host)?
         .pop()
         .ok_or_else(|| format!("No pattern found for {}", pattern))?;
-    let mut inflected_words_irregular_stem: Vec<InflectedWordMetadata> = Vec::new();
-    for mut inflection_row in inflections {
-        for inflection in inflection_row
+    let mut inflections: Vec<String> = Vec::new();
+    for mut suffix_row in suffixes {
+        for suffix in suffix_row
             .pop()
             .ok_or_else(|| format!("No pattern found for {}", pattern))?
             .split(',')
         {
-            inflected_words_irregular_stem.push(InflectedWordMetadata {
-                inflected_word: inflection.to_string(),
-                stem_word: pali1.to_string(),
-                grammar: inflection_row.join(" ").to_string(),
-                comment: "*".to_string(),
-            })
+            inflections.push(suffix.to_string())
         }
     }
-    Ok(inflected_words_irregular_stem)
+    Ok(inflections)
 }
 
-fn get_words_for_regular_stem(
-    pali1: &str,
+fn get_all_inflections_for_regulars(
     stem: &str,
     pattern: &str,
     host: &dyn PlsInflectionsHost,
-) -> Result<Vec<InflectedWordMetadata>, String> {
-    let mut inflected_words_regular_stem: Vec<InflectedWordMetadata> = Vec::new();
-    let inflections: Vec<Vec<String>> = get_inflections_for_pattern(pattern, host)?
+) -> Result<Vec<String>, String> {
+    let mut inflections: Vec<String> = Vec::new();
+    let suffixes: Vec<Vec<String>> = get_inflection_suffixes_for_pattern(pattern, host)?
         .pop()
         .ok_or_else(|| format!("No pattern found for {}", pattern))?;
-    for mut inflection_row in inflections {
-        for inflection in inflection_row
+    for mut suffix_row in suffixes {
+        for suffix in suffix_row
             .pop()
             .ok_or_else(|| format!("No pattern found for {}", pattern))?
             .split(',')
         {
-            inflected_words_regular_stem.push(InflectedWordMetadata {
-                inflected_word: [stem, inflection].join("").to_string(),
-                stem_word: pali1.to_string(),
-                grammar: inflection_row.join(" ").to_string(),
-                comment: " ".to_string(),
-            })
+            inflections.push(format!("{}{}", stem, suffix))
         }
     }
-    Ok(inflected_words_regular_stem)
-}
-
-pub fn generate_all_inflected_words(
-    pali1: &str,
-    stem: &str,
-    pattern: &str,
-    host: &dyn PlsInflectionsHost,
-) -> Result<Vec<InflectedWordMetadata>, String> {
-    let inflected_words: Vec<InflectedWordMetadata> = match stem {
-        "-" => get_words_for_indeclinable_stem(pali1)?,
-        "*" => get_words_for_irregular_stem(pali1, pattern, host)?,
-        _ => get_words_for_regular_stem(pali1, stem, pattern, host)?,
-    };
-    Ok(inflected_words)
+    Ok(inflections)
 }
 
 pub fn localise_abbrev(value: &Value, arg: &HashMap<String, Value>) -> tera::Result<Value> {
@@ -383,6 +358,10 @@ mod tests {
             let table = exec_sql_core(&sql).map_err(|x| x.to_string())?;
             serde_json::to_string(&table).map_err(|x| x.to_string())
         }
+
+        fn log_warning(&self, msg: &str) {
+            println!("WARNING: {}", msg)
+        }
     }
 
     fn get_row_cells(row: &Row) -> Vec<String> {
@@ -427,6 +406,7 @@ mod tests {
     #[test_case("taṃ 3","xx"; "declension - 4 - pron_2nd - xx")]
     #[test_case("pañca","xx"; "declension - 5 - only x gender - xx")]
     #[test_case("ābādheti","en"; "conjugation - 1 - en")]
+    #[test_case("xyz","xxx"; "word that does not exist")]
     fn inflection_tests(pali1: &str, locale: &str) {
         let html = generate_inflection_table(
             pali1,
@@ -441,23 +421,19 @@ mod tests {
         insta::assert_snapshot!(html);
     }
 
-    #[test_case("a 1", "-", ""; "indeclinable")]
-    #[test_case("ababa 1", "abab", "a_nt"; "regular")]
-    #[test_case("ahesuṃ", "*", "ahosi_aor"; "irregular")]
-    fn inflected_word_tests(pali1: &str, stem: &str, pattern: &str) {
-        let h = Host {
+    #[test_case("a 1"; "indeclinable")]
+    #[test_case("ababa 1"; "regular")]
+    #[test_case("ahesuṃ"; "irregular")]
+    fn inflected_word_tests(pali1: &str) {
+        let host = Host {
             locale: "en",
             url: "test case",
             version: "v0.1",
             psuedo_transliterate: true,
         };
 
-        let output: Vec<(String, String, String, String)> =
-            generate_all_inflected_words(pali1, stem, pattern, &h)
-                .unwrap_or_else(|_e| Vec::new())
-                .iter_mut()
-                .map(|x| x.clone().simple_representation())
-                .collect();
+        let output: Vec<String> =
+            generate_all_inflections(pali1, &host).unwrap_or_else(|_e| Vec::new());
 
         insta::assert_yaml_snapshot!(output);
     }

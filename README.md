@@ -28,6 +28,7 @@ This is a cross platform library usable both on frontend and backend.
 ## Updating PLS
 
 - ```cargo clean; cargo build --release; wasm-pack build --scope digitalpalitools --target bundler --release```
+- Revert unnecessary changes
 - ```npm login # dptadmin / digitalpalitools@gmail.com / <passsowrd>```
 - ```wasm-pack publish --access public```
 
