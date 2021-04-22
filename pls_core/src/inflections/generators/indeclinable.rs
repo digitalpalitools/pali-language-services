@@ -1,10 +1,11 @@
 use crate::inflections;
-use crate::inflections::PlsInflectionsHost;
+use crate::inflections::{localise_abbrev, PlsInflectionsHost};
 use tera::{Context, Tera};
 
 lazy_static! {
     static ref TEMPLATES: Tera = {
         let mut tera = Tera::default();
+        tera.register_filter("localise_abbrev", localise_abbrev);
         tera.add_raw_templates(vec![(
             "indeclinable",
             include_str!("templates/indeclinable.html"),

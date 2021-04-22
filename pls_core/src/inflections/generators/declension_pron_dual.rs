@@ -1,5 +1,5 @@
 use crate::inflections;
-use crate::inflections::{get_table_name_from_pattern, PlsInflectionsHost};
+use crate::inflections::{get_table_name_from_pattern, localise_abbrev, PlsInflectionsHost};
 use serde::Serialize;
 use std::collections::HashMap;
 use tera::{Context, Tera};
@@ -7,6 +7,7 @@ use tera::{Context, Tera};
 lazy_static! {
     static ref TEMPLATES: Tera = {
         let mut tera = Tera::default();
+        tera.register_filter("localise_abbrev", localise_abbrev);
         tera.add_raw_templates(vec![(
             "declension_pron_dual",
             include_str!("templates/declension_pron_dual.html"),

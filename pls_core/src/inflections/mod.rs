@@ -4,7 +4,7 @@ use crate::alphabet::string_compare;
 use regex::{Error, Regex};
 use serde::Serialize;
 use std::collections::HashMap;
-use tera::{Context, Tera};
+use tera::{Context, Tera, Value};
 
 lazy_static! {
     static ref TEMPLATES: Tera = {
@@ -245,6 +245,18 @@ fn get_all_inflections_for_regulars(
     Ok(inflections)
 }
 
+pub fn localise_abbrev(value: &Value, arg: &HashMap<String, Value>) -> tera::Result<Value> {
+    let localised_abbrev = &arg["hmap"][value
+        .as_str()
+        .ok_or_else(|| "Error while converting value to str.".to_string())?];
+    if localised_abbrev.is_null() {
+        let error_string = format!("Error: abbreviation not found for {}", value);
+        println!("{}", error_string);
+        return Err(tera::Error::msg(error_string));
+    }
+    Ok(serde_json::value::to_value(localised_abbrev)?)
+}
+
 fn join_and_transliterate_if_not_empty(
     stem: &str,
     suffix: &str,
@@ -424,5 +436,37 @@ mod tests {
             generate_all_inflections(pali1, &host).unwrap_or_else(|_e| Vec::new());
 
         insta::assert_yaml_snapshot!(output);
+    }
+
+    #[test_case("xx", "missingAbbreviation")]
+    #[test_case("xx", "pl")]
+    #[test_case("en", "pl")]
+    fn localise_abbrev_filter_test(locale: &str, word: &str) {
+        let mut tera = Tera::default();
+        tera.register_filter("localise_abbrev", localise_abbrev);
+        tera.add_raw_templates(vec![(
+            "test_file",
+            include_str!("./generators/templates/test_file.html"),
+        )])
+        .expect("Unexpected failure adding template");
+        tera.autoescape_on(vec!["html"]);
+
+        let host = Host {
+            locale,
+            url: "test case",
+            version: "v0.1",
+            psuedo_transliterate: true,
+        };
+
+        let abbrev_map = get_abbreviations_for_locale(&host);
+        let mut context = Context::new();
+        context.insert("abbrev_map", &abbrev_map.ok());
+        context.insert("word", &word);
+
+        let html = tera
+            .render("test_file", &context)
+            .map_err(|e| e.to_string())
+            .unwrap_or_else(|e| e);
+        insta::assert_snapshot!(html);
     }
 }
