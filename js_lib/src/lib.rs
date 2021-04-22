@@ -52,6 +52,10 @@ impl<'a> PlsInflectionsHost<'a> for Host<'a> {
                 .unwrap_or_else(|| "No exception string!".to_string())
         })
     }
+
+    fn log_warning(&self, _msg: &str) {
+        // TODO: Send this to console.warn.
+    }
 }
 
 #[wasm_bindgen(js_name = generateInflectionTable)]

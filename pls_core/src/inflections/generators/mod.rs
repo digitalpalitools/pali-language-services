@@ -25,7 +25,3 @@ pub fn create_html_body(
         }
     }
 }
-
-fn get_table_name_from_pattern(pattern: &str) -> String {
-    pattern.replace(" ", "_")
-}

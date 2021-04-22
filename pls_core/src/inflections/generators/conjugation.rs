@@ -1,5 +1,5 @@
 use crate::inflections;
-use crate::inflections::{generators, PlsInflectionsHost};
+use crate::inflections::{get_table_name_from_pattern, localise_abbrev, PlsInflectionsHost};
 use serde::Serialize;
 use std::collections::HashMap;
 use tera::{Context, Tera};
@@ -7,6 +7,7 @@ use tera::{Context, Tera};
 lazy_static! {
     static ref TEMPLATES: Tera = {
         let mut tera = Tera::default();
+        tera.register_filter("localise_abbrev", localise_abbrev);
         tera.add_raw_templates(vec![(
             "conjugation",
             include_str!("templates/conjugation.html"),
@@ -36,7 +37,7 @@ pub fn create_html_body(
     stem: &str,
     host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
-    let table_name = &generators::get_table_name_from_pattern(pattern);
+    let table_name = &get_table_name_from_pattern(pattern);
     let tense_view_models = create_tense_view_models(table_name, &stem, host)?;
     let abbrev_map = inflections::get_abbreviations_for_locale(host)?;
     let vm = TemplateViewModel {

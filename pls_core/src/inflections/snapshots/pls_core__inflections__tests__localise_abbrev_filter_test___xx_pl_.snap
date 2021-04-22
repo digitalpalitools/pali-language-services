@@ -1,7 +1,7 @@
 ---
 source: pls_core/src/inflections/mod.rs
-expression: output
+expression: html
 
 ---
-- a
+^pl$
 
