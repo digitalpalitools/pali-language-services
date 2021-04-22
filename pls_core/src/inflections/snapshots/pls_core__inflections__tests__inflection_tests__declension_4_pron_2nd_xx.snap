@@ -6,11 +6,8 @@ expression: html
 <div class="pls-inflection-root">
   <header class="pls-inflection-header">
     <summary>
-      <div class="pls-inflection-summary-word-info">^taṃ 3$ &ndash; "tvaṃ pron 2nd" (irregular)</div>
-      <div class="pls-inflection-summary-definition">
-        <span class="pls-inflection-summary-definition-pos">(pron)</span> <span class="pls-inflection-summary-definition-meaning">you (object)</span>
-      </div>
-    </summary>
+      <div class="pls-inflection-summary-word-info">^taṃ 3$ "tvaṃ pron 2nd" irreg</div>
+      </summary>
   </header>
 <table class="pls-inflection-table pls-inflection-type-declension">
   <thead>
