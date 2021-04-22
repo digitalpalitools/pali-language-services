@@ -109,9 +109,17 @@ fn get_pali1_metadata(pali1: &str, host: &dyn PlsInflectionsHost) -> Result<Pali
 
         pm.inflection_class = inflection_class_from_str(inflection_class);
         pm.like = if !like.is_empty() {
-            format!("like {}", host.transliterate(like)?)
+            format!(
+                "{} like {}",
+                if inflection_class == "verb" {
+                    "conjugation"
+                } else {
+                    "declension"
+                },
+                host.transliterate(like)?
+            )
         } else {
-            "irregular".to_string()
+            "irreg".to_string()
         };
     } else if stem.eq("-") {
         pm.inflection_class = InflectionClass::Indeclinable;
