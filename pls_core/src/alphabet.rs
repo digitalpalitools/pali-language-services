@@ -343,10 +343,10 @@ mod tests {
 
         #[test]
         fn fixup_compound_letters_with_compound_letters(index in 0usize..PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES.len()) {
-            let indices: Vec<usize> = vec![0, PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES[index], 39, 39, 3, 39];
+            let indices: Vec<usize> = vec![1, PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES[index], 39, 39, 3, 39];
             let fixed_indices = fixup_compound_letters(&indices);
 
-            let new_indices = vec![0, PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES[index] + 1, 39, 3, 39];
+            let new_indices = vec![1, PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES[index] + 1, 39, 3, 39];
 
             assert_eq!(new_indices, fixed_indices)
         }
