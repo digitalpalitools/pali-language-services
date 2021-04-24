@@ -64,8 +64,8 @@ pub const PALI_ALPHABET_ROMAN: &[&str] = &[
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum Character {
-    Pali(PaliAlphabet),
     Other(char),
+    Pali(PaliAlphabet),
 }
 
 pub struct CharacterTokenizer<'a> {
