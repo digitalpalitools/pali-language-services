@@ -231,16 +231,16 @@ mod tests {
 
     #[test]
     fn test_pali_alphabet_length() {
-        assert_eq!(PALI_ALPHABET_ROMAN.len(), 41);
+        assert_eq!(PALI_ALPHABET_ROMAN.len(), 42);
 
         let i: usize = PaliAlphabet::DotM.into();
-        assert_eq!(i, 40);
+        assert_eq!(i, 41);
     }
 
     const PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES: &[usize] =
-        &[8, 10, 13, 15, 18, 20, 23, 25, 28, 30];
+        &[9, 11, 14, 16, 19, 21, 24, 26, 29, 31];
 
-    const PALI_ALPHABET_ROMAN_COMPOUNDING_LETTER_INDEX: usize = 38;
+    const PALI_ALPHABET_ROMAN_COMPOUNDING_LETTER_INDEX: usize = 39;
 
     fn is_compound_letter_roman(index: usize) -> bool {
         None != PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES
@@ -317,6 +317,7 @@ mod tests {
     #[test_case("yabc", "xabc"  => -1)]
     #[test_case("i", "ā"    => 1; "random letters 1")]
     #[test_case("cc", "b"   => -1; "longer of lesser sort order 1")]
+    #[test_case("pālicca", "pāli 1"    => 1; "spaces 1")]
     fn string_compare_tests(str1: &str, str2: &str) -> isize {
         string_compare(str1, str2)
     }
@@ -342,10 +343,10 @@ mod tests {
 
         #[test]
         fn fixup_compound_letters_with_compound_letters(index in 0usize..PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES.len()) {
-            let indices: Vec<usize> = vec![0, PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES[index], 38, 38, 2, 38];
+            let indices: Vec<usize> = vec![0, PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES[index], 39, 39, 3, 39];
             let fixed_indices = fixup_compound_letters(&indices);
 
-            let new_indices = vec![0, PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES[index] + 1, 38, 2, 38];
+            let new_indices = vec![0, PALI_ALPHABET_ROMAN_COMPOUND_LETTERS_INDICES[index] + 1, 39, 3, 39];
 
             assert_eq!(new_indices, fixed_indices)
         }
