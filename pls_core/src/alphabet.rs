@@ -8,6 +8,7 @@ use std::{convert::TryFrom, iter::Peekable};
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, IntoPrimitive, TryFromPrimitive)]
 #[repr(usize)]
 pub enum PaliAlphabet {
+    Space,
     A,
     Aa,
     I,
@@ -15,51 +16,52 @@ pub enum PaliAlphabet {
     U,
     Uu,
     E,
-    O, // vowels - 0-7
+    O, // vowels - 1-8
     K,
     Kh,
     G,
     Gh,
-    QuoteN, // guttural - 8-12
+    QuoteN, // guttural - 9-13
     C,
     Ch,
     J,
     Jh,
-    TildeN, // palatal - 13-17
+    TildeN, // palatal - 14-18
     DotT,
     DotTh,
     DotD,
     DotDh,
-    DotN, // retroflex cerebral - 18-22
+    DotN, // retroflex cerebral - 19-23
     T,
     Th,
     D,
     Dh,
-    N, // dental - 23-27
+    N, // dental - 24-28
     P,
     Ph,
     B,
     Bh,
-    M, // labial - 28-32
+    M, // labial - 29-33
     Y,
     R,
     L,
     V,
     S,
     H,
-    DotL, // semi-vowel - 33-39
-    DotM, // nigahita - 40-40
+    DotL, // semi-vowel - 34-40
+    DotM, // nigahita - 41-41
 }
 
 pub const PALI_ALPHABET_ROMAN: &[&str] = &[
-    "a", "ā", "i", "ī", "u", "ū", "e", "o", // vowels - 0-7
-    "k", "kh", "g", "gh", "ṅ", // guttural - 8-12
-    "c", "ch", "j", "jh", "ñ", // palatal - 13-17
-    "ṭ", "ṭh", "ḍ", "ḍh", "ṇ", // retroflex cerebral - 18-22
-    "t", "th", "d", "dh", "n", // dental - 23-27
-    "p", "ph", "b", "bh", "m", // labial - 28-32
-    "y", "r", "l", "v", "s", "h", "ḷ", // semi-vowel - 33-39
-    "ṃ", // nigahita - 40-40
+    " ", // space - 0
+    "a", "ā", "i", "ī", "u", "ū", "e", "o", // vowels - 1-8
+    "k", "kh", "g", "gh", "ṅ", // guttural - 9-13
+    "c", "ch", "j", "jh", "ñ", // palatal - 14-18
+    "ṭ", "ṭh", "ḍ", "ḍh", "ṇ", // retroflex cerebral - 19-23
+    "t", "th", "d", "dh", "n", // dental - 24-28
+    "p", "ph", "b", "bh", "m", // labial - 29-33
+    "y", "r", "l", "v", "s", "h", "ḷ", // semi-vowel - 34-40
+    "ṃ", // nigahita - 41-41
 ];
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
@@ -142,6 +144,7 @@ impl<'a> Iterator for CharacterTokenizer<'a> {
 
     fn next(&mut self) -> Option<Character> {
         match self.source.next() {
+            Some(' ') => Some(parse_singlechar_letter(PaliAlphabet::Space)),
             Some('a') => Some(parse_singlechar_letter(PaliAlphabet::A)),
             Some('ā') => Some(parse_singlechar_letter(PaliAlphabet::Aa)),
             Some('i') => Some(parse_singlechar_letter(PaliAlphabet::I)),
