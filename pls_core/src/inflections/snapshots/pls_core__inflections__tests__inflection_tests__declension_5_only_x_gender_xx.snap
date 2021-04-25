@@ -6,7 +6,7 @@ expression: html
 <div class="pls-inflection-root">
   <header class="pls-inflection-header">
     <summary>
-      <div class="pls-inflection-summary-word-info">^pañca$ &ndash; "a1 card" (like ^pañca$)</div>
+      <div class="pls-inflection-summary-word-info">^pañca$ "a1 card" like ^pañca$</div>
       <div class="pls-inflection-summary-definition">
         <span class="pls-inflection-summary-definition-pos">(card)</span> <span class="pls-inflection-summary-definition-meaning">five (5)</span>
       </div>

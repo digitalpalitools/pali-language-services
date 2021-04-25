@@ -136,7 +136,7 @@ fn get_pali1_metadata(pali1: &str, host: &dyn PlsInflectionsHost) -> Result<Pali
         pm.like = if !like.is_empty() {
             format!("like {}", host.transliterate(like)?)
         } else {
-            "irregular".to_string()
+            "irreg".to_string()
         };
     } else if stem.eq("-") {
         pm.inflection_class = InflectionClass::Indeclinable;
