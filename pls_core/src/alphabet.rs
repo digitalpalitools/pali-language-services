@@ -64,8 +64,8 @@ pub const PALI_ALPHABET_ROMAN: &[&str] = &[
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub enum Character {
-    Pali(PaliAlphabet),
     Other(char),
+    Pali(PaliAlphabet),
 }
 
 pub struct CharacterTokenizer<'a> {
@@ -314,6 +314,8 @@ mod tests {
     #[test_case("yabc", "xabc"  => -1)]
     #[test_case("i", "ā"    => 1; "random letters 1")]
     #[test_case("cc", "b"   => -1; "longer of lesser sort order 1")]
+    #[test_case("pāli 1", "pālicca"  => 1; "space case")]
+    #[test_case("pādesu sirasā nipatitvā", "pādesu 1" => -1; "number case") ]
     fn string_compare_tests(str1: &str, str2: &str) -> isize {
         string_compare(str1, str2)
     }
