@@ -134,15 +134,7 @@ fn get_pali1_metadata(pali1: &str, host: &dyn PlsInflectionsHost) -> Result<Pali
 
         pm.inflection_class = inflection_class_from_str(inflection_class);
         pm.like = if !like.is_empty() {
-            format!(
-                "{} like {}",
-                if inflection_class == "verb" {
-                    "conjugation"
-                } else {
-                    "declension"
-                },
-                host.transliterate(like)?
-            )
+            format!("like {}", host.transliterate(like)?)
         } else {
             "irreg".to_string()
         };
