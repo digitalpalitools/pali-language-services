@@ -1,0 +1,7 @@
+---
+source: pls_core/src/inflections/pmd.rs
+expression: output
+
+---
+Err: "Word '0xdeadbeef' not found in db."
+

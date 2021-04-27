@@ -67,6 +67,7 @@ pub fn generate_inflection_table(
 ) -> String {
     pls_core::inflections::generate_inflection_table(
         pali1,
+        true,
         &Host {
             locale,
             url: host_url,

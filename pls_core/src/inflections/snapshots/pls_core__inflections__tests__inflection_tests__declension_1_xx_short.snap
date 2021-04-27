@@ -1,0 +1,133 @@
+---
+source: pls_core/src/inflections/mod.rs
+expression: html
+
+---
+<div class="pls-inflection-root">
+  
+<table class="pls-inflection-table pls-inflection-type-declension">
+  <thead>
+    <tr>
+      <td><span class="pls-inflection-table-title">ā fem</span></td>
+      <td colspan="2"><span class="pls-inflection-col-header">^fem$</span></td>
+      </tr>
+    <tr>
+      <td><span class="pls-inflection-row-header"></span></td>
+      <td><span class="pls-inflection-col-header">^sg$</span></td>
+      <td><span class="pls-inflection-col-header">^pl$</span></td>
+      </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">^nom$</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikā$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikāyo$</div>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikā$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">^acc$</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikaṃ$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikāyo$</div>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikā$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">^instr$</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikāya$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikābhi$</div>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikāhi$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">^dat$</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikāya$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikānaṃ$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">^abl$</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikato$</div>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikāya$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikato$</div>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikābhi$</div>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikāhi$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">^gen$</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikāya$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikānaṃ$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">^loc$</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikāyaṃ$</div>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikāya$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikāsu$</div>
+        </td>
+      </tr>
+    <tr>
+      <td>
+        <span class="pls-inflection-row-header">^voc$</span>
+      </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyike$</div>
+        </td>
+      <td>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikāyo$</div>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikā$</div>
+        </td>
+      </tr>
+    <tr>
+      <td><span class="pls-inflection-row-header">^in comps$</span></td>
+      <td colspan="6">
+        <div class="pls-inflection-inflected-word">^vassūpanāyika$</div>
+        <div class="pls-inflection-inflected-word">^vassūpanāyikā$</div>
+        </td>
+    </tr>
+  </tbody>
+</table>
+
+  <footer class="pls-inflection-footer">
+    <a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeoxZiqvIWadaLeuXF4f44NCqEn49-B8KNbSvNer5jxgRYdtQ/viewform?entry.267696921=test case&entry.1433863141=v0.1">
+      spot a mistake in the inflection table? something missing? fix it here!
+    </a>
+  </footer>
+</div>
+

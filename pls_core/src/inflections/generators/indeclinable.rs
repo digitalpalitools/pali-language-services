@@ -16,13 +16,20 @@ lazy_static! {
     };
 }
 
-pub fn create_html_body(stem: &str, host: &dyn PlsInflectionsHost) -> Result<String, String> {
+pub fn create_html_body(
+    word_type: &str,
+    stem: &str,
+    host: &dyn PlsInflectionsHost,
+) -> Result<(String, bool), String> {
     let mut context = Context::new();
     let abbrev_map = inflections::get_abbreviations_for_locale(host)?;
 
-    context.insert("inflection", &host.transliterate(stem)?);
+    context.insert("stem", &host.transliterate(stem)?);
+    context.insert("word_type", word_type);
     context.insert("abbrev_map", &abbrev_map);
-    TEMPLATES
+    let body = TEMPLATES
         .render("indeclinable", &context)
-        .map_err(|e| e.to_string())
+        .map_err(|e| e.to_string())?;
+
+    Ok((body, false))
 }

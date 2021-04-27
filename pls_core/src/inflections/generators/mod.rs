@@ -10,10 +10,10 @@ mod indeclinable;
 pub fn create_html_body(
     pm: &Pali1Metadata,
     host: &dyn PlsInflectionsHost,
-) -> Result<String, String> {
+) -> Result<(String, bool), String> {
     match &pm.word_type {
-        WordType::InflectedForm => Ok("".to_string()),
-        WordType::Indeclinable { stem } => indeclinable::create_html_body(&stem, host),
+        WordType::InflectedForm { stem } => indeclinable::create_html_body(&pm.like, &stem, host),
+        WordType::Indeclinable { stem } => indeclinable::create_html_body(&pm.like, &stem, host),
         WordType::Irregular {
             pattern,
             inflection_class,
@@ -31,8 +31,8 @@ fn create_html_body_for_inflection_class(
     pattern: &str,
     inflection_class: &InflectionClass,
     host: &dyn PlsInflectionsHost,
-) -> Result<String, String> {
-    match inflection_class {
+) -> Result<(String, bool), String> {
+    let body = match inflection_class {
         InflectionClass::Conjugation => conjugation::create_html_body(pattern, stem, host),
         InflectionClass::Declension => declension::create_html_body(pattern, stem, host),
         InflectionClass::DeclensionPron1st => {
@@ -44,5 +44,7 @@ fn create_html_body_for_inflection_class(
         InflectionClass::DeclensionPronDual => {
             declension_pron_dual::create_html_body(pattern, stem, host)
         }
-    }
+    };
+
+    Ok((body?, true))
 }

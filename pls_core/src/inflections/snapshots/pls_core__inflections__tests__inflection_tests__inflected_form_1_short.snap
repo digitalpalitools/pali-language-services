@@ -1,0 +1,14 @@
+---
+source: pls_core/src/inflections/mod.rs
+expression: html
+
+---
+<div class="pls-inflection-root">
+  
+<div class="pls-inflection-table pls-inflection-type-indeclinable">
+  <i>NOTE: <strong>^ahesuṃ$</strong>&quot; does not have inflection table as it is an inflected form.</i>
+</div>
+
+  
+</div>
+

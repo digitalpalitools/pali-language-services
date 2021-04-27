@@ -1,14 +1,17 @@
 use crate::inflections::host::PlsInflectionsHost;
 use regex::{Error, Regex};
+use serde::Serialize;
 use std::str::FromStr;
 
 lazy_static! {
     static ref INDECLINABLE_CRACKER: Result<Regex, Error> = Regex::new(r" \d+$");
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub enum WordType {
-    InflectedForm,
+    InflectedForm {
+        stem: String,
+    },
     Indeclinable {
         stem: String,
     },
@@ -23,7 +26,7 @@ pub enum WordType {
     },
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub enum InflectionClass {
     Conjugation,
     Declension,
@@ -47,6 +50,7 @@ impl FromStr for InflectionClass {
     }
 }
 
+#[derive(Serialize)]
 pub struct Pali1Metadata {
     pub pali1: String,
     pub word_type: WordType,
@@ -60,7 +64,6 @@ pub fn get_stem_for_indeclinable(pali1: &str) -> Result<String, String> {
     Ok(regex.replace(pali1, "").to_string())
 }
 
-// TODO: Tests for this.
 pub fn get_pali1_metadata(
     pali1: &str,
     host: &dyn PlsInflectionsHost,
@@ -86,7 +89,9 @@ pub fn get_pali1_metadata(
     let pm = match stem.as_str() {
         "!" => Pali1Metadata {
             pali1: pali1.to_string(),
-            word_type: WordType::InflectedForm,
+            word_type: WordType::InflectedForm {
+                stem: pali1.to_string(),
+            },
             pos,
             meaning,
             like: "inflected form".to_string(),
@@ -154,4 +159,29 @@ fn get_index_info(
     let like = results[0][0][1].to_owned();
 
     Ok((inflection_class, like))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::inflections::test_host;
+    use test_case::test_case;
+
+    #[test_case("0xdeadbeef"; "not found")]
+    #[test_case("ahesuṃ"; "inflected form")]
+    #[test_case("a 1"; "indeclinable")]
+    #[test_case("ababa 1"; "regular")]
+    #[test_case("hoti 2"; "irregular")]
+    fn get_pali1_metadata_tests(pali1: &str) {
+        let host = test_host::Host {
+            locale: "en",
+            url: "test case",
+            version: "v0.1",
+            psuedo_transliterate: true,
+        };
+
+        let output = get_pali1_metadata(pali1, &host);
+
+        insta::assert_yaml_snapshot!(output);
+    }
 }

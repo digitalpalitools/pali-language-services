@@ -24,12 +24,13 @@ lazy_static! {
 
 pub fn generate_inflection_table(
     pali1: &str,
+    with_details: bool,
     host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
     let pm = get_pali1_metadata(pali1, host)?;
-    let body = generators::create_html_body(&pm, host)?;
+    let (body, has_inflection_table) = generators::create_html_body(&pm, host)?;
 
-    generate_output(&pm, pali1, &body, host)
+    generate_output(&pm, pali1, with_details, &body, has_inflection_table, host)
 }
 
 pub fn generate_all_inflections(
@@ -39,8 +40,8 @@ pub fn generate_all_inflections(
     let pm = get_pali1_metadata(pali1, host)?;
 
     let inflected_words = match pm.word_type {
-        WordType::InflectedForm => vec![],
-        WordType::Indeclinable { stem } => get_all_inflections_for_indeclinables(stem),
+        WordType::InflectedForm { stem: _ } => vec![],
+        WordType::Indeclinable { stem } => vec![stem],
         WordType::Irregular {
             pattern,
             inflection_class: _,
@@ -66,13 +67,15 @@ fn get_table_name_from_pattern(pattern: &str) -> String {
 }
 
 #[derive(Serialize)]
-struct ViewModel<'a> {
+struct OutputViewModel<'a> {
     pub pali1: &'a str,
+    pub with_details: bool,
     pub pattern: &'a str,
     pub like: &'a str,
     pub pos: &'a str,
     pub meaning: &'a str,
     pub body: &'a str,
+    has_inflection_table: bool,
     pub feedback_form_url: &'a str,
     pub host_url: &'a str,
     pub host_version: &'a str,
@@ -81,7 +84,9 @@ struct ViewModel<'a> {
 fn generate_output(
     pm: &Pali1Metadata,
     pali1: &str,
+    with_details: bool,
     body: &str,
+    has_inflection_table: bool,
     host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
     let feedback_form_url = match &pm.word_type {
@@ -110,14 +115,16 @@ fn generate_output(
         _ => "",
     };
 
-    let vm = ViewModel {
+    let vm = OutputViewModel {
         pali1: &host.transliterate(pali1)?,
+        with_details,
         pattern,
         like: &pm.like,
         pos: &pm.pos,
         meaning: &pm.meaning,
         body: &body,
         feedback_form_url: &feedback_form_url,
+        has_inflection_table,
         host_url: host.get_url(),
         host_version: host.get_version(),
     };
@@ -133,10 +140,6 @@ fn get_inflection_suffixes_for_pattern(
     host: &dyn PlsInflectionsHost,
 ) -> Result<Vec<Vec<Vec<String>>>, String> {
     host.exec_sql_query(&format!("Select * from {}", pattern))
-}
-
-fn get_all_inflections_for_indeclinables(stem: String) -> Vec<String> {
-    vec![stem]
 }
 
 fn get_all_inflections_for_irregulars(
@@ -256,14 +259,101 @@ pub fn get_abbreviations_for_locale(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rusqlite::{Connection, Row, NO_PARAMS};
+    use crate::inflections::test_host::Host;
     use test_case::test_case;
 
-    struct Host<'a> {
-        locale: &'a str,
-        version: &'a str,
-        url: &'a str,
-        psuedo_transliterate: bool,
+    #[test_case("ahesuṃ",true,"xx"; "inflected form - 1")]
+    #[test_case("ahesuṃ",false,"xx"; "inflected form - 1 - short")]
+    #[test_case("ābādheti",true,"xx"; "conjugation - 1 - xx")]
+    #[test_case("ābādheti",false,"xx"; "conjugation - 1 - xx - short")]
+    #[test_case("vassūpanāyikā",true,"xx"; "declension - 1 - xx ")]
+    #[test_case("vassūpanāyikā",false,"xx"; "declension - 1 - xx - short")]
+    #[test_case("kamma 1",true,"xx"; "declension - 2 - irreg - xx")]
+    #[test_case("kamma 1",false,"xx"; "declension - 2 - irreg - xx - short")]
+    #[test_case("kāmaṃ 3",true,"xx"; "declension - 3 - ind - xx")]
+    #[test_case("kāmaṃ 3",false,"xx"; "declension - 3 - ind - xx - short")]
+    #[test_case("ubha",true,"xx"; "declension - 4 - pron_dual - xx")]
+    #[test_case("ahaṃ",true,"xx"; "declension - 4 - pron_1st - xx")]
+    #[test_case("tumha",true,"xx"; "declension - 4 - pron_2nd - xx")]
+    #[test_case("pañca",true,"xx"; "declension - 5 - only x gender - xx")]
+    #[test_case("ābādheti",true,"en"; "conjugation - 1 - en")]
+    #[test_case("xyz",true,"xxx"; "word that does not exist")]
+    fn inflection_tests(pali1: &str, with_details: bool, locale: &str) {
+        let html = generate_inflection_table(
+            pali1,
+            with_details,
+            &test_host::Host {
+                locale,
+                url: "test case",
+                version: "v0.1",
+                psuedo_transliterate: true,
+            },
+        )
+        .unwrap_or_else(|e| e);
+        insta::assert_snapshot!(html);
+    }
+
+    #[test_case("ahesuṃ"; "inflected form")]
+    #[test_case("a 1"; "indeclinable")]
+    #[test_case("ababa 1"; "regular")]
+    #[test_case("hoti 2"; "irregular")]
+    fn inflected_word_tests(pali1: &str) {
+        let host = Host {
+            locale: "en",
+            url: "test case",
+            version: "v0.1",
+            psuedo_transliterate: true,
+        };
+
+        let output: Vec<String> =
+            generate_all_inflections(pali1, &host).unwrap_or_else(|_e| Vec::new());
+
+        insta::assert_yaml_snapshot!(output);
+    }
+
+    #[test_case("xx", "missingAbbreviation")]
+    #[test_case("xx", "pl")]
+    #[test_case("en", "pl")]
+    fn localise_abbrev_filter_test(locale: &str, word: &str) {
+        let mut tera = Tera::default();
+        tera.register_filter("localise_abbrev", localise_abbrev);
+        tera.add_raw_templates(vec![(
+            "test_file",
+            include_str!("./generators/templates/test_file.html"),
+        )])
+        .expect("Unexpected failure adding template");
+        tera.autoescape_on(vec!["html"]);
+
+        let host = Host {
+            locale,
+            url: "test case",
+            version: "v0.1",
+            psuedo_transliterate: true,
+        };
+
+        let abbrev_map = get_abbreviations_for_locale(&host);
+        let mut context = Context::new();
+        context.insert("abbrev_map", &abbrev_map.ok());
+        context.insert("word", &word);
+
+        let html = tera
+            .render("test_file", &context)
+            .map_err(|e| e.to_string())
+            .unwrap_or_else(|e| e);
+        insta::assert_snapshot!(html);
+    }
+}
+
+#[cfg(test)]
+mod test_host {
+    use crate::inflections::host::PlsInflectionsHost;
+    use rusqlite::{Connection, Row, NO_PARAMS};
+
+    pub(crate) struct Host<'a> {
+        pub(crate) locale: &'a str,
+        pub(crate) version: &'a str,
+        pub(crate) url: &'a str,
+        pub(crate) psuedo_transliterate: bool,
     }
 
     impl<'a> PlsInflectionsHost<'a> for Host<'a> {
@@ -330,80 +420,5 @@ mod tests {
         }
 
         Ok(result)
-    }
-
-    // TODO: #[test_case("ābādhetixxxx","xx"; "inflected form - 1")]
-    #[test_case("ābādheti","xx"; "conjugation - 1 - xx")]
-    #[test_case("vassūpanāyikā","xx"; "declension - 1 - xx ")]
-    #[test_case("kamma 1","xx"; "declension - 2 - irreg - xx")]
-    #[test_case("kāmaṃ 3","xx"; "declension - 3 - ind - xx")]
-    #[test_case("ubha","xx"; "declension - 4 - pron_dual - xx")]
-    #[test_case("ahaṃ","xx"; "declension - 4 - pron_1st - xx")]
-    #[test_case("tumha","xx"; "declension - 4 - pron_2nd - xx")]
-    #[test_case("pañca","xx"; "declension - 5 - only x gender - xx")]
-    #[test_case("ābādheti","en"; "conjugation - 1 - en")]
-    #[test_case("xyz","xxx"; "word that does not exist")]
-    fn inflection_tests(pali1: &str, locale: &str) {
-        let html = generate_inflection_table(
-            pali1,
-            &Host {
-                locale,
-                url: "test case",
-                version: "v0.1",
-                psuedo_transliterate: true,
-            },
-        )
-        .unwrap_or_else(|e| e);
-        insta::assert_snapshot!(html);
-    }
-
-    // TODO: #[test_case("ahesuṃxxxx"; "inflected form")]
-    #[test_case("a 1"; "indeclinable")]
-    #[test_case("ababa 1"; "regular")]
-    #[test_case("hoti 2"; "irregular")]
-    fn inflected_word_tests(pali1: &str) {
-        let host = Host {
-            locale: "en",
-            url: "test case",
-            version: "v0.1",
-            psuedo_transliterate: true,
-        };
-
-        let output: Vec<String> =
-            generate_all_inflections(pali1, &host).unwrap_or_else(|_e| Vec::new());
-
-        insta::assert_yaml_snapshot!(output);
-    }
-
-    #[test_case("xx", "missingAbbreviation")]
-    #[test_case("xx", "pl")]
-    #[test_case("en", "pl")]
-    fn localise_abbrev_filter_test(locale: &str, word: &str) {
-        let mut tera = Tera::default();
-        tera.register_filter("localise_abbrev", localise_abbrev);
-        tera.add_raw_templates(vec![(
-            "test_file",
-            include_str!("./generators/templates/test_file.html"),
-        )])
-        .expect("Unexpected failure adding template");
-        tera.autoescape_on(vec!["html"]);
-
-        let host = Host {
-            locale,
-            url: "test case",
-            version: "v0.1",
-            psuedo_transliterate: true,
-        };
-
-        let abbrev_map = get_abbreviations_for_locale(&host);
-        let mut context = Context::new();
-        context.insert("abbrev_map", &abbrev_map.ok());
-        context.insert("word", &word);
-
-        let html = tera
-            .render("test_file", &context)
-            .map_err(|e| e.to_string())
-            .unwrap_or_else(|e| e);
-        insta::assert_snapshot!(html);
     }
 }

@@ -1,0 +1,14 @@
+---
+source: pls_core/src/inflections/pmd.rs
+expression: output
+
+---
+Ok:
+  pali1: ahesuṃ
+  word_type:
+    InflectedForm:
+      stem: ahesuṃ
+  pos: aor
+  meaning: "there were, they were"
+  like: inflected form
+

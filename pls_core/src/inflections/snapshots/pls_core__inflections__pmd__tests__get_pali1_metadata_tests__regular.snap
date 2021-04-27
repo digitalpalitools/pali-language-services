@@ -1,0 +1,16 @@
+---
+source: pls_core/src/inflections/pmd.rs
+expression: output
+
+---
+Ok:
+  pali1: ababa 1
+  word_type:
+    Declinable:
+      stem: abab
+      pattern: a nt
+      inflection_class: Declension
+  pos: nt
+  meaning: name of a purgatory
+  like: like ^citta$
+

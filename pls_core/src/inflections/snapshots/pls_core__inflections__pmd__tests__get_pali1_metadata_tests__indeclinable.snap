@@ -1,0 +1,14 @@
+---
+source: pls_core/src/inflections/pmd.rs
+expression: output
+
+---
+Ok:
+  pali1: a 1
+  word_type:
+    Indeclinable:
+      stem: a
+  pos: letter
+  meaning: "letter “a”, 1st letter of the alphabet, guttural vowel"
+  like: indeclinable
+

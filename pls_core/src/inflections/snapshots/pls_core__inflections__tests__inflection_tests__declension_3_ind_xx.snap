@@ -12,21 +12,10 @@ expression: html
       </div>
     </summary>
   </header>
-<table class="pls-inflection-table pls-inflection-type-indeclinable">
-  <tbody>
-    <tr>
-      <td><span class="pls-inflection-row-header">^ind$</span></td>
-      <td>
-        <div class="pls-inflection-inflected-word">^kāmaṃ$</div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div class="pls-inflection-table pls-inflection-type-indeclinable">
+  <i>NOTE: <strong>^kāmaṃ$</strong>&quot; does not have inflection table as it is an indeclinable.</i>
+</div>
 
-  <footer class="pls-inflection-footer">
-    <a class="pls-inflection-feedback-link" target="_blank" href="https://docs.google.com/forms/d/e/1FAIpQLSeoxZiqvIWadaLeuXF4f44NCqEn49-B8KNbSvNer5jxgRYdtQ/viewform?entry.267696921=test case&entry.1433863141=v0.1">
-      spot a mistake in the inflection table? something missing? fix it here!
-    </a>
-  </footer>
+  
 </div>
 
