@@ -1,4 +1,5 @@
-use crate::inflections::{InflectionClass, Pali1Metadata, PlsInflectionsHost};
+use crate::inflections::pmd::{InflectionClass, Pali1Metadata, WordType};
+use crate::inflections::PlsInflectionsHost;
 
 mod conjugation;
 mod declension;
@@ -10,18 +11,38 @@ pub fn create_html_body(
     pm: &Pali1Metadata,
     host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
-    match pm.inflection_class {
-        InflectionClass::Indeclinable => indeclinable::create_html_body(&pm.pali1, host),
-        InflectionClass::Conjugation => conjugation::create_html_body(&pm.pattern, &pm.stem, host),
-        InflectionClass::Declension => declension::create_html_body(&pm.pattern, &pm.stem, host),
+    match &pm.word_type {
+        WordType::InflectedForm => Ok("".to_string()),
+        WordType::Indeclinable { stem } => indeclinable::create_html_body(&stem, host),
+        WordType::Irregular {
+            pattern,
+            inflection_class,
+        } => create_html_body_for_inflection_class("", pattern, inflection_class, host),
+        WordType::Declinable {
+            stem,
+            pattern,
+            inflection_class,
+        } => create_html_body_for_inflection_class(stem, pattern, inflection_class, host),
+    }
+}
+
+fn create_html_body_for_inflection_class(
+    stem: &str,
+    pattern: &str,
+    inflection_class: &InflectionClass,
+    host: &dyn PlsInflectionsHost,
+) -> Result<String, String> {
+    match inflection_class {
+        InflectionClass::Conjugation => conjugation::create_html_body(pattern, stem, host),
+        InflectionClass::Declension => declension::create_html_body(pattern, stem, host),
         InflectionClass::DeclensionPron1st => {
-            declension_pron_x::create_html_body("1st", &pm.pattern, &pm.stem, host)
+            declension_pron_x::create_html_body("1st", pattern, stem, host)
         }
         InflectionClass::DeclensionPron2nd => {
-            declension_pron_x::create_html_body("2nd", &pm.pattern, &pm.stem, host)
+            declension_pron_x::create_html_body("2nd", pattern, stem, host)
         }
         InflectionClass::DeclensionPronDual => {
-            declension_pron_dual::create_html_body(&pm.pattern, &pm.stem, host)
+            declension_pron_dual::create_html_body(pattern, stem, host)
         }
     }
 }

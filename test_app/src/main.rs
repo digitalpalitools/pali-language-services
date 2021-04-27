@@ -1,4 +1,4 @@
-use pls_core::inflections::PlsInflectionsHost;
+use pls_core::inflections::host::PlsInflectionsHost;
 use rusqlite::{Connection, Row, NO_PARAMS};
 use std::path::PathBuf;
 

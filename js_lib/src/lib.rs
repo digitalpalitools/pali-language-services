@@ -1,4 +1,4 @@
-use pls_core::inflections::PlsInflectionsHost;
+use pls_core::inflections::host::PlsInflectionsHost;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen(raw_module = "./pali_language_services_dal.js")]

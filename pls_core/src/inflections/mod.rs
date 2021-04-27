@@ -1,7 +1,13 @@
 mod generators;
+pub mod host;
+mod pmd;
 
 use crate::alphabet::string_compare;
-use regex::{Error, Regex};
+use crate::inflections::host::PlsInflectionsHost;
+use crate::inflections::pmd::{
+    get_feedback_url_for_inflection_class, get_pali1_metadata, InflectionClass, Pali1Metadata,
+    WordType,
+};
 use serde::Serialize;
 use std::collections::HashMap;
 use tera::{Context, Tera, Value};
@@ -14,42 +20,6 @@ lazy_static! {
         tera.autoescape_on(vec!["html"]);
         tera
     };
-    static ref INDECLINABLE_CRACKER: Result<Regex, Error> = Regex::new(r" \d+$");
-}
-
-#[derive(Debug)]
-pub enum InflectionClass {
-    Indeclinable,
-    Conjugation,
-    Declension,
-    DeclensionPron1st,
-    DeclensionPron2nd,
-    DeclensionPronDual,
-}
-
-pub struct Pali1Metadata {
-    pub pali1: String,
-    pub stem: String,
-    pub pattern: String,
-    pub pos: String,
-    pub meaning: String,
-    pub inflection_class: InflectionClass,
-    pub like: String,
-}
-
-pub trait PlsInflectionsHost<'a> {
-    fn get_locale(&self) -> &'a str;
-    fn get_version(&self) -> &'a str;
-    fn get_url(&self) -> &'a str;
-    fn transliterate(&self, s: &str) -> Result<String, String>;
-    fn exec_sql_query_core(&self, sql: &str) -> Result<String, String>;
-    fn exec_sql_query(&self, sql: &str) -> Result<Vec<Vec<Vec<String>>>, String> {
-        let result_str = self.exec_sql_query_core(sql)?;
-        let result: Vec<Vec<Vec<String>>> =
-            serde_json::from_str(&result_str).map_err(|e| e.to_string())?;
-        Ok(result)
-    }
-    fn log_warning(&self, msg: &str);
 }
 
 pub fn generate_inflection_table(
@@ -67,12 +37,25 @@ pub fn generate_all_inflections(
     host: &dyn PlsInflectionsHost,
 ) -> Result<Vec<String>, String> {
     let pm = get_pali1_metadata(pali1, host)?;
-    let table_name = get_table_name_from_pattern(&pm.pattern);
 
-    let inflected_words: Vec<String> = match pm.stem.as_ref() {
-        "-" => get_all_inflections_for_indeclinables(pali1)?,
-        "*" => get_all_inflections_for_irregulars(&table_name, host)?,
-        _ => get_all_inflections_for_regulars(&pm.stem, &table_name, host)?,
+    let inflected_words = match pm.word_type {
+        WordType::InflectedForm => vec![],
+        WordType::Indeclinable { stem } => get_all_inflections_for_indeclinables(stem),
+        WordType::Irregular {
+            pattern,
+            inflection_class: _,
+        } => {
+            let table_name = get_table_name_from_pattern(&pattern);
+            get_all_inflections_for_irregulars(&table_name, host)?
+        }
+        WordType::Declinable {
+            stem,
+            pattern,
+            inflection_class: _,
+        } => {
+            let table_name = get_table_name_from_pattern(&pattern);
+            get_all_inflections_for_regulars(&stem, &table_name, host)?
+        }
     };
 
     Ok(inflected_words)
@@ -80,71 +63,6 @@ pub fn generate_all_inflections(
 
 fn get_table_name_from_pattern(pattern: &str) -> String {
     pattern.replace(" ", "_")
-}
-
-fn inflection_class_from_str(ic: &str) -> InflectionClass {
-    match ic {
-        "verb" => InflectionClass::Conjugation,
-        "pron1st" => InflectionClass::DeclensionPron1st,
-        "pron2nd" => InflectionClass::DeclensionPron2nd,
-        "prondual" => InflectionClass::DeclensionPronDual,
-        _ => InflectionClass::Declension,
-    }
-}
-
-fn get_stem_for_indeclinable(pali1: &str) -> Result<String, String> {
-    let regex = INDECLINABLE_CRACKER.as_ref().map_err(|e| e.to_string())?;
-    Ok(regex.replace(pali1, "").to_string())
-}
-
-fn get_pali1_metadata(pali1: &str, host: &dyn PlsInflectionsHost) -> Result<Pali1Metadata, String> {
-    let sql = format!(
-        r#"select stem, pattern, pos, definition from '_stems' where pāli1 = "{}""#,
-        pali1,
-    );
-    let results = host.exec_sql_query(&sql)?;
-    if results.len() != 1 || results[0].len() != 1 || results[0][0].len() != 4 {
-        return Err(format!("Word '{}' not found in db.", pali1));
-    }
-
-    let stem = &results[0][0][0];
-    let pattern = &results[0][0][1];
-    let mut pm = Pali1Metadata {
-        pali1: pali1.to_string(),
-        stem: if !stem.eq("*") {
-            stem.to_owned()
-        } else {
-            "".to_string()
-        },
-        pattern: pattern.to_owned(),
-        pos: results[0][0][2].to_owned(),
-        meaning: results[0][0][3].to_owned(),
-        inflection_class: InflectionClass::Declension,
-        like: "".to_string(),
-    };
-
-    if !pattern.trim().is_empty() {
-        let sql = format!(
-            r#"select inflection_class, like from '_index' where name = "{}""#,
-            pattern
-        );
-        let results = host.exec_sql_query(&sql)?;
-        let inflection_class = &results[0][0][0];
-        let like = &results[0][0][1];
-
-        pm.inflection_class = inflection_class_from_str(inflection_class);
-        pm.like = if !like.is_empty() {
-            format!("like {}", host.transliterate(like)?)
-        } else {
-            "irreg".to_string()
-        };
-    } else if stem.eq("-") {
-        pm.inflection_class = InflectionClass::Indeclinable;
-        pm.pali1 = get_stem_for_indeclinable(&pm.pali1)?;
-        pm.like = "indeclinable".to_string();
-    }
-
-    Ok(pm)
 }
 
 #[derive(Serialize)]
@@ -166,18 +84,35 @@ fn generate_output(
     body: &str,
     host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
-    let feedback_form_url = match pm.inflection_class {
-        InflectionClass::Conjugation => {
-            "https://docs.google.com/forms/d/e/1FAIpQLSeJpx7TsISkYEXzxvbBtOH25T-ZO1Z5NFdujO5SD9qcAH_i1A/viewform"
-        }
-        _ => { // All declensions.
-            "https://docs.google.com/forms/d/e/1FAIpQLSeoxZiqvIWadaLeuXF4f44NCqEn49-B8KNbSvNer5jxgRYdtQ/viewform"
-        }
+    let feedback_form_url = match &pm.word_type {
+        WordType::Irregular {
+            pattern: _,
+            inflection_class,
+        } => get_feedback_url_for_inflection_class(inflection_class),
+        WordType::Declinable {
+            stem: _,
+            pattern: _,
+            inflection_class,
+        } => get_feedback_url_for_inflection_class(inflection_class),
+        _ => get_feedback_url_for_inflection_class(&InflectionClass::Declension),
+    };
+
+    let pattern = match &pm.word_type {
+        WordType::Irregular {
+            pattern,
+            inflection_class: _,
+        } => pattern.as_str(),
+        WordType::Declinable {
+            stem: _,
+            pattern,
+            inflection_class: _,
+        } => pattern.as_str(),
+        _ => "",
     };
 
     let vm = ViewModel {
         pali1: &host.transliterate(pali1)?,
-        pattern: &pm.pattern,
+        pattern,
         like: &pm.like,
         pos: &pm.pos,
         meaning: &pm.meaning,
@@ -200,8 +135,8 @@ fn get_inflection_suffixes_for_pattern(
     host.exec_sql_query(&format!("Select * from {}", pattern))
 }
 
-fn get_all_inflections_for_indeclinables(pali1: &str) -> Result<Vec<String>, String> {
-    Ok(vec![get_stem_for_indeclinable(pali1)?])
+fn get_all_inflections_for_indeclinables(stem: String) -> Vec<String> {
+    vec![stem]
 }
 
 fn get_all_inflections_for_irregulars(
@@ -397,6 +332,7 @@ mod tests {
         Ok(result)
     }
 
+    // TODO: #[test_case("ābādhetixxxx","xx"; "inflected form - 1")]
     #[test_case("ābādheti","xx"; "conjugation - 1 - xx")]
     #[test_case("vassūpanāyikā","xx"; "declension - 1 - xx ")]
     #[test_case("kamma 1","xx"; "declension - 2 - irreg - xx")]
@@ -421,6 +357,7 @@ mod tests {
         insta::assert_snapshot!(html);
     }
 
+    // TODO: #[test_case("ahesuṃxxxx"; "inflected form")]
     #[test_case("a 1"; "indeclinable")]
     #[test_case("ababa 1"; "regular")]
     #[test_case("hoti 2"; "irregular")]
