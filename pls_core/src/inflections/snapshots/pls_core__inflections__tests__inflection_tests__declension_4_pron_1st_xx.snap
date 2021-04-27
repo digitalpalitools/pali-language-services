@@ -6,9 +6,9 @@ expression: html
 <div class="pls-inflection-root">
   <header class="pls-inflection-header">
     <summary>
-      <div class="pls-inflection-summary-word-info">^maṃ$ &ndash; "ahaṃ pron 1st" (irregular)</div>
+      <div class="pls-inflection-summary-word-info">^ahaṃ$ &ndash; "ahaṃ pron 1st" (irregular)</div>
       <div class="pls-inflection-summary-definition">
-        <span class="pls-inflection-summary-definition-pos">(pron)</span> <span class="pls-inflection-summary-definition-meaning">me (object)</span>
+        <span class="pls-inflection-summary-definition-pos">(pron)</span> <span class="pls-inflection-summary-definition-meaning">I</span>
       </div>
     </summary>
   </header>

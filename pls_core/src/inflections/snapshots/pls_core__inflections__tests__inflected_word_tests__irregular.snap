@@ -3,25 +3,16 @@ source: pls_core/src/inflections/mod.rs
 expression: output
 
 ---
-- ahesuṃ
-- ahuṃ
-- ahuvimhe
-- ahuvase
-- ahuvaṃ
-- ahuṃ
-- ahuvivhaṃ
-- ahosiṃ
-- ahuṃ
-- ahuvāsiṃ
-- ahuvo
-- ahosi
-- ahuvattha
-- ahosittha
-- ahuvu
-- ahuvā
-- ahosi
-- ahu
-- ahumha
-- ahumhā
-- ahosimha
+- hoti
+- hohi
+- homa
+- hosi
+- homa
+- homi
+- hotha
+- homi
+- honti
+- hotu
+- hotha
+- hontu
 

@@ -402,8 +402,8 @@ mod tests {
     #[test_case("kamma 1","xx"; "declension - 2 - irreg - xx")]
     #[test_case("kāmaṃ 3","xx"; "declension - 3 - ind - xx")]
     #[test_case("ubha","xx"; "declension - 4 - pron_dual - xx")]
-    #[test_case("maṃ","xx"; "declension - 4 - pron_1st - xx")]
-    #[test_case("taṃ 3","xx"; "declension - 4 - pron_2nd - xx")]
+    #[test_case("ahaṃ","xx"; "declension - 4 - pron_1st - xx")]
+    #[test_case("tumha","xx"; "declension - 4 - pron_2nd - xx")]
     #[test_case("pañca","xx"; "declension - 5 - only x gender - xx")]
     #[test_case("ābādheti","en"; "conjugation - 1 - en")]
     #[test_case("xyz","xxx"; "word that does not exist")]
@@ -423,7 +423,7 @@ mod tests {
 
     #[test_case("a 1"; "indeclinable")]
     #[test_case("ababa 1"; "regular")]
-    #[test_case("ahesuṃ"; "irregular")]
+    #[test_case("hoti 2"; "irregular")]
     fn inflected_word_tests(pali1: &str) {
         let host = Host {
             locale: "en",
