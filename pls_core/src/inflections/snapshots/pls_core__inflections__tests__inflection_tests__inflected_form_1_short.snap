@@ -4,7 +4,12 @@ expression: html
 
 ---
 <div class="pls-inflection-root">
-  
+  <header class="pls-inflection-header">
+    <summary>
+      <div class="pls-inflection-summary-word-info">^ahesuṃ$ infl</div>
+      
+    </summary>
+  </header>
 <div class="pls-inflection-type-indeclinable">
   <i>NOTE: <strong>^ahesuṃ$</strong>&quot; does not have inflection table as it is an inflected form.</i>
 </div>

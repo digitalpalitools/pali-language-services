@@ -57,6 +57,7 @@ pub struct Pali1Metadata {
     pub pos: String,
     pub meaning: String,
     pub like: String,
+    pub long_name: String,
 }
 
 pub fn get_stem_for_indeclinable(pali1: &str) -> Result<String, String> {
@@ -94,7 +95,8 @@ pub fn get_pali1_metadata(
             },
             pos,
             meaning,
-            like: "inflected form".to_string(),
+            like: "infl".to_string(),
+            long_name: "inflected form".to_string(),
         },
         "-" => Pali1Metadata {
             pali1: pali1.to_string(),
@@ -103,7 +105,8 @@ pub fn get_pali1_metadata(
             },
             pos,
             meaning,
-            like: "indeclinable".to_string(),
+            like: "ind".to_string(),
+            long_name: "indeclinable".to_string(),
         },
         "*" => {
             let (inflection_class, _) = get_index_info(&pattern, host)?;
@@ -116,6 +119,7 @@ pub fn get_pali1_metadata(
                 pos,
                 meaning,
                 like: "irreg".to_string(),
+                long_name: "irregular".to_string(),
             }
         }
         _ => {
@@ -130,6 +134,7 @@ pub fn get_pali1_metadata(
                 pos,
                 meaning,
                 like: format!("like {}", host.transliterate(&like)?),
+                long_name: "declinable".to_string(),
             }
         }
     };

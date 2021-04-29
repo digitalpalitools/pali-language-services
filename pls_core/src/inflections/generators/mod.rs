@@ -12,8 +12,12 @@ pub fn create_html_body(
     host: &dyn PlsInflectionsHost,
 ) -> Result<(String, bool), String> {
     match &pm.word_type {
-        WordType::InflectedForm { stem } => indeclinable::create_html_body(&pm.like, &stem, host),
-        WordType::Indeclinable { stem } => indeclinable::create_html_body(&pm.like, &stem, host),
+        WordType::InflectedForm { stem } => {
+            indeclinable::create_html_body(&pm.long_name, &stem, host)
+        }
+        WordType::Indeclinable { stem } => {
+            indeclinable::create_html_body(&pm.long_name, &stem, host)
+        }
         WordType::Irregular {
             pattern,
             inflection_class,

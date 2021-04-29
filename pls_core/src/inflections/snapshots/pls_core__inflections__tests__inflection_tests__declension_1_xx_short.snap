@@ -4,7 +4,12 @@ expression: html
 
 ---
 <div class="pls-inflection-root">
-  
+  <header class="pls-inflection-header">
+    <summary>
+      <div class="pls-inflection-summary-word-info">^vassūpanāyikā$ "ā fem" like ^vanitā$</div>
+      
+    </summary>
+  </header>
 <table class="pls-inflection-table pls-inflection-type-declension">
   <thead>
     <tr>

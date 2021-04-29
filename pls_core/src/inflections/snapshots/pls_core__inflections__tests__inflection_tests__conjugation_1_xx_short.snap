@@ -4,7 +4,12 @@ expression: html
 
 ---
 <div class="pls-inflection-root">
-  
+  <header class="pls-inflection-header">
+    <summary>
+      <div class="pls-inflection-summary-word-info">^ābādheti$ "eti pr" like ^bhāveti$</div>
+      
+    </summary>
+  </header>
 <table class="pls-inflection-table pls-inflection-type-conjugation">
     <thead>
       <tr>

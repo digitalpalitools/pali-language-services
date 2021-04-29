@@ -1,5 +1,4 @@
 <div class="pls-inflection-root">
-  {% if with_details -%}
   <header class="pls-inflection-header">
     <summary>
       {% if pattern -%}
@@ -7,12 +6,13 @@
       {% else -%}
       <div class="pls-inflection-summary-word-info">{{ pali1 }} {{ like }}</div>
       {% endif -%}
+      {% if with_details -%}
       <div class="pls-inflection-summary-definition">
         <span class="pls-inflection-summary-definition-pos">({{ pos }})</span> <span class="pls-inflection-summary-definition-meaning">{{ meaning }}</span>
       </div>
+      {%- endif %}
     </summary>
   </header>
-  {%- endif %}
 {{ body }}
   {% if has_inflection_table -%}
   <footer class="pls-inflection-footer">

@@ -10,5 +10,6 @@ Ok:
       stem: a
   pos: letter
   meaning: "letter “a”, 1st letter of the alphabet, guttural vowel"
-  like: indeclinable
+  like: ind
+  long_name: indeclinable
 

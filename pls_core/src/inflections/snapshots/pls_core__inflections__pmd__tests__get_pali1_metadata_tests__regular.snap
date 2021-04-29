@@ -13,4 +13,5 @@ Ok:
   pos: nt
   meaning: name of a purgatory
   like: like ^citta$
+  long_name: declinable
 
