@@ -98,7 +98,7 @@ jobs:
 
   finish:
     name: Finish
-    needs: [check, test, lints]
+    needs: [check, test, lints, wasm-pack]
     runs-on: ubuntu-latest
     steps:
       - name: Notify DPT on Discord
