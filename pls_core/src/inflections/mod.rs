@@ -40,7 +40,7 @@ pub fn generate_all_inflections(
     let pm = get_pali1_metadata(pali1, host)?;
 
     let inflected_words = match pm.word_type {
-        WordType::InflectedForm { stem: _ } => vec![],
+        WordType::InflectedForm { stems: _ } => vec![],
         WordType::Indeclinable { stem } => vec![stem],
         WordType::Irregular {
             pattern,

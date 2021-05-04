@@ -1,3 +1,7 @@
 <div class="pls-inflection-type-indeclinable">
-  <i>NOTE: <strong>{{ stem }}</strong>&quot; does not have inflection table as it is an {{ word_type }}.</i>
+  {% if is_inflected_form -%}
+  <i>NOTE: See <strong>{{ word }}</strong> for inflection table.</i>
+  {% else -%}
+  <i>NOTE: '<strong>{{ word }}</strong>' is indeclinable.</i>
+  {% endif -%}
 </div>

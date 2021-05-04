@@ -1,4 +1,3 @@
-use crate::inflections;
 use crate::inflections::{localise_abbrev, PlsInflectionsHost};
 use tera::{Context, Tera};
 
@@ -17,16 +16,14 @@ lazy_static! {
 }
 
 pub fn create_html_body(
-    word_type: &str,
-    stem: &str,
+    word: &str,
+    is_inflected_form: bool,
     host: &dyn PlsInflectionsHost,
 ) -> Result<(String, bool), String> {
     let mut context = Context::new();
-    let abbrev_map = inflections::get_abbreviations_for_locale(host)?;
 
-    context.insert("stem", &host.transliterate(stem)?);
-    context.insert("word_type", word_type);
-    context.insert("abbrev_map", &abbrev_map);
+    context.insert("word", &host.transliterate(word)?);
+    context.insert("is_inflected_form", &is_inflected_form);
     let body = TEMPLATES
         .render("indeclinable", &context)
         .map_err(|e| e.to_string())?;

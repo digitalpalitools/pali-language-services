@@ -10,7 +10,7 @@ lazy_static! {
 #[derive(Debug, Serialize)]
 pub enum WordType {
     InflectedForm {
-        stem: String,
+        stems: String,
     },
     Indeclinable {
         stem: String,
@@ -90,9 +90,7 @@ pub fn get_pali1_metadata(
     let pm = match stem.as_str() {
         "!" => Pali1Metadata {
             pali1: pali1.to_string(),
-            word_type: WordType::InflectedForm {
-                stem: pali1.to_string(),
-            },
+            word_type: WordType::InflectedForm { stems: pattern },
             pos,
             meaning,
             like: "infl".to_string(),
