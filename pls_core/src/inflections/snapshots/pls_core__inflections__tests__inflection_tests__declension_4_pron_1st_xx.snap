@@ -66,10 +66,10 @@ expression: html
         <span class="pls-inflection-row-header">^dat$</span>
       </td>
       <td>
-        <div class="pls-inflection-inflected-word">^mamaṃ$</div>
         <div class="pls-inflection-inflected-word">^mama$</div>
-        <div class="pls-inflection-inflected-word">^mayhaṃ$</div>
+        <div class="pls-inflection-inflected-word">^mamaṃ$</div>
         <div class="pls-inflection-inflected-word">^mayha$</div>
+        <div class="pls-inflection-inflected-word">^mayhaṃ$</div>
         <div class="pls-inflection-inflected-word">^me$</div>
         </td>
       <td>
@@ -94,10 +94,10 @@ expression: html
         <span class="pls-inflection-row-header">^gen$</span>
       </td>
       <td>
-        <div class="pls-inflection-inflected-word">^mamaṃ$</div>
         <div class="pls-inflection-inflected-word">^mama$</div>
-        <div class="pls-inflection-inflected-word">^mayhaṃ$</div>
+        <div class="pls-inflection-inflected-word">^mamaṃ$</div>
         <div class="pls-inflection-inflected-word">^mayha$</div>
+        <div class="pls-inflection-inflected-word">^mayhaṃ$</div>
         <div class="pls-inflection-inflected-word">^me$</div>
         </td>
       <td>

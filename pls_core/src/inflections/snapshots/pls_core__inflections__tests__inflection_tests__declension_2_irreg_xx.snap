@@ -30,12 +30,12 @@ expression: html
         <span class="pls-inflection-row-header">^nom$</span>
       </td>
       <td>
-        <div class="pls-inflection-inflected-word">^kammaṃ$</div>
         <div class="pls-inflection-inflected-word">^kamma$</div>
+        <div class="pls-inflection-inflected-word">^kammaṃ$</div>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word">^kammāni$</div>
         <div class="pls-inflection-inflected-word">^kammā$</div>
+        <div class="pls-inflection-inflected-word">^kammāni$</div>
         </td>
       </tr>
     <tr>
@@ -43,8 +43,8 @@ expression: html
         <span class="pls-inflection-row-header">^acc$</span>
       </td>
       <td>
-        <div class="pls-inflection-inflected-word">^kammaṃ$</div>
         <div class="pls-inflection-inflected-word">^kamma$</div>
+        <div class="pls-inflection-inflected-word">^kammaṃ$</div>
         </td>
       <td>
         <div class="pls-inflection-inflected-word">^kammāni$</div>
@@ -123,8 +123,8 @@ expression: html
         <div class="pls-inflection-inflected-word">^kamma$</div>
         </td>
       <td>
-        <div class="pls-inflection-inflected-word">^kammāni$</div>
         <div class="pls-inflection-inflected-word">^kammā$</div>
+        <div class="pls-inflection-inflected-word">^kammāni$</div>
         </td>
       </tr>
     <tr>
