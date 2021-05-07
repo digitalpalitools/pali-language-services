@@ -76,8 +76,8 @@ pub fn char_compare(c1: Character, c2: Character) -> isize {
     match (c1, c2) {
         (Character::Other(c1), Character::Other(c2)) => (c1 as isize - c2 as isize).signum(),
         (Character::Pali(c1), Character::Pali(c2)) => (c1 as isize - c2 as isize).signum(),
-        (Character::Other(_c1), Character::Pali(_c2)) => 1,
-        (Character::Pali(_c1), Character::Other(_c2)) => -1,
+        (Character::Other(_c1), Character::Pali(_c2)) => -1,
+        (Character::Pali(_c1), Character::Other(_c2)) => 1,
     }
 }
 
