@@ -27,12 +27,16 @@ jobs:
 
       - run: wasm-pack build ./js_lib/ --scope digitalpalitools --target bundler --release
 
-  check:
-    name: Check
+  build-test-deploy-linux:
+    name: Build, test & deploy (linux)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
         uses: actions/checkout@v2
+
+      - name: Install musl tools
+        run: |
+          sudo apt-get install musl-tools
 
       - name: Install stable toolchain
         uses: actions-rs/toolchain@v1
@@ -40,12 +44,38 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
+          target: x86_64-unknown-linux-musl
 
-      - name: Run cargo check
+      - name: Run cargo build
         uses: actions-rs/cargo@v1
         continue-on-error: false
         with:
-          command: check
+          command: build
+          args: --release --target x86_64-unknown-linux-musl
+
+      - name: Run cargo test
+        uses: actions-rs/cargo@v1
+        continue-on-error: false
+        with:
+          command: test
+          args: --release --target x86_64-unknown-linux-musl
+
+      - name: Azure Login
+        if: github.event_name != 'pull_request'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS_KSAPPLICATIONS_STORAGE }}
+
+      - name: Deploy
+        if: github.event_name != 'pull_request'
+        run: |
+          az storage blob upload --account-name ksapplications --container-name '$web' --name 'inflections/all_words_gen' --file ./target/x86_64-unknown-linux-musl/release/all_words_gen --content-cache-control 'no-store max-age=0' --content-type "application/x-executable"
+        shell: pwsh
+
+      - name: Azure Logout
+        if: github.event_name != 'pull_request'
+        run: |
+          az logout
 
   test:
     name: Test Suite
@@ -98,7 +128,7 @@ jobs:
 
   finish:
     name: Finish
-    needs: [check, test, lints, wasm-pack]
+    needs: [build-test-deploy-linux, lints, wasm-pack]
     runs-on: ubuntu-latest
     steps:
       - name: Notify DPT on Discord
