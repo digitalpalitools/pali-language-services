@@ -26,8 +26,14 @@ fn main() -> Result<(), String> {
         logger: &ColoredConsoleLogger {},
     };
 
-    let html = pls_core::inflections::generate_all_inflections("ababa 1", &pls_host)?;
+    let html = pls_core::inflections::generate_inflection_table("no 4", true, &pls_host)?;
     println!("{:?}", html);
+
+    let xx = pls_host
+        .sql_access
+        .exec_sql_core("SELECT CAST(COUNT(*) as text) FROM '_stems'")
+        .expect("");
+    println!("{:?}", xx);
 
     Ok(())
 }

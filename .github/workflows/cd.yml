@@ -10,7 +10,7 @@ on:
 
 jobs:
   wasm-pack:
-    name: WAsm Pack
+    name: wasm Pack
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
@@ -76,26 +76,6 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           az logout
-
-  test:
-    name: Test Suite
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v2
-
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
-
-      - name: Run cargo test
-        uses: actions-rs/cargo@v1
-        continue-on-error: false
-        with:
-          command: test
 
   lints:
     name: Lints

@@ -21,17 +21,14 @@ impl SqlAccess {
         cells
     }
 
-    pub fn exec_sql_core(
-        &self,
-        sql: &str,
-    ) -> rusqlite::Result<Vec<Vec<Vec<String>>>, rusqlite::Error> {
+    pub fn exec_sql_core(&self, sql: &str) -> rusqlite::Result<Vec<Vec<Vec<String>>>, String> {
         let mut result: Vec<Vec<Vec<String>>> = Vec::new();
         for s in sql.split(';').filter(|s| !s.trim().is_empty()) {
-            let mut stmt = self.connection.prepare(&s)?;
-            let mut rows = stmt.query(NO_PARAMS)?;
+            let mut stmt = self.connection.prepare(&s).map_err(|e| e.to_string())?;
+            let mut rows = stmt.query(NO_PARAMS).map_err(|e| e.to_string())?;
 
             let mut table: Vec<Vec<String>> = Vec::new();
-            while let Some(row) = rows.next()? {
+            while let Some(row) = rows.next().map_err(|e| e.to_string())? {
                 table.push(self.get_row_cells(row));
             }
             result.push(table)

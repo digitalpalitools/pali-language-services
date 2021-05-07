@@ -3,16 +3,16 @@ source: pls_core/src/inflections/mod.rs
 expression: output
 
 ---
-- hontu
-- hotu
 - homi
-- hohi
+- hontu
 - hosi
+- honti
+- homa
+- hotha
+- hohi
+- hotha
+- hotu
 - hoti
 - homa
-- hotha
-- hotha
-- homa
-- honti
 - homi
 
