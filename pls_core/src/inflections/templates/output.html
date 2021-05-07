@@ -1,4 +1,5 @@
 <div class="pls-inflection-root">
+  {% if has_inflection_table -%}
   <header class="pls-inflection-header">
     <summary>
       {% if pattern -%}
@@ -13,6 +14,7 @@
       {%- endif %}
     </summary>
   </header>
+  {%- endif %}
 {{ body }}
   {% if has_inflection_table -%}
   <footer class="pls-inflection-footer">

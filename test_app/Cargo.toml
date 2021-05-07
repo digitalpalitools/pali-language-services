@@ -7,6 +7,7 @@ description = "Pāli language services test app."
 
 [dependencies]
 pls_core = { path = '../pls_core' }
+pls_core_extras = { path = '../pls_core_extras' }
 serde_json = "1.0.63"
 
 [dependencies.rusqlite]

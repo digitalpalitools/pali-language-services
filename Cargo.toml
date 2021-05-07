@@ -1,5 +1,5 @@
 [workspace]
-members = ["pls_core", "js_lib", "test_app"]
+members = ["pls_core", "pls_core_extras", "js_lib", "all_words_gen", "test_app"]
 
 [profile.release]
 opt-level = "s" # Optimize for small code size.

@@ -1,0 +1,21 @@
+[package]
+name = "all_words_gen"
+version = "0.1.0"
+authors = ["Digital Pāli Tools <digitalpalitools@gmail.com>"]
+edition = "2018"
+description = "Generate inflections_all_words.db from inflections.db."
+
+[dependencies]
+pls_core = { path = '../pls_core' }
+pls_core_extras = { path = '../pls_core_extras' }
+clap = "2.33.3"
+chrono = "0.4"
+
+[dependencies.rusqlite]
+version = "0.24.2"
+features = ["bundled"]
+
+[dev-dependencies]
+proptest = "0.10.1"
+test-case = "1.1.0"
+insta = "1.7.0"

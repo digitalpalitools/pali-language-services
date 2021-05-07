@@ -1,0 +1,22 @@
+[package]
+name = "pls_core_extras"
+version = "0.1.0"
+authors = ["Digital Pāli Tools <digitalpalitools@gmail.com>"]
+edition = "2018"
+description = "Extra supporting implementations for pls_core meanign for non-web usage."
+
+[dependencies]
+lazy_static = "1.4.0"
+pls_core = { path = '../pls_core' }
+serde_json = "1.0.63"
+colored = "2"
+chrono = "0.4"
+
+[dependencies.rusqlite]
+version = "0.24.2"
+features = ["bundled"]
+
+[dev-dependencies]
+proptest = "0.10.1"
+test-case = "1.1.0"
+insta = "1.7.0"

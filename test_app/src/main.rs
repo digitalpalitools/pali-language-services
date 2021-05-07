@@ -1,5 +1,7 @@
-use pls_core::inflections::host::PlsInflectionsHost;
-use rusqlite::{Connection, Row, NO_PARAMS};
+use pls_core_extras::host::PlsHost;
+use pls_core_extras::logger::ColoredConsoleLogger;
+use pls_core_extras::sql_access::SqlAccess;
+use rusqlite::Connection;
 use std::path::PathBuf;
 
 fn main() -> Result<(), String> {
@@ -7,7 +9,24 @@ fn main() -> Result<(), String> {
     let x = pls_core::alphabet::PaliAlphabet::Aa;
     println!("ā > bh? {:#?}", x > pls_core::alphabet::PaliAlphabet::Bh);
 
-    let html = pls_core::inflections::generate_all_inflections("ababa 1", &Host {})?;
+    let inflections_db_path = resolve_file_in_manifest_dir("inflections.db")
+        .expect("must exist")
+        .as_path()
+        .to_str()
+        .expect("must exist")
+        .to_owned();
+    let connection = Connection::open(&inflections_db_path)
+        .map_err(|e| format!("Cannot open db '{}'. Error: {}.", &inflections_db_path, e))?;
+
+    let pls_host = PlsHost {
+        locale: "en",
+        version: "host version v0.0.1",
+        url: "the table is hosted here",
+        sql_access: SqlAccess { connection },
+        logger: &ColoredConsoleLogger {},
+    };
+
+    let html = pls_core::inflections::generate_all_inflections("ababa 1", &pls_host)?;
     println!("{:#?}", html);
 
     Ok(())
@@ -24,67 +43,4 @@ fn resolve_file_in_manifest_dir(file_name: &str) -> Result<PathBuf, String> {
     };
 
     Ok(file_path)
-}
-
-fn get_row_cells(row: &Row) -> Vec<String> {
-    let cells: Vec<String> = row
-        .column_names()
-        .iter()
-        .map(|&cn| {
-            let cell: String = match row.get(cn) {
-                Ok(c) => c,
-                Err(e) => e.to_string(),
-            };
-            cell
-        })
-        .collect();
-
-    cells
-}
-
-fn exec_sql_core(sql: &str) -> rusqlite::Result<Vec<Vec<Vec<String>>>, rusqlite::Error> {
-    let conn =
-        Connection::open(&resolve_file_in_manifest_dir("inflections.db").expect("must exist"))?;
-    let mut result: Vec<Vec<Vec<String>>> = Vec::new();
-    for s in sql.split(';').filter(|s| !s.trim().is_empty()) {
-        let mut stmt = conn.prepare(&s)?;
-        let mut rows = stmt.query(NO_PARAMS)?;
-
-        let mut table: Vec<Vec<String>> = Vec::new();
-        while let Some(row) = rows.next()? {
-            table.push(get_row_cells(row));
-        }
-        result.push(table)
-    }
-
-    Ok(result)
-}
-
-struct Host {}
-
-impl<'a> PlsInflectionsHost<'a> for Host {
-    fn get_locale(&self) -> &'a str {
-        "en"
-    }
-
-    fn get_version(&self) -> &'a str {
-        "host version v0.0.1"
-    }
-
-    fn get_url(&self) -> &'a str {
-        "the table is hosted here"
-    }
-
-    fn transliterate(&self, s: &str) -> Result<String, String> {
-        Ok(s.to_string())
-    }
-
-    fn exec_sql_query_core(&self, sql: &str) -> Result<String, String> {
-        let table = exec_sql_core(&sql).map_err(|x| x.to_string())?;
-        serde_json::to_string(&table).map_err(|x| x.to_string())
-    }
-
-    fn log_warning(&self, msg: &str) {
-        println!("WARNING: {}", msg)
-    }
 }
