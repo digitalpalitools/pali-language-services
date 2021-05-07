@@ -9,7 +9,7 @@ license = "CC BY-NC-SA 4.0"
 keywords = ["pāli", "language", "nlp", "dhamma"]
 
 [lib]
-crate-type = ["rlib"]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 pls_core = { path = '../pls_core' }
