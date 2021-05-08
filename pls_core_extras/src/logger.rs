@@ -38,3 +38,11 @@ impl PlsLogger for ColoredConsoleLogger {
         );
     }
 }
+
+pub struct NullLogger;
+
+impl PlsLogger for NullLogger {
+    fn info(&self, _msg: &str) {}
+    fn error(&self, _msg: &str) {}
+    fn warning(&self, _msg: &str) {}
+}

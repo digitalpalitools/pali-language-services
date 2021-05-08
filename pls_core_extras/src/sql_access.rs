@@ -1,5 +1,6 @@
 use rusqlite::{Connection, Row, NO_PARAMS};
 use std::fmt::Display;
+use std::path::PathBuf;
 use std::str::FromStr;
 
 pub struct SqlAccess {
@@ -53,11 +54,35 @@ impl SqlAccess {
     }
 }
 
+pub fn create_sql_access() -> SqlAccess {
+    let db_path = resolve_file_in_manifest_dir("inflections.db")
+        .expect("must exist")
+        .as_path()
+        .to_str()
+        .expect("must exist")
+        .to_string();
+
+    SqlAccess {
+        connection: Connection::open(db_path).expect("must be valid db"),
+    }
+}
+
+pub fn resolve_file_in_manifest_dir(file_name: &str) -> Result<PathBuf, String> {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+    let p1 = root.join(file_name);
+    let file_path = if p1.exists() {
+        p1
+    } else {
+        let p1 = root.parent().ok_or("???")?;
+        p1.join(file_name)
+    };
+
+    Ok(file_path)
+}
+
 #[cfg(test)]
-mod tests {
+pub mod tests {
     use super::*;
-    use rusqlite::Connection;
-    use std::path::PathBuf;
 
     #[test]
     fn test_exec_invalid_query() {
@@ -189,31 +214,5 @@ mod tests {
         let ret = sa.exec_scalar::<i32>("SELECT COUNT(*) FROM '_stems'");
 
         assert_eq!(ret, Err("invalid digit found in string".to_string()));
-    }
-
-    fn create_sql_access() -> SqlAccess {
-        let db_path = resolve_file_in_manifest_dir("inflections.db")
-            .expect("must exist")
-            .as_path()
-            .to_str()
-            .expect("must exist")
-            .to_string();
-
-        SqlAccess {
-            connection: Connection::open(db_path).expect("must be valid db"),
-        }
-    }
-
-    fn resolve_file_in_manifest_dir(file_name: &str) -> Result<PathBuf, String> {
-        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
-        let p1 = root.join(file_name);
-        let file_path = if p1.exists() {
-            p1
-        } else {
-            let p1 = root.parent().ok_or("")?;
-            p1.join(file_name)
-        };
-
-        Ok(file_path)
     }
 }

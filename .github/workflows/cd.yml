@@ -10,7 +10,7 @@ on:
 
 jobs:
   wasm-pack:
-    name: wasm Pack
+    name: wasm-pack
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
