@@ -76,8 +76,8 @@ pub fn char_compare(c1: Character, c2: Character) -> isize {
     match (c1, c2) {
         (Character::Other(c1), Character::Other(c2)) => (c1 as isize - c2 as isize).signum(),
         (Character::Pali(c1), Character::Pali(c2)) => (c1 as isize - c2 as isize).signum(),
-        (Character::Other(_c1), Character::Pali(_c2)) => 1,
-        (Character::Pali(_c1), Character::Other(_c2)) => -1,
+        (Character::Other(_c1), Character::Pali(_c2)) => -1,
+        (Character::Pali(_c1), Character::Other(_c2)) => 1,
     }
 }
 
@@ -302,20 +302,20 @@ mod tests {
     #[test_case("ac", "ab"  => -1)]
     #[test_case("ac", "ac"  => 0)]
     #[test_case("ab", "ac"  => 1)]
-    #[test_case("a", "x"    => -1)]
-    #[test_case("x", "a"    => 1)]
+    #[test_case("a", "x"    => 1)]
+    #[test_case("x", "a"    => -1)]
     #[test_case("x", "z"    => -1)]
     #[test_case("x", "x"    => 0)]
     #[test_case("z", "x"    => 1)]
-    #[test_case("xabc", "aabc"  => 1)]
-    #[test_case("aabc", "xabc"  => -1)]
-    #[test_case("xabc", "yabc"  => 1)]
+    #[test_case("xabc", "aabc"  => -1)]
+    #[test_case("aabc", "xabc"  => 1)]
+    #[test_case("xabc", "yabc"  => -1)]
     #[test_case("xabc", "xabc"  => 0)]
-    #[test_case("yabc", "xabc"  => -1)]
+    #[test_case("yabc", "xabc"  => 1)]
     #[test_case("i", "ā"    => 1; "random letters 1")]
     #[test_case("cc", "b"   => -1; "longer of lesser sort order 1")]
-    #[test_case("pāli 1", "pālicca"  => 1; "space case")]
-    #[test_case("pādesu sirasā nipatitvā", "pādesu 1" => -1; "number case") ]
+    #[test_case("pāli 1", "pālicca"  => -1; "space case")]
+    #[test_case("pādesu sirasā nipatitvā", "pādesu 1" => 1; "number case") ]
     fn string_compare_tests(str1: &str, str2: &str) -> isize {
         string_compare(str1, str2)
     }
