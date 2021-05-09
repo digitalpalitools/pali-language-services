@@ -9,17 +9,17 @@ pub struct InflectionInfo {
 }
 
 #[derive(Serialize, Debug)]
-pub struct StemsBatchInfo {
-    pub inflection_info: Vec<InflectionInfo>,
+pub struct InflectionsBatchInfo {
+    pub inflection_infos: Vec<InflectionInfo>,
     pub inflected_forms_fetched: i64,
 }
 
 pub fn create_inflection_infos(
     stem_infos: Vec<StemInfo>,
     igen: &dyn InflectionGenerator,
-) -> StemsBatchInfo {
-    let mut ibi = StemsBatchInfo {
-        inflection_info: vec![],
+) -> InflectionsBatchInfo {
+    let mut ibi = InflectionsBatchInfo {
+        inflection_infos: vec![],
         inflected_forms_fetched: 0,
     };
 
@@ -36,7 +36,7 @@ pub fn create_inflection_infos(
                 inflection: inf,
             })
             .collect();
-        ibi.inflection_info.append(&mut inf_infos);
+        ibi.inflection_infos.append(&mut inf_infos);
     }
 
     ibi

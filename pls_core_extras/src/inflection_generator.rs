@@ -47,7 +47,7 @@ impl InflectionGenerator for NullInflectionGenerator {
 }
 
 pub struct PlsInflectionGenerator<'a> {
-    inflection_host: PlsHost<'a>,
+    pub inflection_host: PlsHost<'a>,
 }
 
 impl<'a> PlsInflectionGenerator<'a> {

@@ -1,0 +1,13 @@
+---
+source: all_words_gen/src/inflection_sql_queries.rs
+expression: isqbi
+
+---
+inflection_sql_queries:
+  - BEGIN
+  - "INSERT INTO _all_words (inflection, stem_id) VALUES ('102-1', 102)"
+  - "INSERT INTO _all_words (inflection, stem_id) VALUES ('102-2', 102)"
+  - "INSERT INTO _all_words (inflection, stem_id) VALUES ('103-1', 103)"
+  - END
+inflected_forms_fetched: 10005
+

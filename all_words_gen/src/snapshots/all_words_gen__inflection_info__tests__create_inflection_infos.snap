@@ -1,9 +1,9 @@
 ---
-source: all_words_gen/src/inflections.rs
+source: all_words_gen/src/inflection_info.rs
 expression: infl_infos
 
 ---
-inflection_info:
+inflection_infos:
   - pali1_id: 7
     inflection: ababe
   - pali1_id: 7

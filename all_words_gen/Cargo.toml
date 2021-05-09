@@ -10,12 +10,7 @@ pls_core = { path = '../pls_core' }
 pls_core_extras = { path = '../pls_core_extras' }
 clap = "2.33.3"
 chrono = "0.4"
-lazy_static = "1.4.0"
 serde = "1.0"
-
-[dependencies.tera]
-version = "1.6.1"
-default-features = false
 
 [dependencies.rusqlite]
 version = "0.24.2"

@@ -1,52 +1,32 @@
-#[macro_use]
-extern crate lazy_static;
-use crate::inflections::create_inflection_infos;
+use crate::inflection_info::create_inflection_infos;
+use crate::inflection_sql_queries::create_inflection_sql_queries;
 use chrono::{Datelike, Utc};
-use pls_core_extras::host::PlsHost;
 use pls_core_extras::inflection_generator::PlsInflectionGenerator;
 use pls_core_extras::logger::{ColoredConsoleLogger, PlsLogger};
-use pls_core_extras::sql_access::SqlAccess;
-use rusqlite::Connection;
 use std::borrow::BorrowMut;
-use tera::Tera;
 
 mod args;
-mod inflections;
+mod inflection_info;
+mod inflection_sql_queries;
 mod stem_info;
-
-lazy_static! {
-    static ref TEMPLATES: Tera = {
-        let mut tera = Tera::default();
-        tera.add_raw_templates(vec![(
-            "batch_sql_template",
-            include_str!("templates/batch_sql_template.sql"),
-        )])
-        .expect("Unexpected failure adding template");
-        tera.autoescape_on(vec!["sql"]);
-        tera
-    };
-}
 
 fn main() -> Result<(), String> {
     let arg_matches = args::parse_args();
     let args = args::get_args(&arg_matches);
     print_banner();
 
-    let connection = Connection::open(&args.inflections_db_path).map_err(|e| {
-        format!(
-            "Cannot open db '{}'. Error: {}.",
-            args.inflections_db_path, e
-        )
-    })?;
-
     let logger = &ColoredConsoleLogger {};
-    let pls_host = PlsHost {
-        locale: "en",
-        version: env!("CARGO_PKG_VERSION"),
-        url: env!("CARGO_PKG_NAME"),
-        sql_access: SqlAccess { connection },
-        logger,
-    };
+    logger.info("Generating all words with the following parameters:");
+    logger.info(&format!(
+        "... inflections_db_path: {}",
+        args.inflections_db_path
+    ));
+    logger.info(&format!(
+        "... max_stems_to_fetch: {}",
+        args.max_stems_to_fetch
+    ));
+    logger.info(&format!("... max_batch_size: {}", args.max_batch_size));
+    logger.info("");
 
     let igen = &PlsInflectionGenerator::new(
         "en",
@@ -56,19 +36,43 @@ fn main() -> Result<(), String> {
         logger,
     )?;
 
-    let max_stems_to_fetch = i64::MAX;
-    let max_batch_size = 100;
+    logger.info("(Re)Creating _all_words table...");
+    create_all_words_table(&igen)?;
+
+    logger.info("Inserting inflections into _all_words...");
     let mut sii = crate::stem_info::StemInfoIterator::new(
-        &pls_host.sql_access,
-        max_stems_to_fetch,
-        max_batch_size,
+        &igen.inflection_host.sql_access,
+        args.max_stems_to_fetch,
+        args.max_batch_size,
     );
-    let mut ibis = sii.borrow_mut().map(|x| create_inflection_infos(x, igen));
+    let mut ibis = sii
+        .borrow_mut()
+        .map(|x| create_inflection_infos(x, igen))
+        .map(create_inflection_sql_queries);
     let mut inflections_generated = 0;
     let mut inflected_forms_fetched = 0;
+    let mut n = 0;
     for ibi in &mut ibis {
-        inflections_generated += ibi.inflection_info.len();
+        inflections_generated += ibi.inflection_sql_queries.len();
         inflected_forms_fetched += ibi.inflected_forms_fetched;
+
+        let batch_query = ibi.inflection_sql_queries.join(";\n");
+        match &igen.inflection_host.sql_access.exec(&batch_query) {
+            Ok(_) => Ok(()),
+            Err(e) => {
+                logger.error(&format!("Insertion into db failed with {}", e));
+                Err(e)
+            }
+        }?;
+
+        n += 1;
+        if n % 1000 == 0 {
+            logger.info(&format!(
+                "... inserted {:05} entries into dob. ({}).",
+                n,
+                ibi.inflection_sql_queries[ibi.inflection_sql_queries.len() - 2]
+            ));
+        }
     }
 
     logger.info("Summary:");
@@ -88,13 +92,27 @@ fn main() -> Result<(), String> {
     logger.info(&format!("... Error: {:?}", sii.error));
 
     logger.info("");
-    let n = pls_host
+    let n = igen
+        .inflection_host
         .sql_access
         .exec_scalar::<i32>("SELECT CAST(COUNT(*) as text) FROM '_stems'")
         .expect("");
-    logger.info(&format!("_stems table rows: {}", n));
+    logger.info(&format!("Total _stems table rows: {}", n));
 
     Ok(())
+}
+
+fn create_all_words_table(igen: &PlsInflectionGenerator) -> Result<(), String> {
+    let query = r#"DROP TABLE IF EXISTS _all_words; CREATE TABLE _all_words (inflection TEXT NOT NULL, stem_id INTEGER NOT NULL);"#;
+    match igen.inflection_host.sql_access.exec(query) {
+        Ok(_) => Ok(()),
+        Err(e) => {
+            igen.inflection_host
+                .logger
+                .error(&format!("Insertion into db failed with {}", e));
+            Err(e)
+        }
+    }
 }
 
 fn print_banner() {
