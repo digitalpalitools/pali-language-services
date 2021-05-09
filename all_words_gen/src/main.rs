@@ -68,7 +68,7 @@ fn main() -> Result<(), String> {
         n += 1;
         if n % 1000 == 0 {
             logger.info(&format!(
-                "... inserted {:05} entries into dob. ({}).",
+                "... inserted {:05} entries into db. ({}).",
                 n,
                 ibi.inflection_sql_queries[ibi.inflection_sql_queries.len() - 2]
             ));
@@ -92,12 +92,8 @@ fn main() -> Result<(), String> {
     logger.info(&format!("... Error: {:?}", sii.error));
 
     logger.info("");
-    let n = igen
-        .inflection_host
-        .sql_access
-        .exec_scalar::<i32>("SELECT CAST(COUNT(*) as text) FROM '_stems'")
-        .expect("");
-    logger.info(&format!("Total _stems table rows: {}", n));
+    print_table_word_count("_stems", igen);
+    print_table_word_count("_all_words", igen);
 
     Ok(())
 }
@@ -130,3 +126,13 @@ fn print_banner() {
     println!("This work is licensed under the {} license (https://creativecommons.org/licenses/by-nc-sa/4.0/)", env!("CARGO_PKG_LICENSE"));
     println!();
 }
+
+fn print_table_word_count(table_name: &str, igen: &PlsInflectionGenerator) {
+    let n = igen
+        .inflection_host
+        .sql_access
+        .exec_scalar::<i32>(& format!("SELECT CAST(COUNT(*) as text) FROM '{}'", table_name))
+        .expect("");
+    igen.inflection_host.logger.info(&format!("Total {} table rows: {}", table_name, n));
+}
+
