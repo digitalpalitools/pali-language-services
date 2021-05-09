@@ -131,8 +131,12 @@ fn print_table_word_count(table_name: &str, igen: &PlsInflectionGenerator) {
     let n = igen
         .inflection_host
         .sql_access
-        .exec_scalar::<i32>(& format!("SELECT CAST(COUNT(*) as text) FROM '{}'", table_name))
+        .exec_scalar::<i32>(&format!(
+            "SELECT CAST(COUNT(*) as text) FROM '{}'",
+            table_name
+        ))
         .expect("");
-    igen.inflection_host.logger.info(&format!("Total {} table rows: {}", table_name, n));
+    igen.inflection_host
+        .logger
+        .info(&format!("Total {} table rows: {}", table_name, n));
 }
-
