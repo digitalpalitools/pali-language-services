@@ -4,7 +4,6 @@ use chrono::{Datelike, Utc};
 use pls_core_extras::inflection_generator::PlsInflectionGenerator;
 use pls_core_extras::logger::{ColoredConsoleLogger, PlsLogger};
 use std::borrow::BorrowMut;
-
 mod args;
 mod inflection_info;
 mod inflection_sql_queries;
@@ -53,7 +52,7 @@ fn main() -> Result<(), String> {
     let mut inflected_forms_fetched = 0;
     let mut n = 0;
     for ibi in &mut ibis {
-        inflections_generated += ibi.inflection_sql_queries.len();
+        inflections_generated += ibi.inflection_sql_queries.len() - 2;
         inflected_forms_fetched += ibi.inflected_forms_fetched;
 
         let batch_query = ibi.inflection_sql_queries.join(";\n");
@@ -99,7 +98,7 @@ fn main() -> Result<(), String> {
 }
 
 fn create_all_words_table(igen: &PlsInflectionGenerator) -> Result<(), String> {
-    let query = r#"DROP TABLE IF EXISTS _all_words; CREATE TABLE _all_words (inflection TEXT NOT NULL, stem_id INTEGER NOT NULL);"#;
+    let query = r#"DROP TABLE IF EXISTS _all_words; CREATE TABLE _all_words (stem_id INTEGER NOT NULL, inflection TEXT NOT NULL );"#;
     match igen.inflection_host.sql_access.exec(query) {
         Ok(_) => Ok(()),
         Err(e) => {
