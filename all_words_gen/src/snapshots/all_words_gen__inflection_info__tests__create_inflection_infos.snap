@@ -5,128 +5,72 @@ expression: infl_infos
 ---
 inflection_infos:
   - pali1_id: 7
-    inflection: ababe
+    inflection: ababa
   - pali1_id: 7
     inflection: ababamhi
   - pali1_id: 7
-    inflection: ababasmiṃ
-  - pali1_id: 7
-    inflection: ababehi
-  - pali1_id: 7
-    inflection: ababebhi
-  - pali1_id: 7
-    inflection: ababato
-  - pali1_id: 7
-    inflection: ababa
-  - pali1_id: 7
-    inflection: ababānaṃ
-  - pali1_id: 7
-    inflection: ababassa
-  - pali1_id: 7
-    inflection: ababaṃ
-  - pali1_id: 7
-    inflection: ababā
-  - pali1_id: 7
     inflection: ababamhā
+  - pali1_id: 7
+    inflection: ababasmiṃ
   - pali1_id: 7
     inflection: ababasmā
   - pali1_id: 7
+    inflection: ababassa
+  - pali1_id: 7
     inflection: ababato
   - pali1_id: 7
+    inflection: ababaṃ
+  - pali1_id: 7
     inflection: ababe
+  - pali1_id: 7
+    inflection: ababebhi
+  - pali1_id: 7
+    inflection: ababehi
+  - pali1_id: 7
+    inflection: ababena
+  - pali1_id: 7
+    inflection: ababesu
+  - pali1_id: 7
+    inflection: ababā
+  - pali1_id: 7
+    inflection: ababānaṃ
   - pali1_id: 7
     inflection: ababāni
   - pali1_id: 7
     inflection: ababāya
-  - pali1_id: 7
-    inflection: ababassa
-  - pali1_id: 7
-    inflection: ababesu
-  - pali1_id: 7
-    inflection: ababa
-  - pali1_id: 7
-    inflection: ababā
-  - pali1_id: 7
-    inflection: ababaṃ
-  - pali1_id: 7
-    inflection: ababā
-  - pali1_id: 7
-    inflection: ababāni
-  - pali1_id: 7
-    inflection: ababā
-  - pali1_id: 7
-    inflection: ababāni
-  - pali1_id: 7
-    inflection: ababena
-  - pali1_id: 7
-    inflection: ababānaṃ
-  - pali1_id: 7
-    inflection: ababaṃ
-  - pali1_id: 7
-    inflection: ababehi
-  - pali1_id: 7
-    inflection: ababebhi
   - pali1_id: 8
-    inflection: ababe
+    inflection: ababa
   - pali1_id: 8
     inflection: ababamhi
   - pali1_id: 8
-    inflection: ababasmiṃ
-  - pali1_id: 8
-    inflection: ababehi
-  - pali1_id: 8
-    inflection: ababebhi
-  - pali1_id: 8
-    inflection: ababato
-  - pali1_id: 8
-    inflection: ababa
-  - pali1_id: 8
-    inflection: ababānaṃ
-  - pali1_id: 8
-    inflection: ababassa
-  - pali1_id: 8
-    inflection: ababaṃ
-  - pali1_id: 8
-    inflection: ababā
-  - pali1_id: 8
     inflection: ababamhā
+  - pali1_id: 8
+    inflection: ababasmiṃ
   - pali1_id: 8
     inflection: ababasmā
   - pali1_id: 8
+    inflection: ababassa
+  - pali1_id: 8
     inflection: ababato
   - pali1_id: 8
+    inflection: ababaṃ
+  - pali1_id: 8
     inflection: ababe
+  - pali1_id: 8
+    inflection: ababebhi
+  - pali1_id: 8
+    inflection: ababehi
+  - pali1_id: 8
+    inflection: ababena
+  - pali1_id: 8
+    inflection: ababesu
+  - pali1_id: 8
+    inflection: ababā
+  - pali1_id: 8
+    inflection: ababānaṃ
   - pali1_id: 8
     inflection: ababāni
   - pali1_id: 8
     inflection: ababāya
-  - pali1_id: 8
-    inflection: ababassa
-  - pali1_id: 8
-    inflection: ababesu
-  - pali1_id: 8
-    inflection: ababa
-  - pali1_id: 8
-    inflection: ababā
-  - pali1_id: 8
-    inflection: ababaṃ
-  - pali1_id: 8
-    inflection: ababā
-  - pali1_id: 8
-    inflection: ababāni
-  - pali1_id: 8
-    inflection: ababā
-  - pali1_id: 8
-    inflection: ababāni
-  - pali1_id: 8
-    inflection: ababena
-  - pali1_id: 8
-    inflection: ababānaṃ
-  - pali1_id: 8
-    inflection: ababaṃ
-  - pali1_id: 8
-    inflection: ababehi
-  - pali1_id: 8
-    inflection: ababebhi
 inflected_forms_fetched: 1
 
