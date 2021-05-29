@@ -4,6 +4,7 @@ use chrono::{Datelike, Utc};
 use pls_core_extras::inflection_generator::PlsInflectionGenerator;
 use pls_core_extras::logger::{ColoredConsoleLogger, PlsLogger};
 use std::borrow::BorrowMut;
+
 mod args;
 mod inflection_info;
 mod inflection_sql_queries;
