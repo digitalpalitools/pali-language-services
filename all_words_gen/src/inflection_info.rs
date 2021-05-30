@@ -24,9 +24,7 @@ pub fn create_inflection_infos(
     };
 
     for stem_info in stem_infos {
-        let mut infs = igen.generate_all_inflections(&stem_info.pali1);
-        infs.sort();
-        infs.dedup();
+        let infs = igen.generate_all_inflections(&stem_info.pali1);
         if infs.is_empty() {
             ibi.inflected_forms_fetched += 1;
         }
