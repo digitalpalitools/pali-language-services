@@ -99,7 +99,7 @@ fn main() -> Result<(), String> {
 }
 
 fn create_all_words_table(igen: &PlsInflectionGenerator) -> Result<(), String> {
-    let query = r#"DROP TABLE IF EXISTS _all_words; CREATE TABLE _all_words (inflection TEXT NOT NULL, stem_id INTEGER NOT NULL);"#;
+    let query = r#"DROP TABLE IF EXISTS _all_words; CREATE TABLE _all_words (subIndex INTEGER PRIMARY KEY, inflection TEXT NOT NULL, stem_id INTEGER NOT NULL);"#;
     match igen.inflection_host.sql_access.exec(query) {
         Ok(_) => Ok(()),
         Err(e) => {
