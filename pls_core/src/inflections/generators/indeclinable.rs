@@ -1,4 +1,4 @@
-use crate::inflections::{localise_abbrev, PlsInflectionsHost, pmd::get_pali1_metadata};
+use crate::inflections::{localise_abbrev, pmd::get_pali1_metadata, PlsInflectionsHost};
 use tera::{Context, Tera};
 
 lazy_static! {
@@ -19,6 +19,7 @@ pub fn create_html_body(
     word: &str,
     is_inflected_form: bool,
     host: &dyn PlsInflectionsHost,
+    with_details: bool,
 ) -> Result<(String, bool), String> {
     let mut context = Context::new();
     let pm = get_pali1_metadata(&word, host)?;
@@ -27,6 +28,7 @@ pub fn create_html_body(
     context.insert("is_inflected_form", &is_inflected_form);
     context.insert("meaning", &pm.meaning);
     context.insert("pos", &pm.pos);
+    context.insert("with_details", &with_details);
     let body = TEMPLATES
         .render("indeclinable", &context)
         .map_err(|e| e.to_string())?;

@@ -28,7 +28,7 @@ pub fn generate_inflection_table(
     host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
     let pm = get_pali1_metadata(pali1, host)?;
-    let (body, has_inflection_table) = generators::create_html_body(&pm, host)?;
+    let (body, has_inflection_table) = generators::create_html_body(&pm, host, with_details)?;
 
     generate_output(&pm, pali1, with_details, &body, has_inflection_table, host)
 }
