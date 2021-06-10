@@ -10,13 +10,14 @@ mod indeclinable;
 pub fn create_html_body(
     pm: &Pali1Metadata,
     host: &dyn PlsInflectionsHost,
+    with_details: bool,
 ) -> Result<(String, bool), String> {
     match &pm.word_type {
         WordType::InflectedForm { stems: stem } => {
-            indeclinable::create_html_body(&stem, true, host)
+            indeclinable::create_html_body(&stem, true, host, with_details)
         }
         WordType::Indeclinable { stem: _stem } => {
-            indeclinable::create_html_body(&pm.pali1, false, host)
+            indeclinable::create_html_body(&pm.pali1, false, host, with_details)
         }
         WordType::Irregular {
             pattern,
