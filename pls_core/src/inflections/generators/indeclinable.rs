@@ -1,4 +1,5 @@
-use crate::inflections::{localise_abbrev, pmd::get_pali1_metadata, PlsInflectionsHost};
+use crate::inflections::pmd::{Pali1Metadata, WordType};
+use crate::inflections::{localise_abbrev, PlsInflectionsHost};
 use tera::{Context, Tera};
 
 lazy_static! {
@@ -16,16 +17,26 @@ lazy_static! {
 }
 
 pub fn create_html_body(
-    word: &str,
-    is_inflected_form: bool,
+    pm: &Pali1Metadata,
     host: &dyn PlsInflectionsHost,
     with_details: bool,
 ) -> Result<(String, bool), String> {
     let mut context = Context::new();
-    let pm = get_pali1_metadata(&word, host)?;
-
-    context.insert("word", &host.transliterate(word)?);
-    context.insert("is_inflected_form", &is_inflected_form);
+    match &pm.word_type {
+        WordType::InflectedForm { stems: stem } => {
+            context.insert("word", &host.transliterate(stem)?);
+            context.insert("is_inflected_form", &true);
+        }
+        WordType::Indeclinable { stem: _stem } => {
+            context.insert("word", &host.transliterate(&pm.pali1)?);
+            context.insert("is_inflected_form", &false);
+        }
+        _ => {
+            return Err(format!(
+                "WordType should be either InflectedForm or Indeclinable."
+            ))
+        }
+    }
     context.insert("meaning", &pm.meaning);
     context.insert("pos", &pm.pos);
     context.insert("with_details", &with_details);
