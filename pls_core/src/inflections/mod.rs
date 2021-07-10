@@ -262,6 +262,8 @@ mod tests {
     use crate::inflections::test_host::Host;
     use test_case::test_case;
 
+    #[test_case("agamaṃsu",true,"xx"; "indeclinable - 1")]
+    #[test_case("agamaṃsu",false,"xx"; "indeclinable - 1 - short")]
     #[test_case("ahesuṃ",true,"xx"; "inflected form - 1")]
     #[test_case("ahesuṃ",false,"xx"; "inflected form - 1 - short")]
     #[test_case("ābādheti",true,"xx"; "conjugation - 1 - xx")]
