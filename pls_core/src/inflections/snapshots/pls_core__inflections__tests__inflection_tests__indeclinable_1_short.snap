@@ -1,0 +1,15 @@
+---
+source: pls_core/src/inflections/mod.rs
+expression: html
+
+---
+<div class="pls-inflection-root">
+  
+<div class="pls-inflection-type-indeclinable">
+  <i>See <strong>^agamāsi$</strong> for inflection table.</i>
+  </div>
+
+
+  
+</div>
+
