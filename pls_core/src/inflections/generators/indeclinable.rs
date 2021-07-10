@@ -31,11 +31,7 @@ pub fn create_html_body(
             context.insert("word", &host.transliterate(&pm.pali1)?);
             context.insert("is_inflected_form", &false);
         }
-        _ => {
-            return Err(format!(
-                "WordType should be either InflectedForm or Indeclinable."
-            ))
-        }
+        _ => return Err("WordType should be either InflectedForm or Indeclinable.".to_string()),
     }
     context.insert("meaning", &pm.meaning);
     context.insert("pos", &pm.pos);
