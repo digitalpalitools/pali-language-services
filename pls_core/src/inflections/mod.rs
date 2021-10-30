@@ -122,8 +122,8 @@ fn generate_output(
         like: &pm.like,
         pos: &pm.pos,
         meaning: &pm.meaning,
-        body: &body,
-        feedback_form_url: &feedback_form_url,
+        body,
+        feedback_form_url,
         has_inflection_table,
         host_url: host.get_url(),
         host_version: host.get_version(),
@@ -209,7 +209,7 @@ fn join_and_transliterate_if_not_empty(
 }
 
 fn get_inflections(stem: &str, sql: &str, host: &dyn PlsInflectionsHost) -> Vec<String> {
-    let res = match host.exec_sql_query(&sql) {
+    let res = match host.exec_sql_query(sql) {
         Ok(x) => {
             if x.len() == 1 && x[0].len() == 1 && x[0][0].len() == 1 {
                 x[0][0][0].to_string()
@@ -229,7 +229,7 @@ fn get_inflections(stem: &str, sql: &str, host: &dyn PlsInflectionsHost) -> Vec<
 }
 
 fn query_has_no_results(query: &str, host: &dyn PlsInflectionsHost) -> Result<bool, String> {
-    let count = &host.exec_sql_query(&query)?[0][0][0];
+    let count = &host.exec_sql_query(query)?[0][0][0];
     Ok(count.eq("0"))
 }
 
@@ -382,7 +382,7 @@ mod test_host {
         }
 
         fn exec_sql_query_core(&self, sql: &str) -> Result<String, String> {
-            let table = exec_sql_core(&sql).map_err(|x| x.to_string())?;
+            let table = exec_sql_core(sql).map_err(|x| x.to_string())?;
             serde_json::to_string(&table).map_err(|x| x.to_string())
         }
 
@@ -411,7 +411,7 @@ mod test_host {
         let conn = Connection::open("../inflections.db")?;
         let mut result: Vec<Vec<Vec<String>>> = Vec::new();
         for s in sql.split(';').filter(|s| !s.trim().is_empty()) {
-            let mut stmt = conn.prepare(&s)?;
+            let mut stmt = conn.prepare(s)?;
             let mut rows = stmt.query(NO_PARAMS)?;
 
             let mut table: Vec<Vec<String>> = Vec::new();

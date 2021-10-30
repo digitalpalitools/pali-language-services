@@ -107,7 +107,7 @@ fn create_case_view_models(
                     r#"SELECT inflections FROM '{}' WHERE "case" = '{}' AND gender = '{}' AND "number" = '{}'"#,
                     table_name, c, g, n
                 );
-                let inflections = inflections::get_inflections(&stem, &sql, host);
+                let inflections = inflections::get_inflections(stem, &sql, host);
                 inflections_list.push(inflections);
             }
         }
@@ -132,5 +132,5 @@ fn create_template_view_model_for_in_comps(
         table_name
     );
 
-    inflections::get_inflections(&stem, &sql, host)
+    inflections::get_inflections(stem, &sql, host)
 }

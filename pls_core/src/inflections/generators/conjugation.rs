@@ -38,7 +38,7 @@ pub fn create_html_body(
     host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
     let table_name = &get_table_name_from_pattern(pattern);
-    let tense_view_models = create_tense_view_models(table_name, &stem, host)?;
+    let tense_view_models = create_tense_view_models(table_name, stem, host)?;
     let abbrev_map = inflections::get_abbreviations_for_locale(host)?;
     let vm = TemplateViewModel {
         stem,
@@ -110,7 +110,7 @@ fn create_tense_view_models(
                         r#"SELECT inflections FROM '{}' WHERE tense = '{}' AND person = '{}' AND actreflx = '{}' AND "number" = '{}'"#,
                         table_name, t, p, ar, n,
                     );
-                    let inflections = inflections::get_inflections(&stem, &sql, host);
+                    let inflections = inflections::get_inflections(stem, &sql, host);
                     inflections_list.push(inflections);
                 }
             }

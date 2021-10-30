@@ -28,7 +28,7 @@ impl<'a> PlsInflectionsHost<'a> for PlsHost<'a> {
     }
 
     fn exec_sql_query_core(&self, sql: &str) -> Result<String, String> {
-        let table = self.sql_access.exec(&sql)?;
+        let table = self.sql_access.exec(sql)?;
         serde_json::to_string(&table).map_err(|x| x.to_string())
     }
 

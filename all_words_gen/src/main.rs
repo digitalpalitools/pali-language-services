@@ -37,7 +37,7 @@ fn main() -> Result<(), String> {
     )?;
 
     logger.info("(Re)Creating _all_words table...");
-    create_all_words_table(&igen)?;
+    create_all_words_table(igen)?;
 
     logger.info("Inserting inflections into _all_words...");
     let mut sii = crate::stem_info::StemInfoIterator::new(

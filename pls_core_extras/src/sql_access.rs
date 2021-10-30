@@ -27,7 +27,7 @@ impl SqlAccess {
     pub fn exec(&self, sql: &str) -> Result<Vec<Vec<Vec<String>>>, String> {
         let mut result: Vec<Vec<Vec<String>>> = Vec::new();
         for s in sql.split(';').filter(|s| !s.trim().is_empty()) {
-            let mut stmt = self.connection.prepare(&s).map_err(|e| e.to_string())?;
+            let mut stmt = self.connection.prepare(s).map_err(|e| e.to_string())?;
             let mut rows = stmt.query(NO_PARAMS).map_err(|e| e.to_string())?;
 
             let mut table: Vec<Vec<String>> = Vec::new();

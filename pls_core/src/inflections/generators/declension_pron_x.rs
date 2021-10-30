@@ -41,7 +41,7 @@ pub fn create_html_body(
     host: &dyn PlsInflectionsHost,
 ) -> Result<String, String> {
     let table_name = &get_table_name_from_pattern(pattern);
-    let view_models = create_case_view_models(&pron_type, table_name, &stem, host)?;
+    let view_models = create_case_view_models(pron_type, table_name, stem, host)?;
     let in_comps_inflections = Vec::new();
     let abbrev_map = inflections::get_abbreviations_for_locale(host)?;
 
@@ -79,7 +79,7 @@ fn create_case_view_models(
                 r#"SELECT inflections FROM '{}' WHERE "case" = '{}' AND special_pron_class = '{}' AND "number" = '{}'"#,
                 table_name, case, pron_type, number
             );
-            let inflections = inflections::get_inflections(&stem, &sql, host);
+            let inflections = inflections::get_inflections(stem, &sql, host);
             inflections_list.push(inflections);
         }
 

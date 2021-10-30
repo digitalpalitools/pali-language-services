@@ -14,7 +14,7 @@ pub fn create_html_body(
 ) -> Result<(String, bool), String> {
     match &pm.word_type {
         WordType::InflectedForm { stems: _ } | WordType::Indeclinable { stem: _ } => {
-            indeclinable::create_html_body(&pm, host, with_details)
+            indeclinable::create_html_body(pm, host, with_details)
         }
         WordType::Irregular {
             pattern,
