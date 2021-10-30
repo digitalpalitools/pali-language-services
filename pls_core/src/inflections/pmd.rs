@@ -157,7 +157,17 @@ fn get_index_info(
         r#"select inflection_class, like from '_index' where name = "{}""#,
         pattern
     );
+
     let results = host.exec_sql_query(&sql)?;
+    if results.len() == 0 || results[0].len() == 0 || results[0][0].len() == 0 {
+        host.log_warning(
+            format!(
+                "No results returned from inflections.db. This is unexpected, will crash now. sql: '{}'",
+                sql
+            )
+        );
+    }
+
     let inflection_class = InflectionClass::from_str(&results[0][0][0])?;
     let like = results[0][0][1].to_owned();
 
