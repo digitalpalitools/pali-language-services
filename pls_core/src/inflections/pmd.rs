@@ -161,7 +161,7 @@ fn get_index_info(
     let results = host.exec_sql_query(&sql)?;
     if results.len() == 0 || results[0].len() == 0 || results[0][0].len() == 0 {
         host.log_warning(
-            format!(
+            &format!(
                 "No results returned from inflections.db. This is unexpected, will crash now. sql: '{}'",
                 sql
             )
